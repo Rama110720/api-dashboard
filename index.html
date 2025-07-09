@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Dashboard - Dokumentasi API</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-header h4 {
+            margin: 0;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-header h4 {
+            opacity: 0;
+        }
+
+        .nav-item {
+            margin: 0.25rem 0;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+
+        .container-fluid {
+            padding: 2rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .api-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .api-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .api-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .api-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .api-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .api-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .api-description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .api-endpoint {
+            background: #f3f4f6;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .api-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn-try {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-try:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-ready {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-maintenance {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .response-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 80%;
+            max-width: 600px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: var(--danger-color);
+        }
+
+        .json-response {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .container-fluid {
+                padding: 1rem;
+            }
+            
+            .api-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-code"></i>
+            <h4>API Dashboard</h4>
+        </div>
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#ai-apis">
+                    <i class="fas fa-robot"></i>
+                    <span>AI APIs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#canvas-apis">
+                    <i class="fas fa-palette"></i>
+                    <span>Canvas APIs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#random-apis">
+                    <i class="fas fa-random"></i>
+                    <span>Random APIs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#utility-apis">
+                    <i class="fas fa-tools"></i>
+                    <span>Utility APIs</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Top Navigation -->
+        <nav class="navbar">
+            <div class="d-flex align-items-center">
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 class="ms-3 mb-0">API Documentation</h2>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-success me-3">
+                    <i class="fas fa-circle"></i> Online
+                </span>
+                <span class="text-muted">Last updated: <span id="lastUpdated"></span></span>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <!-- Statistics Cards -->
+            <div class="stats-cards">
+                <div class="stats-card">
+                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="mb-1">12</h3>
+                    <p class="text-muted mb-0">Total APIs</p>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="mb-1">10</h3>
+                    <p class="text-muted mb-0">Ready</p>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="mb-1">1</h3>
+                    <p class="text-muted mb-0">Maintenance</p>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <h3 class="mb-1">1</h3>
+                    <p class="text-muted mb-0">Error</p>
+                </div>
+            </div>
+
+            <!-- AI APIs Section -->
+            <section class="api-section" id="ai-apis">
+                <h2 class="section-title">
+                    <i class="fas fa-robot"></i>
+                    AI APIs
+                </h2>
+                <div class="api-grid">
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">ChatGPT API</h3>
+                                <p class="api-description">Integrasi dengan ChatGPT untuk pemrosesan bahasa alami dan chatbot.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/chatgpt.php?text=hello</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/chatgpt.php?text=hello')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Text Analysis</h3>
+                                <p class="api-description">Analisis sentimen dan klasifikasi teks menggunakan machine learning.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">POST /api/text-analysis.php</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/text-analysis.php')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Image Recognition</h3>
+                                <p class="api-description">Pengenalan objek dan klasifikasi gambar menggunakan AI.</p>
+                            </div>
+                            <span class="status-badge status-maintenance">Maintenance</span>
+                        </div>
+                        <div class="api-endpoint">POST /api/image-recognition.php</div>
+                        <div class="api-actions">
+                            <button class="btn-try" disabled>
+                                <i class="fas fa-wrench"></i> Maintenance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Canvas APIs Section -->
+            <section class="api-section" id="canvas-apis">
+                <h2 class="section-title">
+                    <i class="fas fa-palette"></i>
+                    Canvas APIs
+                </h2>
+                <div class="api-grid">
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Quote Generator</h3>
+                                <p class="api-description">Membuat gambar quote dengan berbagai template dan font.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/quote.php?text=hello&author=world</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/quote.php?text=hello&author=world')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Meme Generator</h3>
+                                <p class="api-description">Membuat meme dengan template populer dan teks custom.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/meme.php?template=drake&top=text1&bottom=text2</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/meme.php?template=drake&top=text1&bottom=text2')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Certificate Generator</h3>
+                                <p class="api-description">Membuat sertifikat digital dengan nama dan tanggal custom.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/certificate.php?name=John&course=Web Development</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/certificate.php?name=John&course=Web Development')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Random APIs Section -->
+            <section class="api-section" id="random-apis">
+                <h2 class="section-title">
+                    <i class="fas fa-random"></i>
+                    Random APIs
+                </h2>
+                <div class="api-grid">
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Random Quote</h3>
+                                <p class="api-description">Mendapatkan kutipan inspiratif secara acak dari berbagai tokoh.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/random-quote.php</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/random-quote.php')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Random Joke</h3>
+                                <p class="api-description">Mendapatkan joke atau lelucon secara acak untuk menghibur.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/random-joke.php</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/random-joke.php')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Random Number</h3>
+                                <p class="api-description">Menghasilkan angka acak dalam rentang yang ditentukan.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/random-number.php?min=1&max=100</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/random-number.php?min=1&max=100')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Utility APIs Section -->
+            <section class="api-section" id="utility-apis">
+                <h2 class="section-title">
+                    <i class="fas fa-tools"></i>
+                    Utility APIs
+                </h2>
+                <div class="api-grid">
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">Hello World</h3>
+                                <p class="api-description">API sederhana untuk testing koneksi dan response dasar.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/hello.php</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/hello.php')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">URL Shortener</h3>
+                                <p class="api-description">Memperpendek URL panjang menjadi link yang lebih mudah dibagikan.</p>
+                            </div>
+                            <span class="status-badge status-ready">Ready</span>
+                        </div>
+                        <div class="api-endpoint">POST /api/shorturl.php</div>
+                        <div class="api-actions">
+                            <button class="btn-try" onclick="testAPI('/api/shorturl.php')">
+                                <i class="fas fa-play"></i> Test API
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">QR Code Generator</h3>
+                                <p class="api-description">Membuat QR Code dari teks atau URL yang diberikan.</p>
+                            </div>
+                            <span class="status-badge status-error">Error</span>
+                        </div>
+                        <div class="api-endpoint">GET /api/qrcode.php?text=hello</div>
+                        <div class="api-actions">
+                            <button class="btn-try" disabled>
+                                <i class="fas fa-times"></i> Error
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Response Modal -->
+    <div id="responseModal" class="response-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>API Response</h3>
+            <div id="responseContent" class="json-response"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLastUpdated();
+            setInterval(updateLastUpdated, 60000); // Update every minute
+        });
+
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            document.getElementById('lastUpdated').textContent = timeString;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+
+        function testAPI(endpoint) {
+            // Simulate API call
+            const modal = document.getElementById('responseModal');
+            const responseContent = document.getElementById('responseContent');
+            
+            // Show loading
+            responseContent.innerHTML = 'Loading...';
+            modal.style.display = 'block';
+            
+            // Simulate API response based on endpoint
+            setTimeout(() => {
+                let response;
+                
+                if (endpoint.includes('hello.php')) {
+                    response = {
+                        "status": "success",
+                        "message": "Halo Dunia!",
+                        "timestamp": new Date().toISOString()
+                    };
+                } else if (endpoint.includes('chatgpt.php')) {
+                    response = {
+                        "status": "success",
+                        "response": "Hello! How can I help you today?",
+                        "model": "gpt-3.5-turbo",
+                        "timestamp": new Date().toISOString()
+                    };
+                } else if (endpoint.includes('quote.php')) {
+                    response = {
+                        "status": "success",
+                        "image_url": "https://example.com/quote-image.png",
+                        "text": "hello",
+                        "author": "world",
+                        "timestamp": new Date().toISOString()
+                    };
+                } else if (endpoint.includes('random-quote.php')) {
+                    response = {
+                        "status": "success",
+                        "quote": "The only way to do great work is to love what you do.",
+                        "author": "Steve Jobs",
+                        "category": "motivation",
+                        "timestamp": new Date().toISOString()
+                    };
+                } else if (endpoint.includes('random-number.php')) {
+                    response = {
+                        "status": "success",
+                        "number": Math.floor(Math.random() * 100) + 1,
+                        "min": 1,
+                        "max": 100,
+                        "timestamp": new Date().toISOString()
+                    };
+                } else {
+                    response = {
+                        "status": "success",
+                        "message": "API endpoint working correctly",
+                        "endpoint": endpoint,
+                        "timestamp": new Date().toISOString()
+                    };
+                }
+                
+                responseContent.innerHTML = JSON.stringify(response, null, 2);
+            }, 1000);
+        }
+
+        function closeModal() {
+            document.getElementById('responseModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('responseModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
