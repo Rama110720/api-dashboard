@@ -40,6 +40,10 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'API key not configured' });
     }
 
+    console.log('Model yang digunakan:', model);
+    console.log('Message:', message);
+    console.log('API Key exists:', !!process.env.OPENROUTER_API_KEY);
+
     // Request ke OpenRouter
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -55,7 +59,11 @@ export default async function handler(req, res) {
       })
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
+
     const data = await response.json();
+    console.log('Response data:', data);
     
     if (!response.ok) {
       throw new Error(data.error?.message || 'API error');
