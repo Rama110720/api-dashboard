@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // Support GET dengan query params
     if (req.method === 'GET') {
       message = req.query.text || req.query.message || req.query.q;
-      model = req.query.model || 'meta-llama/llama-3.1-8b-instruct:free';
+      model = req.query.model || 'meta-llama/llama-4-scout:free';
       max_tokens = parseInt(req.query.max_tokens) || 1000;
       temperature = parseFloat(req.query.temperature) || 0.7;
     }
