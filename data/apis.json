@@ -1,0 +1,26 @@
+[
+    {
+        "id": "random-joke",
+        "name": "Random Joke",
+        "description": "Mendapatkan joke atau lelucon secara acak untuk menghibur.",
+        "endpoint": "\/api\/random-joke.php",
+        "category": "Random APIs",
+        "status": "ready"
+    },
+    {
+        "id": "meme-generator",
+        "name": "Meme Generator",
+        "description": "Membuat meme dengan template imgflip",
+        "endpoint": "\/api\/meme-generator.php?template=drake&top=text1&bottom=text2",
+        "category": "Random APIs",
+        "status": "ready"
+    },
+    {
+        "id": "brat",
+        "name": "Brat",
+        "description": "Membuat foto brat.",
+        "endpoint": "\/api\/brat.php?text=text",
+        "category": "Canvas APIs",
+        "status": "ready"
+    }
+]
