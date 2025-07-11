@@ -1,47 +1,38 @@
-// File: /api/random-joke.js
 export default async function handler(req, res) {
+  res.setHeader('Content-Type', 'application/json')
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-  res.setHeader('Content-Type', 'application/json')
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end()
-  }
-
-  const sendResponse = (data, status = 200) => {
-    res.status(status).json(data)
-  }
-
-  const apiUrl = 'https://official-joke-api.appspot.com/random_joke'
+  if (req.method === 'OPTIONS') return res.status(200).end()
 
   try {
-    const apiRes = await fetch(apiUrl)
-    if (!apiRes.ok) {
-      return sendResponse({
+    const response = await fetch('https://official-joke-api.appspot.com/random_joke')
+    const joke = await response.json()
+
+    if (!joke || !joke.setup || !joke.punchline) {
+      return res.status(502).json({
         status: 'error',
         message: 'Gagal mengambil joke dari server publik.',
-        source: apiUrl
-      }, 502)
+        source: 'official-joke-api'
+      })
     }
 
-    const joke = await apiRes.json()
-    return sendResponse({
+    return res.status(200).json({
       status: 'success',
       joke: {
-        question: joke.setup || '',
-        answer: joke.punchline || ''
+        question: joke.setup,
+        answer: joke.punchline
       },
       source: 'official-joke-api',
       timestamp: new Date().toISOString()
     })
-
-  } catch (error) {
-    return sendResponse({
+  } catch (e) {
+    return res.status(500).json({
       status: 'error',
       message: 'Terjadi kesalahan internal.',
       error_code: 'INTERNAL_ERROR',
       timestamp: new Date().toISOString()
-    }, 500)
+    })
   }
 }
