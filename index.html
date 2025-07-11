@@ -910,110 +910,35 @@
         }
 
     // --- MODIFIKASI FUNGSI testAPI (tetap simulasi untuk demo jika endpoint asli belum ada) ---
-    function testAPI(endpoint) {
-        const modal = document.getElementById('responseModal');
-        const responseContent = document.getElementById('responseContent');
+function testAPI(endpoint) {
+  const modal = document.getElementById('responseModal');
+  const responseContent = document.getElementById('responseContent');
 
-        responseContent.innerHTML = 'Memuat respons...';
-        modal.style.display = 'flex'; // Use flex to center modal
+  responseContent.innerHTML = 'Memuat respons...';
+  modal.style.display = 'flex';
 
-        // Simulasi respons API berdasarkan endpoint
-        setTimeout(() => {
-            let response;
-            if (endpoint.includes('hello.php')) {
-                response = {
-                    "status": "success",
-                    "message": "Halo Dunia! Ini adalah respons dari API Hello World.",
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('chatgpt.php')) {
-                const textParam = new URLSearchParams(endpoint.split('?')[1]).get('text');
-                response = {
-                    "status": "success",
-                    "response": `Anda bertanya: "${textParam}". Saya adalah ChatGPT, siap membantu Anda!`,
-                    "model": "gpt-3.5-turbo",
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('quote.php')) {
-                const params = new URLSearchParams(endpoint.split('?')[1]);
-                response = {
-                    "status": "success",
-                    "image_url": "https://via.placeholder.com/400x200?text=Your+Quote+Image",
-                    "text": params.get('text') || "Hidup adalah anugerah.",
-                    "author": params.get('author') || "Anonim",
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('meme.php')) {
-                const params = new URLSearchParams(endpoint.split('?')[1]);
-                response = {
-                    "status": "success",
-                    "image_url": "https://via.placeholder.com/400x200?text=Your+Meme+Image",
-                    "template": params.get('template') || "default",
-                    "top_text": params.get('top') || "TOP TEXT",
-                    "bottom_text": params.get('bottom') || "BOTTOM TEXT",
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('certificate.php')) {
-                const params = new URLSearchParams(endpoint.split('?')[1]);
-                response = {
-                    "status": "success",
-                    "image_url": "https://via.placeholder.com/600x400?text=Certificate+Generated",
-                    "name": params.get('name') || "Peserta",
-                    "course": params.get('course') || "Kursus API",
-                    "date": new Date().toLocaleDateString('id-ID'),
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('random-quote.php')) {
-                const quotes = [
-                    { "quote": "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang Anda lakukan.", "author": "Steve Jobs" },
-                    { "quote": "Masa depan adalah milik mereka yang percaya pada keindahan mimpi-mimpi mereka.", "author": "Eleanor Roosevelt" },
-                    { "quote": "Inovasi membedakan antara seorang pemimpin dan seorang pengikut.", "author": "Steve Jobs" }
-                ];
-                response = {
-                    "status": "success",
-                    ...quotes[Math.floor(Math.random() * quotes.length)],
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('random-joke.php')) {
-                const jokes = [
-                    { "setup": "Kenapa kucing tidak punya teman?", "punchline": "Karena ia suka 'cat'at sendiri." },
-                    { "setup": "Apa bedanya monas dengan cewek?", "punchline": "Kalau monas di kasih payung, kalau cewek di kasih hati." }
-                ];
-                response = {
-                    "status": "success",
-                    ...jokes[Math.floor(Math.random() * jokes.length)],
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('random-number.php')) {
-                const params = new URLSearchParams(endpoint.split('?')[1]);
-                const min = parseInt(params.get('min')) || 1;
-                const max = parseInt(params.get('max')) || 100;
-                response = {
-                    "status": "success",
-                    "number": Math.floor(Math.random() * (max - min + 1)) + min,
-                    "min": min,
-                    "max": max,
-                    "timestamp": new Date().toISOString()
-                };
-            } else if (endpoint.includes('shorturl.php')) {
-                 response = {
-                     "status": "success",
-                     "original_url": "https://www.example.com/very/long/url/that/needs/shortening",
-                     "short_url": "https://short.ly/xyz123",
-                     "timestamp": new Date().toISOString()
-                 };
-            } else if (endpoint.includes('qrcode.php')) {
-                response = {
-                    "status": "error",
-                    "message": "API QR Code sedang mengalami masalah. Mohon coba lagi nanti.",
-                    "error_code": 500,
-                    "timestamp": new Date().toISOString()
-                };
-            }
+  fetch(endpoint)
+    .then(async res => {
+      const contentType = res.headers.get('Content-Type');
 
-            responseContent.innerHTML = JSON.stringify(response, null, 2);
-        }, 1000);
-    }
+      if (contentType.includes('application/json')) {
+        const json = await res.json();
+        responseContent.innerHTML = JSON.stringify(json, null, 2);
+      } else if (contentType.includes('image/')) {
+        responseContent.innerHTML = `<img src="${endpoint}" alt="Hasil Gambar API" style="max-width:100%">`;
+      } else {
+        const text = await res.text();
+        responseContent.innerHTML = text;
+      }
+    })
+    .catch(err => {
+      responseContent.innerHTML = JSON.stringify({
+        status: 'error',
+        message: 'Gagal menghubungi API',
+        detail: err.message
+      }, null, 2);
+    });
+}
 
     function closeModal() {
         document.getElementById('responseModal').style.display = 'none';
