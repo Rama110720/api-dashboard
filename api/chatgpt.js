@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Parameter text/message required' });
     }
 
-    if (!process.env.OPENROUTER_API_KEY) {
+    if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({ error: 'API key not configured' });
     }
 
