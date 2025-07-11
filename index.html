@@ -5,193 +5,314 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Dashboard - Dokumentasi API</title>
     
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-color: #6366f1;
-            --secondary-color: #8b5cf6;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --dark-color: #1f2937;
-            --light-color: #f8fafc;
-            --sidebar-width: 280px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --primary-color: #6c5ce7; /* A more elegant purple */
+            --secondary-color: #8e44ad; /* A deeper purple */
+            --accent-color: #00bcd4; /* A contrasting teal */
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --dark-color: #2c3e50; /* Darker for content */
+            --light-color: #f4f7f6; /* Light gray for background */
+            --white-color: #ffffff;
+            --card-bg: #ffffff;
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 80px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--light-color);
             color: var(--dark-color);
+            line-height: 1.6;
         }
 
+        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
             width: var(--sidebar-width);
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white-color);
+            transition: all 0.3s ease-in-out;
+            z-index: 1050; /* Higher z-index for sidebar */
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; /* Enable scrolling for long content */
         }
 
         .sidebar.collapsed {
-            width: 70px;
+            width: var(--sidebar-collapsed-width);
         }
 
         .sidebar-header {
-            padding: 1.5rem;
+            padding: 1.5rem 1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
+            text-align: center;
         }
 
         .sidebar-header h4 {
             margin: 0;
             font-weight: 600;
+            font-size: 1.35rem;
             transition: opacity 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .sidebar-header .logo-icon {
+            font-size: 2rem;
+            margin-right: 0.75rem;
+            transition: margin-right 0.3s ease;
         }
 
         .sidebar.collapsed .sidebar-header h4 {
             opacity: 0;
+            width: 0;
+            padding: 0;
+            margin: 0;
         }
 
-        .nav-item {
-            margin: 0.25rem 0;
+        .sidebar.collapsed .sidebar-header .logo-icon {
+            margin-right: 0;
         }
 
-        .nav-link {
+        .sidebar-nav .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-nav .nav-link {
             color: rgba(255, 255, 255, 0.9);
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
             margin: 0 1rem;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
             text-decoration: none;
+            font-weight: 500;
         }
 
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+        .sidebar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white-color);
+            transform: translateX(5px);
         }
 
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+        .sidebar-nav .nav-link.active {
+            background: rgba(255, 255, 255, 0.25);
+            color: var(--white-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        .sidebar-nav .nav-link i {
+            font-size: 1.1rem;
+            width: 20px; /* Fixed width for icons */
+            text-align: center;
+        }
+
+        .sidebar.collapsed .sidebar-nav .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-nav .nav-link {
+            justify-content: center;
+            padding: 0.85rem 0;
+            margin: 0 0.5rem;
+        }
+
+        /* Main Content */
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.3s ease-in-out;
+            padding: 1.5rem;
         }
 
         .main-content.expanded {
-            margin-left: 70px;
+            margin-left: var(--sidebar-collapsed-width);
         }
 
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 1rem 2rem;
+        /* Navbar (Top Bar) */
+        .navbar-top {
+            background: var(--white-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 999;
+            z-index: 1000;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
         }
 
         .toggle-btn {
             background: none;
             border: none;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--dark-color);
             cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
         }
 
-        .container-fluid {
+        .toggle-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .status-info .badge {
+            font-size: 0.9rem;
+            padding: 0.5em 0.8em;
+            border-radius: 50px;
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Sections */
+        .content-section {
             padding: 2rem;
+            background-color: var(--white-color);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        /* Overview Section - About Me & Stats */
+        .overview-about {
+            margin-bottom: 2rem;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 2rem;
+        }
+
+        .overview-about p {
+            font-size: 1.05rem;
+            color: #555;
         }
 
         .stats-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
         }
 
         .stats-card {
-            background: white;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
+            color: var(--white-color);
             border-radius: 0.75rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="25" cy="25" r="5" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="90" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="10" r="3" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+            z-index: 0;
         }
 
         .stats-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .stats-card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .stats-card .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
         }
 
-        .api-section {
-            margin-bottom: 3rem;
+        .stats-card h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .stats-card p {
+            font-size: 1rem;
+            margin-bottom: 0;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
         }
 
+        .stats-card.ready-card { background: linear-gradient(45deg, #28a745, #218838); }
+        .stats-card.maintenance-card { background: linear-gradient(45deg, #ffc107, #e0a800); }
+        .stats-card.error-card { background: linear-gradient(45deg, #dc3545, #c82333); }
+
+        /* API Cards */
         .api-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
         }
 
         .api-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 0.75rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes button to bottom */
         }
 
         .api-card::before {
@@ -200,93 +321,108 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
         }
 
         .api-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .api-card-header {
             display: flex;
             justify-content: space-between;
-            align-items: start;
+            align-items: flex-start;
             margin-bottom: 1rem;
         }
 
         .api-title {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: var(--dark-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .api-description {
             color: #6b7280;
             font-size: 0.95rem;
             line-height: 1.5;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .api-endpoint {
-            background: #f3f4f6;
-            padding: 0.75rem;
+            background: #f8f8f8;
+            padding: 0.8rem;
             border-radius: 0.5rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: var(--dark-color);
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary-color);
+            font-family: 'Fira Code', monospace; /* More modern monospace font */
+            font-size: 0.875rem;
+            color: #333;
+            margin-bottom: 1.25rem;
+            border-left: 4px solid var(--accent-color);
+            word-break: break-all;
         }
 
         .api-actions {
             display: flex;
-            gap: 0.75rem;
-            align-items: center;
+            justify-content: flex-end; /* Align button to the right */
+            margin-top: auto; /* Push to the bottom */
         }
 
         .btn-try {
             background: var(--primary-color);
-            color: white;
+            color: var(--white-color);
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.65rem 1.25rem;
             border-radius: 0.5rem;
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
         }
 
         .btn-try:hover {
             background: var(--secondary-color);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-try:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.8;
         }
 
         .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.8rem;
-            font-weight: 500;
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .status-ready {
-            background: #dcfce7;
-            color: #166534;
+            background-color: #d4edda;
+            color: #155724;
         }
 
         .status-error {
-            background: #fee2e2;
-            color: #991b1b;
+            background-color: #f8d7da;
+            color: #721c24;
         }
 
         .status-maintenance {
-            background: #fef3c7;
-            color: #92400e;
+            background-color: #fff3cd;
+            color: #856404;
         }
 
+        /* Response Modal */
         .response-modal {
             display: none;
             position: fixed;
@@ -294,519 +430,601 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 2000;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 2rem;
+            background: var(--white-color);
+            padding: 2.5rem;
             border-radius: 0.75rem;
-            width: 80%;
-            max-width: 600px;
-            max-height: 70vh;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
             overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeInScale 0.3s ease-out forwards;
         }
 
-        .close {
-            float: right;
-            font-size: 28px;
+        .modal-content h3 {
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
             font-weight: bold;
+            color: #aaa;
             cursor: pointer;
-            line-height: 1;
+            transition: color 0.2s ease;
         }
 
-        .close:hover {
+        .close-modal:hover {
             color: var(--danger-color);
         }
 
         .json-response {
-            background: #1f2937;
-            color: #e5e7eb;
-            padding: 1rem;
+            background: #2d2d2d; /* Darker background for code */
+            color: #f8f8f2;
+            padding: 1.25rem;
             border-radius: 0.5rem;
-            font-family: 'Courier New', monospace;
+            font-family: 'Fira Code', monospace;
             font-size: 0.9rem;
             white-space: pre-wrap;
             overflow-x: auto;
+            max-height: 400px;
+        }
+
+        /* Animations */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: var(--sidebar-collapsed-width);
+            }
+
+            .sidebar .sidebar-header h4,
+            .sidebar .nav-link span {
+                display: none;
+            }
+
+            .sidebar .sidebar-header .logo-icon {
+                margin-right: 0;
+            }
+
+            .sidebar .sidebar-nav .nav-link {
+                justify-content: center;
+                padding: 0.85rem 0;
+                margin: 0 0.5rem;
+            }
+
+            .main-content {
+                margin-left: var(--sidebar-collapsed-width);
+                padding: 1rem;
+            }
+
+            .navbar-top .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .stats-cards, .api-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
             .sidebar {
-                width: 70px;
+                left: -100%; /* Hide sidebar completely by default */
+                width: 250px; /* Full width for mobile overlay */
+                box-shadow: none; /* Remove shadow when hidden */
             }
-            
+
+            .sidebar.show {
+                left: 0; /* Show sidebar when toggled */
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            }
+
             .main-content {
-                margin-left: 70px;
+                margin-left: 0; /* No margin on mobile */
+            }
+
+            .main-content.expanded {
+                margin-left: 0;
+            }
+
+            .navbar-top {
+                border-radius: 0; /* No border-radius on full-width mobile nav */
+                margin-bottom: 1.5rem;
+            }
+
+            .toggle-btn {
+                display: block; /* Always show toggle button on mobile */
+            }
+
+            .page-title {
+                display: none; /* Hide page title on small screens to save space */
             }
             
-            .container-fluid {
+            .status-info {
+                margin-left: auto; /* Push status info to the right */
+            }
+
+            .stats-cards, .api-grid {
+                grid-template-columns: 1fr; /* Stack cards on very small screens */
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 2.5% auto;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-top {
+                padding: 0.75rem 1rem;
+            }
+
+            .status-info .badge {
+                font-size: 0.8rem;
+                padding: 0.4em 0.7em;
+            }
+
+            .last-updated {
+                display: none; /* Hide last updated on smallest screens */
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .api-card {
                 padding: 1rem;
-            }
-            
-            .api-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-cards {
-                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <i class="fas fa-code"></i>
+            <i class="fas fa-code logo-icon"></i>
             <h4>API Dashboard</h4>
         </div>
-        <ul class="nav nav-pills flex-column">
+        <ul class="nav sidebar-nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="#overview">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Overview</span>
+                <a class="nav-link active" href="#overview-section">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#ai-apis">
-                    <i class="fas fa-robot"></i>
-                    <span>AI APIs</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#canvas-apis">
-                    <i class="fas fa-palette"></i>
-                    <span>Canvas APIs</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#random-apis">
-                    <i class="fas fa-random"></i>
-                    <span>Random APIs</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#utility-apis">
-                    <i class="fas fa-tools"></i>
-                    <span>Utility APIs</span>
+                <a class="nav-link" href="#api-section-list">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <span>API</span>
                 </a>
             </li>
         </ul>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content" id="mainContent">
-        <!-- Top Navigation -->
-        <nav class="navbar">
+        <nav class="navbar-top">
             <div class="d-flex align-items-center">
                 <button class="toggle-btn" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h2 class="ms-3 mb-0">API Documentation</h2>
+                <h2 class="page-title ms-3">API Documentation</h2>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center status-info">
                 <span class="badge bg-success me-3">
                     <i class="fas fa-circle"></i> Online
                 </span>
-                <span class="text-muted">Last updated: <span id="lastUpdated"></span></span>
+                <span class="text-muted last-updated">Terakhir diperbarui: <span id="lastUpdated"></span></span>
             </div>
         </nav>
 
-        <div class="container-fluid">
-            <!-- Statistics Cards -->
-            <div class="stats-cards">
-                <div class="stats-card">
-                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3 class="mb-1">12</h3>
-                    <p class="text-muted mb-0">Total APIs</p>
+        <div class="container-fluid content-wrapper">
+            <section class="content-section" id="overview-section">
+                <div class="section-header">
+                    <i class="fas fa-home"></i>
+                    <h2>Beranda</h2>
                 </div>
-                <div class="stats-card">
-                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3 class="mb-1">10</h3>
-                    <p class="text-muted mb-0">Ready</p>
+                <div class="overview-about">
+                    <p>Halo! Saya <strong>MyP</strong>, seorang pengembang yang bersemangat dalam membangun solusi API inovatif. Website ini adalah tempat saya mendokumentasikan dan memamerkan berbagai API yang telah saya kembangkan, mulai dari fungsionalitas AI hingga alat utilitas.</p>
+                    <p>Tujuan utama dari dashboard ini adalah untuk menyediakan akses mudah dan informasi lengkap mengenai setiap API, memungkinkan Anda untuk memahami fungsionalitasnya, melihat contoh penggunaan, dan memantau statusnya.</p>
+                    <p>Silakan jelajahi koleksi API saya dan jangan ragu untuk menghubungi saya jika ada pertanyaan atau kolaborasi!</p>
                 </div>
-                <div class="stats-card">
-                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <h3 class="mb-1">1</h3>
-                    <p class="text-muted mb-0">Maintenance</p>
-                </div>
-                <div class="stats-card">
-                    <div class="stats-card-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white;">
-                        <i class="fas fa-times-circle"></i>
-                    </div>
-                    <h3 class="mb-1">1</h3>
-                    <p class="text-muted mb-0">Error</p>
-                </div>
-            </div>
 
-            <!-- AI APIs Section -->
-            <section class="api-section" id="ai-apis">
-                <h2 class="section-title">
-                    <i class="fas fa-robot"></i>
-                    AI APIs
-                </h2>
-                <div class="api-grid">
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">ChatGPT API</h3>
-                                <p class="api-description">Integrasi dengan ChatGPT untuk pemrosesan bahasa alami dan chatbot.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/chatgpt.php?text=hello</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/chatgpt.php?text=hello')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
+                <h3>Statistik API</h3>
+                <div class="stats-cards">
+                    <div class="stats-card ready-card">
+                        <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3>10</h3>
+                        <p>Ready</p>
                     </div>
-
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Text Analysis</h3>
-                                <p class="api-description">Analisis sentimen dan klasifikasi teks menggunakan machine learning.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">POST /api/text-analysis.php</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/text-analysis.php')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
+                    <div class="stats-card maintenance-card">
+                        <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h3>1</h3>
+                        <p>Maintenance</p>
                     </div>
-
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Image Recognition</h3>
-                                <p class="api-description">Pengenalan objek dan klasifikasi gambar menggunakan AI.</p>
-                            </div>
-                            <span class="status-badge status-maintenance">Maintenance</span>
-                        </div>
-                        <div class="api-endpoint">POST /api/image-recognition.php</div>
-                        <div class="api-actions">
-                            <button class="btn-try" disabled>
-                                <i class="fas fa-wrench"></i> Maintenance
-                            </button>
-                        </div>
+                    <div class="stats-card error-card">
+                        <div class="card-icon"><i class="fas fa-times-circle"></i></div>
+                        <h3>1</h3>
+                        <p>Error</p>
+                    </div>
+                    <div class="stats-card" style="background: linear-gradient(45deg, #17a2b8, #138496);">
+                        <div class="card-icon"><i class="fas fa-plug"></i></div>
+                        <h3>12</h3>
+                        <p>Total API</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Canvas APIs Section -->
-            <section class="api-section" id="canvas-apis">
-                <h2 class="section-title">
-                    <i class="fas fa-palette"></i>
-                    Canvas APIs
-                </h2>
-                <div class="api-grid">
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Quote Generator</h3>
-                                <p class="api-description">Membuat gambar quote dengan berbagai template dan font.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/quote.php?text=hello&author=world</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/quote.php?text=hello&author=world')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Meme Generator</h3>
-                                <p class="api-description">Membuat meme dengan template populer dan teks custom.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/meme.php?template=drake&top=text1&bottom=text2</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/meme.php?template=drake&top=text1&bottom=text2')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Certificate Generator</h3>
-                                <p class="api-description">Membuat sertifikat digital dengan nama dan tanggal custom.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/certificate.php?name=John&course=Web Development</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/certificate.php?name=John&course=Web Development')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
-                    </div>
+            <section class="content-section" id="api-section-list">
+                <div class="section-header">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <h2>Daftar API</h2>
                 </div>
-            </section>
 
-            <!-- Random APIs Section -->
-            <section class="api-section" id="random-apis">
-                <h2 class="section-title">
-                    <i class="fas fa-random"></i>
-                    Random APIs
-                </h2>
-                <div class="api-grid">
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Random Quote</h3>
-                                <p class="api-description">Mendapatkan kutipan inspiratif secara acak dari berbagai tokoh.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/random-quote.php</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/random-quote.php')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
+                <h3 class="mb-3 mt-4"><i class="fas fa-robot me-2"></i>AI APIs</h3>
+                <div class="api-grid" id="ai-apis-grid">
                     </div>
 
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Random Joke</h3>
-                                <p class="api-description">Mendapatkan joke atau lelucon secara acak untuk menghibur.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/random-joke.php</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/random-joke.php')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
+                <h3 class="mb-3 mt-5"><i class="fas fa-palette me-2"></i>Canvas APIs</h3>
+                <div class="api-grid" id="canvas-apis-grid">
                     </div>
 
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Random Number</h3>
-                                <p class="api-description">Menghasilkan angka acak dalam rentang yang ditentukan.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/random-number.php?min=1&max=100</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/random-number.php?min=1&max=100')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Utility APIs Section -->
-            <section class="api-section" id="utility-apis">
-                <h2 class="section-title">
-                    <i class="fas fa-tools"></i>
-                    Utility APIs
-                </h2>
-                <div class="api-grid">
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">Hello World</h3>
-                                <p class="api-description">API sederhana untuk testing koneksi dan response dasar.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/hello.php</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/hello.php')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
+                <h3 class="mb-3 mt-5"><i class="fas fa-random me-2"></i>Random APIs</h3>
+                <div class="api-grid" id="random-apis-grid">
                     </div>
 
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">URL Shortener</h3>
-                                <p class="api-description">Memperpendek URL panjang menjadi link yang lebih mudah dibagikan.</p>
-                            </div>
-                            <span class="status-badge status-ready">Ready</span>
-                        </div>
-                        <div class="api-endpoint">POST /api/shorturl.php</div>
-                        <div class="api-actions">
-                            <button class="btn-try" onclick="testAPI('/api/shorturl.php')">
-                                <i class="fas fa-play"></i> Test API
-                            </button>
-                        </div>
+                <h3 class="mb-3 mt-5"><i class="fas fa-tools me-2"></i>Utility APIs</h3>
+                <div class="api-grid" id="utility-apis-grid">
                     </div>
-
-                    <div class="api-card">
-                        <div class="api-card-header">
-                            <div>
-                                <h3 class="api-title">QR Code Generator</h3>
-                                <p class="api-description">Membuat QR Code dari teks atau URL yang diberikan.</p>
-                            </div>
-                            <span class="status-badge status-error">Error</span>
-                        </div>
-                        <div class="api-endpoint">GET /api/qrcode.php?text=hello</div>
-                        <div class="api-actions">
-                            <button class="btn-try" disabled>
-                                <i class="fas fa-times"></i> Error
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </section>
         </div>
     </main>
 
-    <!-- Response Modal -->
     <div id="responseModal" class="response-modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close-modal" onclick="closeModal()">&times;</span>
             <h3>API Response</h3>
             <div id="responseContent" class="json-response"></div>
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script>
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            updateLastUpdated();
-            setInterval(updateLastUpdated, 60000); // Update every minute
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateLastUpdated();
+        setInterval(updateLastUpdated, 60000); // Update every minute
+
+        // Panggil fungsi untuk memuat API saat halaman dimuat
+        loadAPIs(); // <--- Pastikan ini ada di dalam DOMContentLoaded
+
+        // Set initial active link and scroll to section if hash exists
+        const initialHash = window.location.hash;
+        if (initialHash) {
+            setActiveNavLink(initialHash);
+            document.querySelector(initialHash).scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // Default to 'Beranda' section if no hash
+            setActiveNavLink('#overview-section');
+            document.getElementById('overview-section').scrollIntoView();
+        }
+    });
+
+    function updateLastUpdated() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit'
         });
+        document.getElementById('lastUpdated').textContent = timeString;
+    }
 
-        function updateLastUpdated() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('id-ID', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-            document.getElementById('lastUpdated').textContent = timeString;
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
+
+        // For mobile, toggle 'show' class
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
         }
+    }
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+    // Function to set active navigation link
+    function setActiveNavLink(hash) {
+        document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        const activeLink = document.querySelector(`.sidebar-nav .nav-link[href="${hash}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active');
         }
+    }
 
-        function testAPI(endpoint) {
-            // Simulate API call
-            const modal = document.getElementById('responseModal');
-            const responseContent = document.getElementById('responseContent');
-            
-            // Show loading
-            responseContent.innerHTML = 'Loading...';
-            modal.style.display = 'block';
-            
-            // Simulate API response based on endpoint
-            setTimeout(() => {
-                let response;
-                
-                if (endpoint.includes('hello.php')) {
-                    response = {
-                        "status": "success",
-                        "message": "Halo Dunia!",
-                        "timestamp": new Date().toISOString()
-                    };
-                } else if (endpoint.includes('chatgpt.php')) {
-                    response = {
-                        "status": "success",
-                        "response": "Hello! How can I help you today?",
-                        "model": "gpt-3.5-turbo",
-                        "timestamp": new Date().toISOString()
-                    };
-                } else if (endpoint.includes('quote.php')) {
-                    response = {
-                        "status": "success",
-                        "image_url": "https://example.com/quote-image.png",
-                        "text": "hello",
-                        "author": "world",
-                        "timestamp": new Date().toISOString()
-                    };
-                } else if (endpoint.includes('random-quote.php')) {
-                    response = {
-                        "status": "success",
-                        "quote": "The only way to do great work is to love what you do.",
-                        "author": "Steve Jobs",
-                        "category": "motivation",
-                        "timestamp": new Date().toISOString()
-                    };
-                } else if (endpoint.includes('random-number.php')) {
-                    response = {
-                        "status": "success",
-                        "number": Math.floor(Math.random() * 100) + 1,
-                        "min": 1,
-                        "max": 100,
-                        "timestamp": new Date().toISOString()
-                    };
-                } else {
-                    response = {
-                        "status": "success",
-                        "message": "API endpoint working correctly",
-                        "endpoint": endpoint,
-                        "timestamp": new Date().toISOString()
-                    };
-                }
-                
-                responseContent.innerHTML = JSON.stringify(response, null, 2);
-            }, 1000);
-        }
-
-        function closeModal() {
-            document.getElementById('responseModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('responseModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                
-                // Update active nav link
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
-                this.classList.add('active');
-            });
+            }
+            setActiveNavLink(targetId);
+
+            // Close sidebar on mobile after clicking a link
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('show');
+            }
         });
-    </script>
+    });
+
+    // --- FUNGSI BARU: Memuat API dari Backend ---
+    async function loadAPIs() {
+        // GANTI DENGAN URL API MANAGER ANDA! Pastikan URL ini benar dan bisa diakses dari browser.
+        const apiManagerUrl = 'https://da9313db-ab27-46e0-826e-3077801d874e-00-1c8ib7dznq74n.sisko.replit.dev/api/api-manager.php'; 
+
+        try {
+            const response = await fetch(apiManagerUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                renderAPICards(result.data); // Panggil fungsi untuk merender kartu API
+            } else {
+                console.error('Failed to load APIs:', result.message);
+                // Tampilkan pesan error di UI jika perlu
+            }
+        } catch (error) {
+            console.error('Error fetching APIs:', error);
+            // Tampilkan pesan error koneksi di UI jika perlu
+            alert('Gagal memuat data API. Pastikan server API berjalan dan dapat diakses.');
+        }
+    }
+
+    // --- FUNGSI BARU: Merender Kartu API ---
+    function renderAPICards(apis) {
+    // Bersihkan semua grid API terlebih dahulu
+    document.getElementById('ai-apis-grid').innerHTML = '';
+    document.getElementById('canvas-apis-grid').innerHTML = '';
+    document.getElementById('random-apis-grid').innerHTML = '';
+    document.getElementById('utility-apis-grid').innerHTML = '';
+
+    const apiCounts = {
+        ready: 0,
+        maintenance: 0,
+        error: 0,
+        total: 0
+    };
+
+    apis.forEach(api => {
+        const card = document.createElement('div');
+        card.classList.add('api-card');
+
+        let statusClass = '';
+        let buttonText = ''; // Akan ditentukan di bawah
+        let buttonDisabled = '';
+        let onclickAction = ''; // Akan ditentukan di bawah
+
+        // --- Tentukan perilaku tombol berdasarkan jenis API (gambar vs. data) ---
+        const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
+        if (imageGeneratingAPIs.includes(api.id)) {
+            buttonText = '<i class="fas fa-image"></i> Lihat Gambar';
+            onclickAction = `window.open('${api.endpoint}', '_blank')`;
+        } else {
+            buttonText = '<i class="fas fa-play"></i> Test API';
+            onclickAction = `testAPI('${api.endpoint}')`;
+        }
+        // --- END Tentukan perilaku tombol ---
+
+        // --- Sesuaikan perilaku tombol berdasarkan STATUS API ---
+        switch (api.status) {
+            case 'ready':
+                statusClass = 'status-ready';
+                apiCounts.ready++;
+                // Jika ready, gunakan buttonText/onclickAction yang sudah ditentukan di atas (Lihat Gambar / Test API)
+                break;
+            case 'maintenance':
+                statusClass = 'status-maintenance';
+                buttonText = '<i class="fas fa-wrench"></i> Maintenance'; // Override text
+                buttonDisabled = 'disabled';
+                onclickAction = ''; // Nonaktifkan onclick
+                apiCounts.maintenance++;
+                break;
+            case 'error':
+                statusClass = 'status-error';
+                buttonText = '<i class="fas fa-times"></i> Error'; // Override text
+                buttonDisabled = 'disabled';
+                onclickAction = ''; // Nonaktifkan onclick
+                apiCounts.error++;
+                break;
+            default: // Fallback, misalnya jika status tidak dikenal
+                statusClass = 'status-maintenance';
+                buttonText = '<i class="fas fa-question-circle"></i> Unknown Status';
+                buttonDisabled = 'disabled';
+                onclickAction = '';
+                break;
+        }
+        apiCounts.total++;
+
+        card.innerHTML = `
+            <div class="api-card-header">
+                <div>
+                    <h3 class="api-title">${api.name}</h3>
+                    <p class="api-description">${api.description}</p>
+                </div>
+                <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
+            </div>
+            <div class="api-endpoint">GET ${api.endpoint}</div>
+            <div class="api-actions">
+                <button class="btn-try" ${buttonDisabled} onclick="${onclickAction}">
+                    ${buttonText}
+                </button>
+            </div>
+        `;
+
+        // Masukkan kartu ke grid yang sesuai berdasarkan kategori
+        const targetGridId = api.category.toLowerCase().replace(/ /g, '-') + '-grid';
+        const targetGrid = document.getElementById(targetGridId);
+        if (targetGrid) {
+            targetGrid.appendChild(card);
+        } else {
+            console.warn(`Grid for category "${api.category}" not found. Appending to AI APIs.`);
+            document.getElementById('ai-apis-grid').appendChild(card); // Fallback
+        }
+    });
+
+    // Perbarui statistik di bagian Beranda
+    document.querySelector('.stats-card.ready-card h3').textContent = apiCounts.ready;
+    document.querySelector('.stats-card.maintenance-card h3').textContent = apiCounts.maintenance;
+    document.querySelector('.stats-card.error-card h3').textContent = apiCounts.error;
+    document.querySelector('.stats-card:last-child h3').textContent = apiCounts.total; // Total API
+        }
+
+    // --- MODIFIKASI FUNGSI testAPI (tetap simulasi untuk demo jika endpoint asli belum ada) ---
+    function testAPI(endpoint) {
+        const modal = document.getElementById('responseModal');
+        const responseContent = document.getElementById('responseContent');
+
+        responseContent.innerHTML = 'Memuat respons...';
+        modal.style.display = 'flex'; // Use flex to center modal
+
+        // Simulasi respons API berdasarkan endpoint
+        setTimeout(() => {
+            let response;
+            if (endpoint.includes('hello.php')) {
+                response = {
+                    "status": "success",
+                    "message": "Halo Dunia! Ini adalah respons dari API Hello World.",
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('chatgpt.php')) {
+                const textParam = new URLSearchParams(endpoint.split('?')[1]).get('text');
+                response = {
+                    "status": "success",
+                    "response": `Anda bertanya: "${textParam}". Saya adalah ChatGPT, siap membantu Anda!`,
+                    "model": "gpt-3.5-turbo",
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('quote.php')) {
+                const params = new URLSearchParams(endpoint.split('?')[1]);
+                response = {
+                    "status": "success",
+                    "image_url": "https://via.placeholder.com/400x200?text=Your+Quote+Image",
+                    "text": params.get('text') || "Hidup adalah anugerah.",
+                    "author": params.get('author') || "Anonim",
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('meme.php')) {
+                const params = new URLSearchParams(endpoint.split('?')[1]);
+                response = {
+                    "status": "success",
+                    "image_url": "https://via.placeholder.com/400x200?text=Your+Meme+Image",
+                    "template": params.get('template') || "default",
+                    "top_text": params.get('top') || "TOP TEXT",
+                    "bottom_text": params.get('bottom') || "BOTTOM TEXT",
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('certificate.php')) {
+                const params = new URLSearchParams(endpoint.split('?')[1]);
+                response = {
+                    "status": "success",
+                    "image_url": "https://via.placeholder.com/600x400?text=Certificate+Generated",
+                    "name": params.get('name') || "Peserta",
+                    "course": params.get('course') || "Kursus API",
+                    "date": new Date().toLocaleDateString('id-ID'),
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('random-quote.php')) {
+                const quotes = [
+                    { "quote": "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang Anda lakukan.", "author": "Steve Jobs" },
+                    { "quote": "Masa depan adalah milik mereka yang percaya pada keindahan mimpi-mimpi mereka.", "author": "Eleanor Roosevelt" },
+                    { "quote": "Inovasi membedakan antara seorang pemimpin dan seorang pengikut.", "author": "Steve Jobs" }
+                ];
+                response = {
+                    "status": "success",
+                    ...quotes[Math.floor(Math.random() * quotes.length)],
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('random-joke.php')) {
+                const jokes = [
+                    { "setup": "Kenapa kucing tidak punya teman?", "punchline": "Karena ia suka 'cat'at sendiri." },
+                    { "setup": "Apa bedanya monas dengan cewek?", "punchline": "Kalau monas di kasih payung, kalau cewek di kasih hati." }
+                ];
+                response = {
+                    "status": "success",
+                    ...jokes[Math.floor(Math.random() * jokes.length)],
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('random-number.php')) {
+                const params = new URLSearchParams(endpoint.split('?')[1]);
+                const min = parseInt(params.get('min')) || 1;
+                const max = parseInt(params.get('max')) || 100;
+                response = {
+                    "status": "success",
+                    "number": Math.floor(Math.random() * (max - min + 1)) + min,
+                    "min": min,
+                    "max": max,
+                    "timestamp": new Date().toISOString()
+                };
+            } else if (endpoint.includes('shorturl.php')) {
+                 response = {
+                     "status": "success",
+                     "original_url": "https://www.example.com/very/long/url/that/needs/shortening",
+                     "short_url": "https://short.ly/xyz123",
+                     "timestamp": new Date().toISOString()
+                 };
+            } else if (endpoint.includes('qrcode.php')) {
+                response = {
+                    "status": "error",
+                    "message": "API QR Code sedang mengalami masalah. Mohon coba lagi nanti.",
+                    "error_code": 500,
+                    "timestamp": new Date().toISOString()
+                };
+            }
+
+            responseContent.innerHTML = JSON.stringify(response, null, 2);
+        }, 1000);
+    }
+
+    function closeModal() {
+        document.getElementById('responseModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('responseModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>
