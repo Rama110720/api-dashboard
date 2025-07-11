@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // Support GET dengan query params
     if (req.method === 'GET') {
       message = req.query.text || req.query.message || req.query.q;
-      model = req.query.model || 'openai/gpt-3.5-turbo';
+      model = req.query.model || 'meta-llama/llama-3.1-8b-instruct:free';
       max_tokens = parseInt(req.query.max_tokens) || 1000;
       temperature = parseFloat(req.query.temperature) || 0.7;
     }
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     else if (req.method === 'POST') {
       const body = req.body || {};
       message = body.message || body.text;
-      model = body.model || 'openai/gpt-3.5-turbo';
+      model = body.model || 'meta-llama/llama-3.1-8b-instruct:free';
       max_tokens = body.max_tokens || 1000;
       temperature = body.temperature || 0.7;
     }
