@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     else if (req.method === 'POST') {
       const body = req.body || {};
       message = body.message || body.text;
-      model = body.model || 'meta-llama/llama-3.1-8b-instruct:free';
+      model = body.model || 'meta-llama/llama-4-scout:free';
       max_tokens = body.max_tokens || 1000;
       temperature = body.temperature || 0.7;
     }
