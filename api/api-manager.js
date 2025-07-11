@@ -1,173 +1,113 @@
-// File: /api/api-manager.js (untuk Vercel Serverless API)
-import fs from 'fs'
-import path from 'path'
-
-const dataFile = path.resolve(process.cwd(), 'data', 'apis.json')
+// File: /api/api-manager.js
+const BIN_ID = '6870ecb7afef824ba9f96212'
+const API_KEY = '$2a$10$EZ2tIVheZv7sZYJDFBtf8eQE7G0v2xDxJfO7XNgJ.gl52IQryNEhm'
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`
 const allowedApiKey = 'RamzxProject123'
 
-// Helper functions
-const readAPIs = () => {
-  if (!fs.existsSync(dataFile)) {
-    fs.mkdirSync(path.dirname(dataFile), { recursive: true })
-    fs.writeFileSync(dataFile, JSON.stringify([], null, 2))
-  }
-  const content = fs.readFileSync(dataFile, 'utf-8')
-  try {
-    return JSON.parse(content)
-  } catch {
-    return []
-  }
-}
-
-const writeAPIs = (data) => {
-  fs.writeFileSync(dataFile, JSON.stringify(data, null, 2))
-  return true
-}
-
-const authenticate = (req, res) => {
-  const apiKey = req.headers['x-api-key'] || ''
-  if (apiKey !== allowedApiKey) {
-    res.status(401).json({ status: 'error', message: 'Unauthorized: Invalid API Key' })
-    return false
-  }
-  return true
-}
-
 export default async function handler(req, res) {
-  // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key')
   res.setHeader('X-Content-Type-Options', 'nosniff')
-  
-  const method = req.method
-  let apis = readAPIs()
-  
-  // Handle preflight requests
-  if (method === 'OPTIONS') {
-    return res.status(200).end()
+
+  if (req.method === 'OPTIONS') return res.status(200).end()
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Master-Key': API_KEY
   }
-  
-  console.log(`[API Manager] ${method} request received`)
-  console.log(`[API Manager] Query:`, req.query)
-  console.log(`[API Manager] Body:`, req.body)
-  
-  switch (method) {
-    case 'GET': {
-      console.log(`[API Manager] Returning ${apis.length} APIs`)
-      return res.status(200).json({ status: 'success', data: apis })
+
+  try {
+    // Ambil data dari JSONBin
+    const getData = async () => {
+      const res = await fetch(BIN_URL, { headers })
+      const json = await res.json()
+      return json.record || []
     }
-    
-    case 'POST': {
-      if (!authenticate(req, res)) return
-      
+
+    // Simpan data baru ke JSONBin
+    const updateData = async (data) => {
+      await fetch(BIN_URL, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(data)
+      })
+    }
+
+    if (req.method === 'GET') {
+      const data = await getData()
+      return res.status(200).json({ status: 'success', data })
+    }
+
+    if (!authenticate(req, res)) return
+
+    if (req.method === 'POST') {
       const { name, description, endpoint, category, status: apiStatus } = req.body
-      
-      if (!name || !description || !endpoint || !category || !apiStatus) {
-        return res.status(400).json({ 
-          status: 'error', 
-          message: 'Missing required fields: name, description, endpoint, category, status' 
-        })
-      }
-      
-      // Generate unique ID
+      if (!name || !description || !endpoint || !category || !apiStatus)
+        return res.status(400).json({ error: 'Missing fields' })
+
+      const data = await getData()
       let newId = name.toLowerCase().replace(/\s+/g, '-')
-      if (apis.some(api => api.id === newId)) {
-        newId += '-' + Date.now()
-      }
-      
-      const newApi = { 
-        id: newId, 
-        name, 
-        description, 
-        endpoint, 
-        category, 
+      if (data.find(d => d.id === newId)) newId += '-' + Date.now()
+
+      const newApi = {
+        id: newId,
+        name,
+        description,
+        endpoint,
+        category,
         status: apiStatus,
         created_at: new Date().toISOString()
       }
-      
-      apis.push(newApi)
-      writeAPIs(apis)
-      
-      console.log(`[API Manager] Added new API: ${newApi.id}`)
-      return res.status(201).json({ 
-        status: 'success', 
-        message: 'API added successfully.', 
-        api: newApi 
-      })
+
+      data.push(newApi)
+      await updateData(data)
+
+      return res.status(201).json({ status: 'success', message: 'API added.', api: newApi })
     }
-    
-    case 'PUT': {
-      if (!authenticate(req, res)) return
-      
+
+    if (req.method === 'PUT') {
       const id = req.query.id
-      if (!id) {
-        return res.status(400).json({ 
-          status: 'error', 
-          message: 'Missing API ID in query parameter' 
-        })
-      }
-      
-      const index = apis.findIndex(api => api.id === id)
-      if (index === -1) {
-        return res.status(404).json({ 
-          status: 'error', 
-          message: `API with ID '${id}' not found.` 
-        })
-      }
-      
-      // Update fields
+      if (!id) return res.status(400).json({ error: 'Missing ID' })
+
+      const data = await getData()
+      const index = data.findIndex(d => d.id === id)
+      if (index === -1) return res.status(404).json({ error: 'API not found' })
+
       Object.keys(req.body).forEach(key => {
-        if (apis[index].hasOwnProperty(key) && key !== 'id') {
-          apis[index][key] = req.body[key]
-        }
+        if (key !== 'id') data[index][key] = req.body[key]
       })
-      
-      apis[index].updated_at = new Date().toISOString()
-      writeAPIs(apis)
-      
-      console.log(`[API Manager] Updated API: ${id}`)
-      return res.status(200).json({ 
-        status: 'success', 
-        message: `API '${id}' updated successfully.`, 
-        updated_api: apis[index] 
-      })
+
+      data[index].updated_at = new Date().toISOString()
+      await updateData(data)
+
+      return res.status(200).json({ status: 'success', updated_api: data[index] })
     }
-    
-    case 'DELETE': {
-      if (!authenticate(req, res)) return
-      
+
+    if (req.method === 'DELETE') {
       const id = req.query.id
-      if (!id) {
-        return res.status(400).json({ 
-          status: 'error', 
-          message: 'Missing API ID in query parameter' 
-        })
-      }
-      
-      const initialLength = apis.length
-      apis = apis.filter(api => api.id !== id)
-      
-      if (apis.length === initialLength) {
-        return res.status(404).json({ 
-          status: 'error', 
-          message: `API with ID '${id}' not found.` 
-        })
-      }
-      
-      writeAPIs(apis)
-      
-      console.log(`[API Manager] Deleted API: ${id}`)
-      return res.status(200).json({ 
-        status: 'success', 
-        message: `API '${id}' deleted successfully.` 
-      })
+      if (!id) return res.status(400).json({ error: 'Missing ID' })
+
+      const data = await getData()
+      const filtered = data.filter(d => d.id !== id)
+      if (filtered.length === data.length) return res.status(404).json({ error: 'API not found' })
+
+      await updateData(filtered)
+
+      return res.status(200).json({ status: 'success', message: `API '${id}' deleted.` })
     }
-    
-    default:
-      return res.status(405).json({ 
-        status: 'error', 
-        message: `Method ${method} Not Allowed` 
-      })
+
+    return res.status(405).json({ error: 'Method Not Allowed' })
+  } catch (e) {
+    return res.status(500).json({ error: 'Server Error', detail: e.message })
+  }
+
+  function authenticate(req, res) {
+    const apiKey = req.headers['x-api-key'] || ''
+    if (apiKey !== allowedApiKey) {
+      res.status(401).json({ status: 'error', message: 'Unauthorized: Invalid API Key' })
+      return false
+    }
+    return true
   }
 }
