@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // Support GET dengan query params
     if (req.method === 'GET') {
       message = req.query.text || req.query.message || req.query.q;
-      model = req.query.model || 'gpt-3.5-turbo';
+      model = req.query.model || 'openai/gpt-3.5-turbo';
       max_tokens = parseInt(req.query.max_tokens) || 1000;
       temperature = parseFloat(req.query.temperature) || 0.7;
     }
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     else if (req.method === 'POST') {
       const body = req.body || {};
       message = body.message || body.text;
-      model = body.model || 'gpt-3.5-turbo';
+      model = body.model || 'openai/gpt-3.5-turbo';
       max_tokens = body.max_tokens || 1000;
       temperature = body.temperature || 0.7;
     }
@@ -65,8 +65,13 @@ export default async function handler(req, res) {
     return res.status(200).send(data.choices[0].message.content);
 
   } catch (error) {
+    console.error('Full error:', error);
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    
     return res.status(500).json({
-      error: error.message || 'Internal server error'
+      error: error.message || 'Internal server error',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 }
