@@ -435,17 +435,7 @@
             margin-bottom: 1.5rem; /* More margin */
         }
 
-        .api-endpoint {
-            background: var(--code-bg); /* Darker code background */
-            color: var(--code-text); /* Bright green code text */
-            padding: 1rem; /* More padding */
-            border-radius: 0.75rem; /* More rounded */
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem; /* Slightly larger font */
-            margin-bottom: 1.5rem;
-            border-left: 6px solid var(--accent-color); /* Thicker accent bar */
-            word-break: break-all;
-        }
+        /* Removed .api-endpoint from here as per user request */
 
         .api-actions {
             display: flex;
@@ -467,26 +457,15 @@
             font-weight: 600; /* Bolder */
         }
 
-        .btn-test {
+        .btn-get { /* Renamed from btn-test */
             background: var(--primary-color);
             color: var(--white-bg);
         }
 
-        .btn-test:hover {
+        .btn-get:hover { /* Renamed from btn-test */
             background: var(--secondary-color);
             transform: translateY(-3px); /* More pronounced lift */
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
-        }
-
-        .btn-get-details {
-            background: #e0e0e0;
-            color: var(--dark-text);
-        }
-
-        .btn-get-details:hover {
-            background: #c0c0c0; /* Darker hover */
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .btn-base:disabled {
@@ -953,7 +932,7 @@
         </footer>
     </main>
 
-    <!-- Response Modal -->
+    <!-- Response Modal (for raw API response) -->
     <div id="responseModal" class="modal-overlay">
         <div class="modal-content pixel-border">
             <span class="close-modal" onclick="closeResponseModal()"><i data-lucide="x" class="lucide"></i></span>
@@ -962,7 +941,7 @@
         </div>
     </div>
 
-    <!-- GET Details Modal -->
+    <!-- GET Details Modal (for API details and endpoint) -->
     <div id="getDetailsModal" class="modal-overlay">
         <div class="modal-content pixel-border">
             <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" class="lucide"></i></span>
@@ -1051,7 +1030,7 @@
             });
         });
 
-        // --- FUNGSI BARU: Memuat API dari Backend ---
+        // --- FUNGSI: Memuat API dari Backend ---
         async function loadAPIs() {
             const apiManagerUrl = 'https://www.byapi.my.id/api/api-manager.js';
 
@@ -1074,7 +1053,7 @@
             }
         }
 
-        // --- FUNGSI BARU: Merender Kartu API ---
+        // --- FUNGSI: Merender Kartu API ---
         function renderAPICards(apis) {
             // Clear all API grids first
             document.getElementById('ai-apis-grid').innerHTML = '';
@@ -1091,27 +1070,10 @@
 
             apis.forEach(api => {
                 const card = document.createElement('div');
-                card.classList.add('api-card', 'pixel-border'); // Add pixel-border class
+                card.classList.add('api-card', 'pixel-border');
 
                 let statusClass = '';
-                let testButtonText = '';
-                let testButtonIcon = 'play'; // Default icon for test
-                let testButtonDisabled = '';
-                let testOnclickAction = '';
-
-                // Determine button behavior based on API type (image vs. data)
-                const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
-                const isImageApi = imageGeneratingAPIs.includes(api.id);
-
-                if (isImageApi) {
-                    testButtonText = 'Lihat Gambar';
-                    testButtonIcon = 'image';
-                    testOnclickAction = `window.open('${api.endpoint}', '_blank')`;
-                } else {
-                    testButtonText = 'Test API';
-                    testButtonIcon = 'play';
-                    testOnclickAction = `testAPI('${api.endpoint}')`;
-                }
+                let buttonDisabled = '';
 
                 // Adjust button behavior based on API STATUS
                 switch (api.status) {
@@ -1120,26 +1082,17 @@
                         break;
                     case 'maintenance':
                         statusClass = 'status-maintenance';
-                        testButtonText = 'Maintenance';
-                        testButtonIcon = 'wrench';
-                        testButtonDisabled = 'disabled';
-                        testOnclickAction = '';
+                        buttonDisabled = 'disabled';
                         apiCounts.maintenance++;
                         break;
                     case 'error':
                         statusClass = 'status-error';
-                        testButtonText = 'Error';
-                        testButtonIcon = 'x-circle';
-                        testButtonDisabled = 'disabled';
-                        testOnclickAction = '';
+                        buttonDisabled = 'disabled';
                         apiCounts.error++;
                         break;
                     default: // Fallback
                         statusClass = 'status-maintenance';
-                        testButtonText = 'Unknown Status';
-                        testButtonIcon = 'help-circle';
-                        testButtonDisabled = 'disabled';
-                        testOnclickAction = '';
+                        buttonDisabled = 'disabled';
                         break;
                 }
                 if (api.status === 'ready') apiCounts.ready++;
@@ -1153,27 +1106,23 @@
                         </div>
                         <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
                     </div>
-                    <div class="api-endpoint">GET ${api.endpoint}</div>
                     <div class="api-actions">
-                        <button class="btn-base btn-get-details pixel-button"
+                        <button class="btn-base btn-get pixel-button"
                                 data-api="${encodeURIComponent(JSON.stringify(api))}"
+                                ${buttonDisabled}
                                 onclick="showGetDetailsModal(this)">
-                            <i data-lucide="info" class="lucide"></i> Detail API
-                        </button>
-                        <button class="btn-base btn-test pixel-button" ${testButtonDisabled} onclick="${testOnclickAction}">
-                            <i data-lucide="${testButtonIcon}" class="lucide"></i> ${testButtonText}
+                            <i data-lucide="info" class="lucide"></i> GET
                         </button>
                     </div>
                 `;
 
-                // Append card to the correct grid based on category
                 const targetGridId = api.category.toLowerCase().replace(/ /g, '-') + '-grid';
                 const targetGrid = document.getElementById(targetGridId);
                 if (targetGrid) {
                     targetGrid.appendChild(card);
                 } else {
                     console.warn(`Grid for category "${api.category}" not found. Appending to AI APIs.`);
-                    document.getElementById('ai-apis-grid').appendChild(card); // Fallback
+                    document.getElementById('ai-apis-grid').appendChild(card);
                 }
             });
 
@@ -1183,11 +1132,10 @@
             document.getElementById('error-count').textContent = apiCounts.error;
             document.getElementById('total-count').textContent = apiCounts.total;
 
-            // Re-create Lucide icons after dynamic content is added
             lucide.createIcons();
         }
 
-        // --- FUNGSI testAPI ---
+        // --- FUNGSI: Mengambil dan Menampilkan Respons API (digunakan dari dalam modal detail) ---
         async function testAPI(endpoint) {
             const responseModal = document.getElementById('responseModal');
             const responseContent = document.getElementById('responseContent');
@@ -1201,7 +1149,7 @@
 
                 if (contentType && contentType.includes('application/json')) {
                     const json = await res.json();
-                    responseContent.textContent = JSON.stringify(json, null, 2); // Use textContent for safety
+                    responseContent.textContent = JSON.stringify(json, null, 2);
                 } else if (contentType && contentType.includes('image/')) {
                     responseContent.innerHTML = `<img src="${endpoint}" alt="Hasil Gambar API" style="max-width:100%; height:auto; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">`;
                 } else {
@@ -1215,17 +1163,17 @@
                     detail: err.message
                 }, null, 2);
             }
-            lucide.createIcons(); // Re-render icons in modal if any
+            lucide.createIcons();
         }
 
         function closeResponseModal() {
             document.getElementById('responseModal').style.display = 'none';
-            document.getElementById('responseContent').innerHTML = ''; // Clear content
+            document.getElementById('responseContent').innerHTML = '';
         }
 
-        // --- FUNGSI showGetDetailsModal ---
-        function showGetDetailsModal(buttonElement) { // Changed parameter to buttonElement
-            const apiJsonString = buttonElement.getAttribute('data-api'); // Get data from attribute
+        // --- FUNGSI: Menampilkan Modal Detail API ---
+        function showGetDetailsModal(buttonElement) {
+            const apiJsonString = buttonElement.getAttribute('data-api');
             if (!apiJsonString) {
                 console.error('Data API not found on button element.');
                 return;
@@ -1234,21 +1182,39 @@
             const getDetailsModal = document.getElementById('getDetailsModal');
             const apiDetailsContent = document.getElementById('apiDetailsContent');
 
+            let additionalActions = '';
+            const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
+            const isImageApi = imageGeneratingAPIs.includes(api.id);
+
+            if (isImageApi) {
+                additionalActions = `
+                    <button class="btn-base btn-get pixel-button" onclick="window.open('${api.endpoint}', '_blank'); closeGetDetailsModal();" style="margin-top: 1.5rem;">
+                        <i data-lucide="image" class="lucide"></i> Lihat Gambar
+                    </button>
+                `;
+            } else {
+                additionalActions = `
+                    <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
+                        <i data-lucide="play" class="lucide"></i> Test Respons API
+                    </button>
+                `;
+            }
+
             apiDetailsContent.innerHTML = `
                 <div class="detail-item"><strong>Nama API:</strong> ${api.name}</div>
                 <div class="detail-item"><strong>Deskripsi:</strong> ${api.description}</div>
                 <div class="detail-item"><strong>Endpoint:</strong> <code>${api.endpoint}</code></div>
                 <div class="detail-item"><strong>Kategori:</strong> ${api.category}</div>
                 <div class="detail-item"><strong>Status:</strong> <span class="status-badge ${api.status === 'ready' ? 'status-ready' : api.status === 'maintenance' ? 'status-maintenance' : 'status-error'}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span></div>
-                <!-- Add more details here if needed, e.g., parameters, examples -->
+                ${additionalActions}
             `;
             getDetailsModal.style.display = 'flex';
-            lucide.createIcons(); // Re-render icons in modal if any
+            lucide.createIcons();
         }
 
         function closeGetDetailsModal() {
             document.getElementById('getDetailsModal').style.display = 'none';
-            document.getElementById('apiDetailsContent').innerHTML = ''; // Clear content
+            document.getElementById('apiDetailsContent').innerHTML = '';
         }
 
         // Close modal when clicking outside
