@@ -18,8 +18,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="API Dashboard - Dokumentasi API">
-    <meta name="twitter:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
-    <meta name="twitter:image" content="https://files.catbox.moe/33nlnc.jpg">
+    <meta property="twitter:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
+    <meta property="twitter:image" content="https://files.catbox.moe/33nlnc.jpg">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -608,17 +608,18 @@
         .footer-section p {
             font-size: 1rem;
             margin-bottom: 0.75rem;
-            display: inline-flex; /* Use inline-flex for icon and text to center as a group */
-            align-items: center;
-            justify-content: center; /* Explicitly center content within the inline-flex container */
-            gap: 0.75rem;
-            width: 100%; /* Ensure it takes full width to allow justify-content to work */
+            display: inline-block; /* Changed to inline-block */
+            vertical-align: middle; /* Align icon with text */
+            /* Removed flex properties, justify-content, and margin: auto from here */
+            /* Rely on parent's text-align: center for horizontal centering */
         }
 
         .footer-section p .lucide {
             width: 1.2rem;
             height: 1.2rem;
             color: var(--footer-text);
+            margin-right: 0.75rem; /* Add margin to separate icon from text */
+            vertical-align: middle; /* Ensure vertical alignment */
         }
 
         .social-icons {
@@ -735,6 +736,7 @@
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
+                padding: 0 1rem; /* Add horizontal padding to the body */
             }
             .sidebar {
                 position: fixed;
@@ -790,7 +792,7 @@
                 gap: 1.5rem;
             }
             .modal-content {
-                width: calc(100% - 2rem); /* Adjusted for 1rem padding on each side */
+                width: 100%; /* Take full width of the padded body */
                 margin: auto; /* Ensure it's centered */
                 padding: 1rem; /* Reduced padding */
             }
@@ -990,7 +992,7 @@
     <!-- GET Details Modal (for API details and endpoint) -->
     <div id="getDetailsModal" class="modal-overlay">
         <div class="modal-content pixel-border">
-            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" classide="lucide"></i></span>
+            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" class="lucide"></i></span>
             <h3 style="display: flex; align-items: center;"><i data-lucide="file-text" class="lucide" style="width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;"></i> Detail API</h3>
             <div id="apiDetailsContent" class="modal-detail-content">
                 <!-- API details will be injected here -->
@@ -998,282 +1000,331 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Lucide icons
-            lucide.createIcons();
-
-            updateLastUpdated();
-            setInterval(updateLastUpdated, 60000); // Update every minute
-
-            loadAPIs();
-
-            // Set initial active link and scroll to section if hash exists
-            const initialHash = window.location.hash;
-            if (initialHash) {
-                setActiveNavLink(initialHash);
-                document.querySelector(initialHash).scrollIntoView({ behavior: 'smooth' });
-            } else {
-                // Default to 'Beranda' section if no hash
-                setActiveNavLink('#overview-section');
-                document.getElementById('overview-section').scrollIntoView();
-            }
-        });
-
-        function updateLastUpdated() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            document.getElementById('lastUpdated').textContent = timeString;
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-
-            // For mobile, toggle 'show' class
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('show');
-            }
-            // Re-render Lucide icons after sidebar state change if needed
-            lucide.createIcons();
-        }
-
-        // Function to set active navigation link
-        function setActiveNavLink(hash) {
-            document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            const activeLink = document.querySelector(`.sidebar-nav .nav-link[href="${hash}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-        }
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const target = document.querySelector(targetId);
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+    <script type="text/javascript">
+        // Wrap all JavaScript in an IIFE to encapsulate scope
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Lucide icons
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error initializing Lucide icons:", e);
+                    // Fallback or graceful degradation if icons fail to load/render
                 }
-                setActiveNavLink(targetId);
 
-                // Close sidebar on mobile after clicking a link
+                updateLastUpdated();
+                setInterval(updateLastUpdated, 60000); // Update every minute
+
+                loadAPIs();
+
+                // Set initial active link and scroll to section if hash exists
+                const initialHash = window.location.hash;
+                if (initialHash) {
+                    setActiveNavLink(initialHash);
+                    document.querySelector(initialHash).scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    // Default to 'Beranda' section if no hash
+                    setActiveNavLink('#overview-section');
+                    document.getElementById('overview-section').scrollIntoView();
+                }
+            });
+
+            function updateLastUpdated() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                document.getElementById('lastUpdated').textContent = timeString;
+            }
+
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.getElementById('mainContent');
+
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+
+                // For mobile, toggle 'show' class
                 if (window.innerWidth <= 768) {
-                    document.getElementById('sidebar').classList.remove('show');
+                    sidebar.classList.toggle('show');
                 }
-            });
-        });
-
-        // --- FUNGSI: Memuat API dari Backend ---
-        async function loadAPIs() {
-            const apiManagerUrl = 'https://www.byapi.my.id/api/api-manager.js';
-
-            try {
-                const response = await fetch(apiManagerUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                // Re-render Lucide icons after sidebar state change if needed
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error re-initializing Lucide icons after toggle:", e);
                 }
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    renderAPICards(result.data);
-                } else {
-                    console.error('Failed to load APIs:', result.message);
-                    alert('Gagal memuat data API: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error fetching APIs:', error);
-                alert('Gagal memuat data API. Pastikan server API berjalan dan dapat diakses.');
             }
-        }
 
-        // --- FUNGSI: Merender Kartu API ---
-        function renderAPICards(apis) {
-            // Clear all API grids first
-            document.getElementById('ai-apis-grid').innerHTML = '';
-            document.getElementById('canvas-apis-grid').innerHTML = '';
-            document.getElementById('random-apis-grid').innerHTML = '';
-            document.getElementById('utility-apis-grid').innerHTML = '';
-
-            const apiCounts = {
-                ready: 0,
-                maintenance: 0,
-                error: 0,
-                total: 0
-            };
-
-            apis.forEach(api => {
-                const card = document.createElement('div');
-                card.classList.add('api-card', 'pixel-border');
-
-                let statusClass = '';
-                let buttonDisabled = '';
-
-                // Adjust button behavior based on API STATUS
-                switch (api.status) {
-                    case 'ready':
-                        statusClass = 'status-ready';
-                        break;
-                    case 'maintenance':
-                        statusClass = 'status-maintenance';
-                        buttonDisabled = 'disabled';
-                        apiCounts.maintenance++;
-                        break;
-                    case 'error':
-                        statusClass = 'status-error';
-                        buttonDisabled = 'disabled';
-                        apiCounts.error++;
-                        break;
-                    default: // Fallback
-                        statusClass = 'status-maintenance';
-                        buttonDisabled = 'disabled';
-                        break;
+            // Function to set active navigation link
+            function setActiveNavLink(hash) {
+                document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                const activeLink = document.querySelector(`.sidebar-nav .nav-link[href="${hash}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
                 }
-                if (api.status === 'ready') apiCounts.ready++;
-                apiCounts.total++;
+            }
 
-                card.innerHTML = `
-                    <div class="api-card-header">
-                        <div>
-                            <h3 class="api-title">${api.name}</h3>
-                            <p class="api-description">${api.description}</p>
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                    setActiveNavLink(targetId);
+
+                    // Close sidebar on mobile after clicking a link
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('show');
+                    }
+                });
+            });
+
+            // --- FUNGSI: Memuat API dari Backend ---
+            async function loadAPIs() {
+                const apiManagerUrl = 'https://www.byapi.my.id/api/api-manager.js';
+
+                try {
+                    const response = await fetch(apiManagerUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        renderAPICards(result.data);
+                    } else {
+                        console.error('Failed to load APIs:', result.message);
+                        // Using a custom message box instead of alert()
+                        showMessageBox('Gagal memuat data API: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching APIs:', error);
+                    // Using a custom message box instead of alert()
+                    showMessageBox('Gagal memuat data API. Pastikan server API berjalan dan dapat diakses.');
+                }
+            }
+
+            // --- FUNGSI: Merender Kartu API ---
+            function renderAPICards(apis) {
+                // Clear all API grids first
+                document.getElementById('ai-apis-grid').innerHTML = '';
+                document.getElementById('canvas-apis-grid').innerHTML = '';
+                document.getElementById('random-apis-grid').innerHTML = '';
+                document.getElementById('utility-apis-grid').innerHTML = '';
+
+                const apiCounts = {
+                    ready: 0,
+                    maintenance: 0,
+                    error: 0,
+                    total: 0
+                };
+
+                apis.forEach(api => {
+                    const card = document.createElement('div');
+                    card.classList.add('api-card', 'pixel-border');
+
+                    let statusClass = '';
+                    let buttonDisabled = '';
+
+                    // Adjust button behavior based on API STATUS
+                    switch (api.status) {
+                        case 'ready':
+                            statusClass = 'status-ready';
+                            break;
+                        case 'maintenance':
+                            statusClass = 'status-maintenance';
+                            buttonDisabled = 'disabled';
+                            apiCounts.maintenance++;
+                            break;
+                        case 'error':
+                            statusClass = 'status-error';
+                            buttonDisabled = 'disabled';
+                            apiCounts.error++;
+                            break;
+                        default: // Fallback
+                            statusClass = 'status-maintenance';
+                            buttonDisabled = 'disabled';
+                            break;
+                    }
+                    if (api.status === 'ready') apiCounts.ready++;
+                    apiCounts.total++;
+
+                    card.innerHTML = `
+                        <div class="api-card-header">
+                            <div>
+                                <h3 class="api-title">${api.name}</h3>
+                                <p class="api-description">${api.description}</p>
+                            </div>
+                            <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
                         </div>
-                        <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
-                    </div>
-                    <div class="api-actions">
-                        <button class="btn-base btn-get pixel-button"
-                                data-api="${encodeURIComponent(JSON.stringify(api))}"
-                                ${buttonDisabled}
-                                onclick="showGetDetailsModal(this)">
-                            <i data-lucide="info" class="lucide"></i> GET
+                        <div class="api-actions">
+                            <button class="btn-base btn-get pixel-button"
+                                    data-api="${encodeURIComponent(JSON.stringify(api))}"
+                                    ${buttonDisabled}
+                                    onclick="showGetDetailsModal(this)">
+                                <i data-lucide="info" class="lucide"></i> GET
+                            </button>
+                        </div>
+                    `;
+
+                    const targetGridId = api.category.toLowerCase().replace(/ /g, '-') + '-grid';
+                    const targetGrid = document.getElementById(targetGridId);
+                    if (targetGrid) {
+                        targetGrid.appendChild(card);
+                    } else {
+                        console.warn(`Grid for category "${api.category}" not found. Appending to AI APIs.`);
+                        document.getElementById('ai-apis-grid').appendChild(card);
+                    }
+                });
+
+                // Update statistics in the Overview section
+                document.getElementById('ready-count').textContent = apiCounts.ready;
+                document.getElementById('maintenance-count').textContent = apiCounts.maintenance;
+                document.getElementById('error-count').textContent = apiCounts.error;
+                document.getElementById('total-count').textContent = apiCounts.total;
+
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error re-initializing Lucide icons after rendering cards:", e);
+                }
+            }
+
+            // --- FUNGSI: Mengambil dan Menampilkan Respons API (digunakan dari dalam modal detail) ---
+            async function testAPI(endpoint) {
+                const responseModal = document.getElementById('responseModal');
+                const responseContent = document.getElementById('responseContent');
+
+                responseContent.innerHTML = 'Memuat respons...';
+                responseModal.style.display = 'flex';
+
+                try {
+                    const res = await fetch(endpoint);
+                    const contentType = res.headers.get('Content-Type');
+
+                    if (contentType && contentType.includes('application/json')) {
+                        const json = await res.json();
+                        responseContent.textContent = JSON.stringify(json, null, 2);
+                    } else if (contentType && contentType.includes('image/')) {
+                        responseContent.innerHTML = `<img src="${endpoint}" alt="Hasil Gambar API" style="max-width:100%; height:auto; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">`;
+                    } else {
+                        const text = await res.text();
+                        responseContent.textContent = text;
+                    }
+                } catch (err) {
+                    responseContent.textContent = JSON.stringify({
+                        status: 'error',
+                        message: 'Gagal menghubungi API',
+                        detail: err.message
+                    }, null, 2);
+                }
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error re-initializing Lucide icons after testAPI:", e);
+                }
+            }
+
+            function closeResponseModal() {
+                document.getElementById('responseModal').style.display = 'none';
+                document.getElementById('responseContent').innerHTML = '';
+            }
+
+            // --- FUNGSI: Menampilkan Modal Detail API ---
+            function showGetDetailsModal(buttonElement) {
+                const apiJsonString = buttonElement.getAttribute('data-api');
+                if (!apiJsonString) {
+                    console.error('Data API not found on button element.');
+                    return;
+                }
+                const api = JSON.parse(decodeURIComponent(apiJsonString));
+                const getDetailsModal = document.getElementById('getDetailsModal');
+                const apiDetailsContent = document.getElementById('apiDetailsContent');
+
+                let additionalActions = '';
+                const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
+                const isImageApi = imageGeneratingAPIs.includes(api.id);
+
+                if (isImageApi) {
+                    additionalActions = `
+                        <button class="btn-base btn-get pixel-button" onclick="window.open('${api.endpoint}', '_blank'); closeGetDetailsModal();" style="margin-top: 1.5rem;">
+                            <i data-lucide="image" class="lucide"></i> Lihat Gambar
                         </button>
+                    `;
+                } else {
+                    additionalActions = `
+                        <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
+                            <i data-lucide="play" class="lucide"></i> Test Respons API
+                        </button>
+                    `;
+                }
+
+                apiDetailsContent.innerHTML = `
+                    <div class="detail-item"><strong>Nama API:</strong> ${api.name}</div>
+                    <div class="detail-item"><strong>Deskripsi:</strong> ${api.description}</div>
+                    <div class="detail-item"><strong>Endpoint:</strong> <code>${api.endpoint}</code></div>
+                    <div class="detail-item"><strong>Kategori:</strong> ${api.category}</div>
+                    <div class="detail-item"><strong>Status:</strong> <span class="status-badge ${api.status === 'ready' ? 'status-ready' : api.status === 'maintenance' ? 'status-maintenance' : 'status-error'}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span></div>
+                    ${additionalActions}
+                `;
+                getDetailsModal.style.display = 'flex';
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error re-initializing Lucide icons after showing details modal:", e);
+                }
+            }
+
+            function closeGetDetailsModal() {
+                document.getElementById('getDetailsModal').style.display = 'none';
+                document.getElementById('apiDetailsContent').innerHTML = '';
+            }
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const responseModal = document.getElementById('responseModal');
+                const getDetailsModal = document.getElementById('getDetailsModal');
+                if (event.target === responseModal) {
+                    closeResponseModal();
+                }
+                if (event.target === getDetailsModal) {
+                    closeGetDetailsModal();
+                }
+            }
+
+            // Custom Message Box (instead of alert)
+            function showMessageBox(message) {
+                const modalHtml = `
+                    <div id="messageBoxModal" class="modal-overlay" style="display: flex;">
+                        <div class="modal-content pixel-border" style="max-width: 400px; text-align: center;">
+                            <span class="close-modal" onclick="document.getElementById('messageBoxModal').style.display='none';"><i data-lucide="x" class="lucide"></i></span>
+                            <h3 style="margin-bottom: 1rem;">Pesan</h3>
+                            <p>${message}</p>
+                            <button class="btn-base btn-get pixel-button" onclick="document.getElementById('messageBoxModal').style.display='none';" style="margin-top: 1.5rem;">
+                                OK
+                            </button>
+                        </div>
                     </div>
                 `;
-
-                const targetGridId = api.category.toLowerCase().replace(/ /g, '-') + '-grid';
-                const targetGrid = document.getElementById(targetGridId);
-                if (targetGrid) {
-                    targetGrid.appendChild(card);
-                } else {
-                    console.warn(`Grid for category "${api.category}" not found. Appending to AI APIs.`);
-                    document.getElementById('ai-apis-grid').appendChild(card);
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error initializing Lucide icons for message box:", e);
                 }
-            });
-
-            // Update statistics in the Overview section
-            document.getElementById('ready-count').textContent = apiCounts.ready;
-            document.getElementById('maintenance-count').textContent = apiCounts.maintenance;
-            document.getElementById('error-count').textContent = apiCounts.error;
-            document.getElementById('total-count').textContent = apiCounts.total;
-
-            lucide.createIcons();
-        }
-
-        // --- FUNGSI: Mengambil dan Menampilkan Respons API (digunakan dari dalam modal detail) ---
-        async function testAPI(endpoint) {
-            const responseModal = document.getElementById('responseModal');
-            const responseContent = document.getElementById('responseContent');
-
-            responseContent.innerHTML = 'Memuat respons...';
-            responseModal.style.display = 'flex';
-
-            try {
-                const res = await fetch(endpoint);
-                const contentType = res.headers.get('Content-Type');
-
-                if (contentType && contentType.includes('application/json')) {
-                    const json = await res.json();
-                    responseContent.textContent = JSON.stringify(json, null, 2);
-                } else if (contentType && contentType.includes('image/')) {
-                    responseContent.innerHTML = `<img src="${endpoint}" alt="Hasil Gambar API" style="max-width:100%; height:auto; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">`;
-                } else {
-                    const text = await res.text();
-                    responseContent.textContent = text;
-                }
-            } catch (err) {
-                responseContent.textContent = JSON.stringify({
-                    status: 'error',
-                    message: 'Gagal menghubungi API',
-                    detail: err.message
-                }, null, 2);
-            }
-            lucide.createIcons();
-        }
-
-        function closeResponseModal() {
-            document.getElementById('responseModal').style.display = 'none';
-            document.getElementById('responseContent').innerHTML = '';
-        }
-
-        // --- FUNGSI: Menampilkan Modal Detail API ---
-        function showGetDetailsModal(buttonElement) {
-            const apiJsonString = buttonElement.getAttribute('data-api');
-            if (!apiJsonString) {
-                console.error('Data API not found on button element.');
-                return;
-            }
-            const api = JSON.parse(decodeURIComponent(apiJsonString));
-            const getDetailsModal = document.getElementById('getDetailsModal');
-            const apiDetailsContent = document.getElementById('apiDetailsContent');
-
-            let additionalActions = '';
-            const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
-            const isImageApi = imageGeneratingAPIs.includes(api.id);
-
-            if (isImageApi) {
-                additionalActions = `
-                    <button class="btn-base btn-get pixel-button" onclick="window.open('${api.endpoint}', '_blank'); closeGetDetailsModal();" style="margin-top: 1.5rem;">
-                        <i data-lucide="image" class="lucide"></i> Lihat Gambar
-                    </button>
-                `;
-            } else {
-                additionalActions = `
-                    <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
-                        <i data-lucide="play" class="lucide"></i> Test Respons API
-                    </button>
-                `;
             }
 
-            apiDetailsContent.innerHTML = `
-                <div class="detail-item"><strong>Nama API:</strong> ${api.name}</div>
-                <div class="detail-item"><strong>Deskripsi:</strong> ${api.description}</div>
-                <div class="detail-item"><strong>Endpoint:</strong> <code>${api.endpoint}</code></div>
-                <div class="detail-item"><strong>Kategori:</strong> ${api.category}</div>
-                <div class="detail-item"><strong>Status:</strong> <span class="status-badge ${api.status === 'ready' ? 'status-ready' : api.status === 'maintenance' ? 'status-maintenance' : 'status-error'}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span></div>
-                ${additionalActions}
-            `;
-            getDetailsModal.style.display = 'flex';
-            lucide.createIcons();
-        }
-
-        function closeGetDetailsModal() {
-            document.getElementById('getDetailsModal').style.display = 'none';
-            document.getElementById('apiDetailsContent').innerHTML = '';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const responseModal = document.getElementById('responseModal');
-            const getDetailsModal = document.getElementById('getDetailsModal');
-            if (event.target === responseModal) {
-                closeResponseModal();
-            }
-            if (event.target === getDetailsModal) {
-                closeGetDetailsModal();
-            }
-        }
+        })(); // End of IIFE
     </script>
 </body>
 </html>
