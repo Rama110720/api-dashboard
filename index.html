@@ -502,20 +502,21 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem; /* Reduced padding for mobile optimization */
+            /* Removed padding from here, handled by modal-content */
         }
 
         .modal-content {
             background: var(--white-bg);
-            padding: 1.5rem; /* Reduced padding */
+            padding: 1.5rem; /* Reduced padding for overall minimalist feel */
             border-radius: 0.75rem; /* Slightly less rounded */
-            width: 95%; /* Wider on mobile for better fill */
+            width: calc(100% - 2rem); /* Take 100% width minus combined horizontal padding */
             max-width: 550px; /* Reduced max-width for desktop minimalist feel */
             max-height: 90vh; /* Increased max-height to ensure content fits */
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Slightly less pronounced shadow */
             position: relative;
             animation: fadeInScale 0.3s ease-out forwards;
+            margin: auto; /* Crucial for centering within flex container */
         }
 
         .modal-content h3 {
@@ -609,15 +610,15 @@
             margin-bottom: 0.75rem;
             display: inline-flex; /* Use inline-flex for icon and text to center as a group */
             align-items: center;
-            /* Removed justify-content: center; from here, parent text-align handles it */
+            justify-content: center; /* Explicitly center content within the inline-flex container */
             gap: 0.75rem;
+            width: 100%; /* Ensure it takes full width to allow justify-content to work */
         }
 
         .footer-section p .lucide {
             width: 1.2rem;
             height: 1.2rem;
             color: var(--footer-text);
-            /* Removed margin-right as gap handles it */
         }
 
         .social-icons {
@@ -789,9 +790,9 @@
                 gap: 1.5rem;
             }
             .modal-content {
-                width: 98%; /* Almost full width on mobile */
-                margin: 1% auto; /* Small margin */
-                padding: 1rem; /* Very reduced padding */
+                width: calc(100% - 2rem); /* Adjusted for 1rem padding on each side */
+                margin: auto; /* Ensure it's centered */
+                padding: 1rem; /* Reduced padding */
             }
             .main-footer {
                 padding: 2rem 1rem;
@@ -989,7 +990,7 @@
     <!-- GET Details Modal (for API details and endpoint) -->
     <div id="getDetailsModal" class="modal-overlay">
         <div class="modal-content pixel-border">
-            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" class="lucide"></i></span>
+            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" classide="lucide"></i></span>
             <h3 style="display: flex; align-items: center;"><i data-lucide="file-text" class="lucide" style="width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;"></i> Detail API</h3>
             <div id="apiDetailsContent" class="modal-detail-content">
                 <!-- API details will be injected here -->
