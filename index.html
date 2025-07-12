@@ -1298,8 +1298,9 @@
             const isImageApi = imageGeneratingAPIs.includes(api.id);
 
             if (isImageApi) {
+                // Changed to call testAPI and then close the details modal
                 additionalActions = `
-                    <button class="btn-base btn-get pixel-button" onclick="window.open('${api.endpoint}', '_blank'); closeGetDetailsModal();" style="margin-top: 1.5rem;">
+                    <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
                         <i data-lucide="image" class="lucide"></i> Lihat Gambar
                     </button>
                 `;
