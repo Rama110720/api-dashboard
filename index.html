@@ -18,8 +18,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="API Dashboard - Dokumentasi API">
-    <meta property="twitter:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
-    <meta property="twitter:image" content="https://files.catbox.moe/33nlnc.jpg">
+    <meta name="twitter:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
+    <meta name="twitter:image" content="https://files.catbox.moe/33nlnc.jpg">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -608,12 +608,11 @@
         .footer-section p {
             font-size: 1rem;
             margin-bottom: 0.75rem;
-            display: flex; /* Changed to flex */
+            display: inline-flex; /* Use inline-flex for icon and text to center as a group */
             align-items: center;
-            justify-content: center; /* Explicitly center content within the flex container */
+            justify-content: center; /* Explicitly center content within the inline-flex container */
             gap: 0.75rem;
-            margin: 0 auto 0.75rem auto; /* Center the flex container itself and add bottom margin */
-            max-width: fit-content; /* Ensure the flex container doesn't take full width if not needed */
+            width: 100%; /* Ensure it takes full width to allow justify-content to work */
         }
 
         .footer-section p .lucide {
