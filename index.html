@@ -330,42 +330,43 @@
             margin-bottom: 1rem;
         }
 
+        /* Statistik API - Minimalist Changes */
         .stats-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Larger min-width */
-            gap: 2rem; /* More gap */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Smaller min-width for more cards per row */
+            gap: 1rem; /* Reduced gap */
         }
 
         .stats-card {
             color: var(--white-bg);
-            padding: 2rem; /* More padding */
+            padding: 1.25rem; /* Reduced padding */
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Slightly less pronounced shadow */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
         .stats-card .lucide {
-            width: 3rem; /* Larger icon */
-            height: 3rem;
-            margin: 0 auto 1rem auto; /* More margin */
+            width: 2rem; /* Reduced icon size */
+            height: 2rem;
+            margin: 0 auto 0.5rem auto; /* Reduced margin */
             opacity: 0.9;
             position: relative;
             z-index: 1;
         }
 
         .stats-card h3 {
-            font-size: 2.8rem; /* Larger font */
-            font-weight: 800; /* Extra bold */
-            margin-bottom: 0.5rem;
+            font-size: 2rem; /* Reduced font size */
+            font-weight: 800;
+            margin-bottom: 0.2rem; /* Reduced margin */
             position: relative;
             z-index: 1;
             color: var(--white-bg);
         }
 
         .stats-card p {
-            font-size: 1.1rem; /* Larger text */
+            font-size: 0.9rem; /* Reduced font size */
             margin-bottom: 0;
             opacity: 0.95;
             position: relative;
@@ -489,7 +490,7 @@
         .status-error { background-color: #f8d7da; color: #721c24; }
         .status-maintenance { background-color: #fff3cd; color: #856404; }
 
-        /* Modals */
+        /* Modals - Minimalist & Optimal for Mobile */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -501,34 +502,34 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            padding: 0.75rem; /* Reduced padding for mobile optimization */
         }
 
         .modal-content {
             background: var(--white-bg);
-            padding: 3rem; /* More padding */
-            border-radius: 1rem; /* More rounded */
-            width: 90%;
-            max-width: 800px; /* Wider modal */
-            max-height: 85vh; /* Taller modal */
+            padding: 1.5rem; /* Reduced padding */
+            border-radius: 0.75rem; /* Slightly less rounded */
+            width: 95%; /* Wider on mobile for better fill */
+            max-width: 550px; /* Reduced max-width for desktop minimalist feel */
+            max-height: 90vh; /* Increased max-height to ensure content fits */
             overflow-y: auto;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Slightly less pronounced shadow */
             position: relative;
             animation: fadeInScale 0.3s ease-out forwards;
         }
 
         .modal-content h3 {
             color: var(--dark-text);
-            margin-bottom: 2rem; /* More margin */
+            margin-bottom: 1rem; /* Reduced margin */
             font-weight: 700;
-            font-size: 1.8rem; /* Larger title */
+            font-size: 1.5rem; /* Reduced font size */
         }
 
         .close-modal {
             position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            font-size: 2.5rem; /* Larger close icon */
+            top: 0.75rem; /* Adjusted position */
+            right: 0.75rem; /* Adjusted position */
+            font-size: 2rem; /* Slightly smaller close icon */
             font-weight: bold;
             color: #aaa;
             cursor: pointer;
@@ -542,18 +543,18 @@
         .json-response {
             background: var(--code-bg);
             color: var(--code-text);
-            padding: 1.5rem; /* More padding */
-            border-radius: 0.75rem; /* More rounded */
+            padding: 1rem; /* Reduced padding */
+            border-radius: 0.5rem; /* Slightly less rounded */
             font-family: 'Fira Code', monospace;
-            font-size: 1rem; /* Larger font */
+            font-size: 0.9rem; /* Reduced font size */
             white-space: pre-wrap;
             overflow-x: auto;
-            max-height: 450px; /* Taller */
+            max-height: 350px; /* Reduced max-height */
         }
 
         .modal-detail-content .detail-item {
-            margin-bottom: 1rem; /* More margin */
-            font-size: 1.05rem;
+            margin-bottom: 0.75rem; /* Reduced margin */
+            font-size: 1rem; /* Slightly reduced font size */
         }
 
         .modal-detail-content .detail-item strong {
@@ -564,8 +565,8 @@
 
         .modal-detail-content .detail-item code {
             background-color: #e0e0e0; /* Lighter background for inline code */
-            padding: 0.3em 0.5em; /* More padding */
-            border-radius: 5px;
+            padding: 0.2em 0.4em; /* Reduced padding */
+            border-radius: 4px;
             font-family: 'Fira Code', monospace;
             color: var(--dark-text);
         }
@@ -696,7 +697,24 @@
             .navbar-top .page-title {
                 font-size: 1.6rem;
             }
-            .stats-cards, .api-grid {
+            .stats-cards { /* Adjusted for smaller screens */
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 0.75rem;
+            }
+            .stats-card {
+                padding: 1rem;
+            }
+            .stats-card .lucide {
+                width: 1.8rem;
+                height: 1.8rem;
+            }
+            .stats-card h3 {
+                font-size: 1.8rem;
+            }
+            .stats-card p {
+                font-size: 0.8rem;
+            }
+            .api-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 gap: 1.5rem;
             }
@@ -749,14 +767,31 @@
             .status-info {
                 margin-left: auto;
             }
-            .stats-cards, .api-grid {
+            .stats-cards { /* Further adjustments for smaller tablets/large phones */
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 0.5rem;
+            }
+            .stats-card {
+                padding: 0.75rem;
+            }
+            .stats-card .lucide {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            .stats-card h3 {
+                font-size: 1.5rem;
+            }
+            .stats-card p {
+                font-size: 0.7rem;
+            }
+            .api-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
             .modal-content {
-                width: 95%;
-                margin: 2.5% auto;
-                padding: 2rem;
+                width: 98%; /* Almost full width on mobile */
+                margin: 1% auto; /* Small margin */
+                padding: 1rem; /* Very reduced padding */
             }
             .main-footer {
                 padding: 2rem 1rem;
@@ -781,15 +816,25 @@
                 padding: 1.5rem;
             }
             .modal-content {
-                padding: 1.5rem;
+                padding: 0.75rem; /* Minimal padding */
             }
             .modal-content h3 {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+            .close-modal {
+                font-size: 1.8rem;
+                top: 0.5rem;
+                right: 0.5rem;
             }
             .json-response {
-                font-size: 0.85rem;
-                padding: 1rem;
+                font-size: 0.8rem;
+                padding: 0.75rem;
+                max-height: 300px; /* Adjusted for smaller screens */
+            }
+            .modal-detail-content .detail-item {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
             }
             .footer-section h3 {
                 font-size: 1.2rem;
