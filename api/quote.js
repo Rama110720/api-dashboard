@@ -1,8 +1,9 @@
 // api/quote-of-the-day.js
 // API yang mengembalikan kutipan inspiratif atau terkenal yang berbeda setiap hari.
-// Mengambil kutipan secara real-time dari Forismatic API.
+// Mengambil kutipan secara real-time dari Forismatic API menggunakan modul 'http'.
 
-const axios = require('axios'); // Mengimpor pustaka axios
+const http = require('http'); // Mengimpor modul http bawaan Node.js
+const url = require('url');   // Mengimpor modul url untuk parsing URL (jika diperlukan, tapi tidak untuk http.get)
 
 module.exports = async (req, res) => {
     // Mengatur header CORS
@@ -19,10 +20,30 @@ module.exports = async (req, res) => {
 
     if (req.method === 'GET') {
         try {
-            // Melakukan permintaan ke Forismatic API untuk mendapatkan kutipan acak
-            // Menggunakan lang=en untuk bahasa Inggris, bisa diganti ke 'ru' untuk Rusia
-            const response = await axios.get('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en');
-            const quoteData = response.data;
+            const forismaticApiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en';
+
+            // Melakukan permintaan HTTP GET ke Forismatic API
+            const quoteData = await new Promise((resolve, reject) => {
+                http.get(forismaticApiUrl, (apiRes) => {
+                    let data = '';
+
+                    // Mengumpulkan data dari stream respons
+                    apiRes.on('data', (chunk) => {
+                        data += chunk;
+                    });
+
+                    // Ketika respons selesai
+                    apiRes.on('end', () => {
+                        try {
+                            resolve(JSON.parse(data));
+                        } catch (e) {
+                            reject(new Error('Gagal mengurai respons JSON dari Forismatic API: ' + e.message));
+                        }
+                    });
+                }).on('error', (e) => {
+                    reject(new Error('Gagal terhubung ke Forismatic API: ' + e.message));
+                });
+            });
 
             if (quoteData && quoteData.quoteText) {
                 const quote = quoteData.quoteText.trim();
