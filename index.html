@@ -1,64 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Dashboard - Dokumentasi API</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Dashboard - Dokumentasi API</title>
 
-  <!-- Favicon -->
-  <link rel="icon" href="https://files.catbox.moe/33nlnc.jpg" type="image/png">
+    <!-- Favicon -->
+    <link rel="icon" href="https://files.catbox.moe/33nlnc.jpg" type="image/png">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="API Dashboard - Dokumentasi API">
-  <meta property="og:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
-  <meta property="og:image" content="https://files.catbox.moe/33nlnc.jpg">
-  <meta property="og:url" content="https://byapi.my.id">
-  <meta property="og:type" content="website">
+    <!-- Open Graph -->
+    <meta property="og:title" content="API Dashboard - Dokumentasi API">
+    <meta property="og:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
+    <meta property="og:image" content="https://files.catbox.moe/33nlnc.jpg">
+    <meta property="og:url" content="https://byapi.my.id">
+    <meta property="og:type" content="website">
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="API Dashboard - Dokumentasi API">
-  <meta name="twitter:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
-  <meta name="twitter:image" content="https://files.catbox.moe/33nlnc.jpg">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="API Dashboard - Dokumentasi API">
+    <meta name="twitter:description" content="Pusat dokumentasi API sederhana dan powerful untuk pengembang modern.">
+    <meta name="twitter:image" content="https://files.catbox.moe/33nlnc.jpg">
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "API Dashboard",
-    "url": "https://byapi.my.id",
-    "description": "Pusat dokumentasi API yang sederhana dan powerful untuk pengembang modern.",
-    "image": "https://files.catbox.moe/33nlnc.jpg"
-  }
-  </script>
-</head>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "API Dashboard",
+      "url": "https://byapi.my.id",
+      "description": "Pusat dokumentasi API yang sederhana dan powerful untuk pengembang modern.",
+      "image": "https://files.catbox.moe/33nlnc.jpg"
+    }
+    </script>
 
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <!-- Google Fonts: Inter for general text, Press Start 2P for pixel art feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (instead of Font Awesome for a more modern, customizable feel) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
+        /* CSS Variables for consistent styling - NEW COLOR SCHEME */
         :root {
-            --primary-color: #6c5ce7; /* A more elegant purple */
-            --secondary-color: #8e44ad; /* A deeper purple */
-            --accent-color: #00bcd4; /* A contrasting teal */
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --info-color: #17a2b8;
-            --dark-color: #2c3e50; /* Darker for content */
-            --light-color: #f4f7f6; /* Light gray for background */
-            --white-color: #ffffff;
-            --card-bg: #ffffff;
-            --sidebar-width: 250px;
-            --sidebar-collapsed-width: 80px;
+            --primary-color: #1a237e; /* Dark Indigo Blue */
+            --secondary-color: #283593; /* Slightly Lighter Indigo */
+            --accent-color: #ff9800; /* Bright Orange */
+            --success-color: #4caf50; /* Green */
+            --warning-color: #ffc107; /* Amber */
+            --danger-color: #f44336; /* Red */
+            --info-color: #2196f3; /* Blue */
+            --dark-text: #263238; /* Dark Grey Blue */
+            --light-bg: #eceff1; /* Very Light Grey Blue */
+            --white-bg: #ffffff;
+            --pixel-dark: #1b1b1b; /* Darker for pixel borders */
+            --code-bg: #2d2d2d; /* Dark background for code blocks */
+            --code-text: #a8ff60; /* Bright green for code text */
+            --footer-bg: #111827; /* Darker background for footer */
+            --footer-text: #e0e0e0; /* Light text for footer */
         }
 
+        /* Base Styles */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
             line-height: 1.6;
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Allow footer to stack at bottom */
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Press Start 2P', cursive; /* Pixel art font */
+            color: var(--dark-text);
+        }
+
+        /* Custom Pixel-like border/shadow */
+        .pixel-border {
+            border: 3px solid var(--pixel-dark); /* Thicker border */
+            box-shadow: 6px 6px 0px 0px var(--pixel-dark); /* Larger shadow */
+            border-radius: 10px; /* Slightly more rounded */
+        }
+
+        .pixel-button {
+            border: 3px solid var(--pixel-dark); /* Thicker border */
+            box-shadow: 4px 4px 0px 0px var(--pixel-dark); /* Larger shadow */
+            transition: all 0.1s ease-in-out;
+            border-radius: 8px;
+        }
+
+        .pixel-button:hover {
+            box-shadow: 2px 2px 0px 0px var(--pixel-dark);
+            transform: translate(2px, 2px);
+        }
+
+        .pixel-button:active {
+            box-shadow: none;
+            transform: translate(4px, 4px);
         }
 
         /* Sidebar */
@@ -67,87 +106,97 @@
             top: 0;
             left: 0;
             height: 100vh;
-            width: var(--sidebar-width);
+            width: 280px; /* Slightly wider */
             background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white-color);
+            color: var(--white-bg);
             transition: all 0.3s ease-in-out;
-            z-index: 1050; /* Higher z-index for sidebar */
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* Enable scrolling for long content */
+            z-index: 1050;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
         }
 
         .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
+            width: 90px; /* Slightly wider collapsed state */
         }
 
         .sidebar-header {
-            padding: 1.5rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 1rem; /* More padding */
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* Thicker border */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
         }
 
-        .sidebar-header h4 {
+        .sidebar-header h1 {
             margin: 0;
-            font-weight: 600;
-            font-size: 1.35rem;
+            font-weight: 700; /* Bolder */
+            font-size: 1.5rem; /* Larger font */
             transition: opacity 0.3s ease;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--white-bg);
         }
-        
-        .sidebar-header .logo-icon {
-            font-size: 2rem;
-            margin-right: 0.75rem;
+
+        .sidebar-header .lucide {
+            font-size: 2.5rem; /* Larger icon */
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: 1rem; /* More space */
             transition: margin-right 0.3s ease;
         }
 
-        .sidebar.collapsed .sidebar-header h4 {
+        .sidebar.collapsed .sidebar-header h1 {
             opacity: 0;
             width: 0;
             padding: 0;
             margin: 0;
         }
 
-        .sidebar.collapsed .sidebar-header .logo-icon {
+        .sidebar.collapsed .sidebar-header .lucide {
             margin-right: 0;
         }
 
-        .sidebar-nav .nav-item {
-            margin: 0.5rem 0;
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem; /* More padding */
+            gap: 0.75rem; /* More space between items */
         }
 
         .sidebar-nav .nav-link {
             color: rgba(255, 255, 255, 0.9);
-            padding: 0.85rem 1.5rem;
+            padding: 1rem 1.5rem; /* More padding */
             border-radius: 0.75rem;
-            margin: 0 1rem;
+            margin: 0;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem; /* More space */
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600; /* Bolder text */
         }
 
         .sidebar-nav .nav-link:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--white-color);
-            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.2); /* Stronger hover effect */
+            color: var(--white-bg);
+            transform: translateX(8px); /* More pronounced slide effect */
         }
 
         .sidebar-nav .nav-link.active {
-            background: rgba(255, 255, 255, 0.25);
-            color: var(--white-color);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.35); /* Stronger active effect */
+            color: var(--white-bg);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
         }
 
-        .sidebar-nav .nav-link i {
-            font-size: 1.1rem;
-            width: 20px; /* Fixed width for icons */
+        .sidebar-nav .nav-link .lucide {
+            font-size: 1.3rem; /* Larger icons */
+            width: 24px;
+            height: 24px;
             text-align: center;
         }
 
@@ -157,27 +206,30 @@
 
         .sidebar.collapsed .sidebar-nav .nav-link {
             justify-content: center;
-            padding: 0.85rem 0;
-            margin: 0 0.5rem;
+            padding: 1rem 0;
+            margin: 0 0.75rem;
         }
 
         /* Main Content */
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 280px; /* Adjust initial margin */
+            flex-grow: 1;
             min-height: 100vh;
             transition: margin-left 0.3s ease-in-out;
-            padding: 1.5rem;
+            padding: 2rem; /* More padding */
+            display: flex; /* Flex container for content and footer */
+            flex-direction: column;
         }
 
         .main-content.expanded {
-            margin-left: var(--sidebar-collapsed-width);
+            margin-left: 90px; /* Adjust expanded margin */
         }
 
         /* Navbar (Top Bar) */
         .navbar-top {
-            background: var(--white-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 1rem 1.5rem;
+            background: var(--white-bg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+            padding: 1.25rem 2rem; /* More padding */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -185,162 +237,166 @@
             top: 0;
             z-index: 1000;
             border-radius: 0.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem; /* More margin */
         }
 
         .toggle-btn {
             background: none;
             border: none;
-            font-size: 1.5rem;
-            color: var(--dark-color);
+            font-size: 1.8rem; /* Larger icon */
+            color: var(--dark-text);
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+            padding: 0.6rem;
+            border-radius: 0.6rem;
             transition: all 0.2s ease;
+            display: none;
         }
 
         .toggle-btn:hover {
-            background-color: rgba(0, 0, 0, 0.05);
+            background-color: rgba(0, 0, 0, 0.1); /* Stronger hover */
         }
 
         .page-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--dark-color);
+            font-size: 2rem; /* Larger title */
+            font-weight: 700;
+            color: var(--dark-text);
             margin: 0;
         }
 
         .status-info .badge {
-            font-size: 0.9rem;
-            padding: 0.5em 0.8em;
+            font-size: 1rem; /* Larger badge text */
+            padding: 0.6em 1em; /* More padding */
             border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem; /* More space */
+            font-weight: 700; /* Bolder */
+        }
+
+        .status-info .badge .lucide {
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
         .last-updated {
-            font-size: 0.9rem;
+            font-size: 1rem; /* Larger text */
             color: #6c757d;
+            margin-left: 2rem; /* More margin */
         }
 
         /* Sections */
+        .content-wrapper {
+            flex-grow: 1; /* Allows content sections to take up available space */
+        }
+
         .content-section {
-            padding: 2rem;
-            background-color: var(--white-color);
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
+            padding: 2.5rem; /* More padding */
+            background-color: var(--white-bg);
+            margin-bottom: 2.5rem; /* More margin */
         }
 
         .section-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            border-bottom: 2px solid #eee; /* Thicker border */
+            padding-bottom: 1.25rem; /* More padding */
+            margin-bottom: 2.5rem; /* More margin */
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem; /* More space */
         }
 
         .section-header h2 {
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 2rem; /* Larger title */
+            font-weight: 700;
             color: var(--primary-color);
             margin: 0;
         }
 
+        .section-header .lucide {
+            width: 2.5rem;
+            height: 2.5rem;
+            color: var(--primary-color);
+        }
+
         /* Overview Section - About Me & Stats */
         .overview-about {
-            margin-bottom: 2rem;
-            border-bottom: 1px dashed #eee;
-            padding-bottom: 2rem;
+            margin-bottom: 2.5rem; /* More margin */
+            border-bottom: 2px dashed #eee; /* Thicker dashed border */
+            padding-bottom: 2.5rem; /* More padding */
         }
 
         .overview-about p {
-            font-size: 1.05rem;
+            font-size: 1.1rem; /* Slightly larger text */
             color: #555;
+            margin-bottom: 1rem;
         }
 
         .stats-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Larger min-width */
+            gap: 2rem; /* More gap */
         }
 
         .stats-card {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
-            color: var(--white-color);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
+            color: var(--white-bg);
+            padding: 2rem; /* More padding */
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Stronger shadow */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
-        .stats-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="25" cy="25" r="5" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="90" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="10" r="3" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat center center;
-            background-size: cover;
-            opacity: 0.3;
-            z-index: 0;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .stats-card .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
-            opacity: 0.8;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-card h3 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-card p {
-            font-size: 1rem;
-            margin-bottom: 0;
+        .stats-card .lucide {
+            width: 3rem; /* Larger icon */
+            height: 3rem;
+            margin: 0 auto 1rem auto; /* More margin */
             opacity: 0.9;
             position: relative;
             z-index: 1;
         }
 
-        .stats-card.ready-card { background: linear-gradient(45deg, #28a745, #218838); }
-        .stats-card.maintenance-card { background: linear-gradient(45deg, #ffc107, #e0a800); }
-        .stats-card.error-card { background: linear-gradient(45deg, #dc3545, #c82333); }
+        .stats-card h3 {
+            font-size: 2.8rem; /* Larger font */
+            font-weight: 800; /* Extra bold */
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            color: var(--white-bg);
+        }
+
+        .stats-card p {
+            font-size: 1.1rem; /* Larger text */
+            margin-bottom: 0;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Updated gradient colors for stats cards */
+        .stats-card.ready-card { background: linear-gradient(45deg, var(--success-color), #388e3c); }
+        .stats-card.maintenance-card { background: linear-gradient(45deg, var(--warning-color), #ffa000); }
+        .stats-card.error-card { background: linear-gradient(45deg, var(--danger-color), #d32f2f); }
+        .stats-card.total-card { background: linear-gradient(45deg, var(--info-color), #1976d2); }
+
 
         /* API Cards */
         .api-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Larger min-width */
+            gap: 2rem; /* More gap */
         }
 
         .api-card {
-            background: var(--card-bg);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e0e0e0;
+            background: var(--white-bg);
+            padding: 2rem; /* More padding */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+            border: 2px solid #e0e0e0; /* Thicker border */
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Pushes button to bottom */
+            justify-content: space-between;
         }
 
         .api-card::before {
@@ -349,145 +405,151 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 6px; /* Thicker accent bar */
             background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
         }
 
         .api-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* Much stronger shadow */
         }
 
         .api-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem; /* More margin */
         }
 
         .api-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--dark-color);
-            margin-bottom: 0.4rem;
+            font-size: 1.5rem; /* Larger title */
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
         }
 
         .api-description {
             color: #6b7280;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 1.25rem;
+            font-size: 1rem; /* Slightly larger text */
+            line-height: 1.6;
+            margin-bottom: 1.5rem; /* More margin */
         }
 
         .api-endpoint {
-            background: #f8f8f8;
-            padding: 0.8rem;
-            border-radius: 0.5rem;
-            font-family: 'Fira Code', monospace; /* More modern monospace font */
-            font-size: 0.875rem;
-            color: #333;
-            margin-bottom: 1.25rem;
-            border-left: 4px solid var(--accent-color);
+            background: var(--code-bg); /* Darker code background */
+            color: var(--code-text); /* Bright green code text */
+            padding: 1rem; /* More padding */
+            border-radius: 0.75rem; /* More rounded */
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem; /* Slightly larger font */
+            margin-bottom: 1.5rem;
+            border-left: 6px solid var(--accent-color); /* Thicker accent bar */
             word-break: break-all;
         }
 
         .api-actions {
             display: flex;
-            justify-content: flex-end; /* Align button to the right */
-            margin-top: auto; /* Push to the bottom */
+            justify-content: flex-end;
+            margin-top: auto;
+            gap: 0.75rem; /* More space between buttons */
         }
 
-        .btn-try {
-            background: var(--primary-color);
-            color: var(--white-color);
+        .btn-base {
             border: none;
-            padding: 0.65rem 1.25rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
+            padding: 0.8rem 1.5rem; /* More padding */
+            border-radius: 0.6rem;
+            font-size: 1rem; /* Larger font */
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
+            gap: 0.6rem; /* More space */
+            font-weight: 600; /* Bolder */
         }
 
-        .btn-try:hover {
+        .btn-test {
+            background: var(--primary-color);
+            color: var(--white-bg);
+        }
+
+        .btn-test:hover {
             background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
         }
 
-        .btn-try:disabled {
+        .btn-get-details {
+            background: #e0e0e0;
+            color: var(--dark-text);
+        }
+
+        .btn-get-details:hover {
+            background: #c0c0c0; /* Darker hover */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-base:disabled {
             background: #cccccc;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         .status-badge {
-            padding: 0.3rem 0.9rem;
+            padding: 0.4rem 1rem; /* More padding */
             border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.85rem; /* Slightly larger */
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.75px; /* More spacing */
         }
 
-        .status-ready {
-            background-color: #d4edda;
-            color: #155724;
-        }
+        .status-ready { background-color: #d4edda; color: #155724; }
+        .status-error { background-color: #f8d7da; color: #721c24; }
+        .status-maintenance { background-color: #fff3cd; color: #856404; }
 
-        .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-maintenance {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        /* Response Modal */
-        .response-modal {
+        /* Modals */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7); /* Darker overlay */
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 1.5rem;
         }
 
         .modal-content {
-            background: var(--white-color);
-            padding: 2.5rem;
-            border-radius: 0.75rem;
+            background: var(--white-bg);
+            padding: 3rem; /* More padding */
+            border-radius: 1rem; /* More rounded */
             width: 90%;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 800px; /* Wider modal */
+            max-height: 85vh; /* Taller modal */
             overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Stronger shadow */
             position: relative;
             animation: fadeInScale 0.3s ease-out forwards;
         }
 
         .modal-content h3 {
-            color: var(--dark-color);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 2rem; /* More margin */
+            font-weight: 700;
+            font-size: 1.8rem; /* Larger title */
         }
 
         .close-modal {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
+            top: 1.25rem;
+            right: 1.25rem;
+            font-size: 2.5rem; /* Larger close icon */
             font-weight: bold;
             color: #aaa;
             cursor: pointer;
@@ -499,109 +561,226 @@
         }
 
         .json-response {
-            background: #2d2d2d; /* Darker background for code */
-            color: #f8f8f2;
-            padding: 1.25rem;
-            border-radius: 0.5rem;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem; /* More padding */
+            border-radius: 0.75rem; /* More rounded */
             font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
+            font-size: 1rem; /* Larger font */
             white-space: pre-wrap;
             overflow-x: auto;
-            max-height: 400px;
+            max-height: 450px; /* Taller */
+        }
+
+        .modal-detail-content .detail-item {
+            margin-bottom: 1rem; /* More margin */
+            font-size: 1.05rem;
+        }
+
+        .modal-detail-content .detail-item strong {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .modal-detail-content .detail-item code {
+            background-color: #e0e0e0; /* Lighter background for inline code */
+            padding: 0.3em 0.5em; /* More padding */
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+            color: var(--dark-text);
+        }
+
+        /* Footer Styles */
+        .main-footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 2rem; /* Generous padding */
+            margin-top: 3rem; /* Space from content above */
+            text-align: center;
+            border-top: 3px solid var(--accent-color); /* Accent line at the top */
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            justify-content: space-around;
+            gap: 2rem; /* Space between sections */
+            max-width: 1200px;
+            margin: 0 auto 2rem auto; /* Center and add bottom margin */
+        }
+
+        .footer-section {
+            flex: 1; /* Allow sections to grow */
+            min-width: 250px; /* Minimum width before wrapping */
+            padding: 1rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent-color); /* Bright orange for footer headings */
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section p {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center text and icon */
+            gap: 0.75rem;
+        }
+
+        .footer-section p .lucide {
+            width: 1.2rem;
+            height: 1.2rem;
+            color: var(--footer-text);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center; /* Center social icons */
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--footer-text);
+            font-size: 2.2rem; /* Larger icons */
+            transition: transform 0.2s ease, color 0.2s ease;
+            display: inline-flex; /* Ensure icons are proper flex items */
+        }
+
+        .social-icons a .lucide {
+            width: 2.2rem;
+            height: 2.2rem;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-color); /* Highlight on hover */
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Animations */
         @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.85); } /* Start smaller */
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 10px; /* Thicker scrollbar */
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0; /* Lighter track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a0a0a0; /* Darker thumb */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #707070;
         }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
             .sidebar {
-                width: var(--sidebar-collapsed-width);
+                width: 90px;
             }
-
-            .sidebar .sidebar-header h4,
+            .sidebar .sidebar-header h1,
             .sidebar .nav-link span {
                 display: none;
             }
-
-            .sidebar .sidebar-header .logo-icon {
+            .sidebar .sidebar-header .lucide {
                 margin-right: 0;
             }
-
             .sidebar .sidebar-nav .nav-link {
                 justify-content: center;
-                padding: 0.85rem 0;
-                margin: 0 0.5rem;
+                padding: 1rem 0;
+                margin: 0 0.75rem;
             }
-
             .main-content {
-                margin-left: var(--sidebar-collapsed-width);
-                padding: 1rem;
+                margin-left: 90px;
+                padding: 1.5rem;
             }
-
             .navbar-top .page-title {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
-            
             .stats-cards, .api-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            .footer-content {
+                flex-direction: column; /* Stack footer sections vertically */
+                align-items: center;
+            }
+            .footer-section {
+                min-width: unset; /* Remove min-width constraint */
+                width: 100%; /* Take full width */
+            }
+            .footer-section p {
+                justify-content: center; /* Ensure text is centered */
             }
         }
 
         @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
             .sidebar {
-                left: -100%; /* Hide sidebar completely by default */
-                width: 250px; /* Full width for mobile overlay */
-                box-shadow: none; /* Remove shadow when hidden */
+                position: fixed;
+                left: -100%;
+                width: 280px; /* Full width for mobile overlay */
+                box-shadow: none;
             }
-
             .sidebar.show {
-                left: 0; /* Show sidebar when toggled */
-                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+                left: 0;
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
             }
-
             .main-content {
-                margin-left: 0; /* No margin on mobile */
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
             }
-
             .main-content.expanded {
                 margin-left: 0;
             }
-
             .navbar-top {
-                border-radius: 0; /* No border-radius on full-width mobile nav */
+                border-radius: 0;
                 margin-bottom: 1.5rem;
+                padding: 1rem 1.5rem;
             }
-
             .toggle-btn {
-                display: block; /* Always show toggle button on mobile */
+                display: block;
             }
-
             .page-title {
-                display: none; /* Hide page title on small screens to save space */
+                display: none;
             }
-            
             .status-info {
-                margin-left: auto; /* Push status info to the right */
+                margin-left: auto;
             }
-
             .stats-cards, .api-grid {
-                grid-template-columns: 1fr; /* Stack cards on very small screens */
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
-
             .modal-content {
                 width: 95%;
                 margin: 2.5% auto;
-                padding: 1.5rem;
+                padding: 2rem;
+            }
+            .main-footer {
+                padding: 2rem 1rem;
             }
         }
 
@@ -609,22 +788,39 @@
             .navbar-top {
                 padding: 0.75rem 1rem;
             }
-
             .status-info .badge {
-                font-size: 0.8rem;
-                padding: 0.4em 0.7em;
+                font-size: 0.9rem;
+                padding: 0.5em 0.8em;
             }
-
             .last-updated {
-                display: none; /* Hide last updated on smallest screens */
+                display: none;
             }
-
             .section-header h2 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
-            
             .api-card {
+                padding: 1.5rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+            .modal-content h3 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            .json-response {
+                font-size: 0.85rem;
                 padding: 1rem;
+            }
+            .footer-section h3 {
+                font-size: 1.2rem;
+            }
+            .social-icons a {
+                font-size: 1.8rem;
+            }
+            .social-icons a .lucide {
+                width: 1.8rem;
+                height: 1.8rem;
             }
         }
     </style>
@@ -632,20 +828,26 @@
 <body>
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <i class="fas fa-code logo-icon"></i>
-            <h4>API Dashboard</h4>
+            <i data-lucide="code" class="lucide"></i>
+            <h1>API Dashboard</h1>
         </div>
-        <ul class="nav sidebar-nav flex-column">
+        <ul class="sidebar-nav">
             <li class="nav-item">
                 <a class="nav-link active" href="#overview-section">
-                    <i class="fas fa-home"></i>
+                    <i data-lucide="home" class="lucide"></i>
                     <span>Beranda</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#api-section-list">
-                    <i class="fas fa-puzzle-piece"></i>
+                    <i data-lucide="puzzle" class="lucide"></i>
                     <span>API</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#main-footer">
+                    <i data-lucide="contact" class="lucide"></i>
+                    <span>Kontak</span>
                 </a>
             </li>
         </ul>
@@ -653,24 +855,24 @@
 
     <main class="main-content" id="mainContent">
         <nav class="navbar-top">
-            <div class="d-flex align-items-center">
+            <div style="display: flex; align-items: center;">
                 <button class="toggle-btn" onclick="toggleSidebar()">
-                    <i class="fas fa-bars"></i>
+                    <i data-lucide="menu" class="lucide"></i>
                 </button>
-                <h2 class="page-title ms-3">API Documentation</h2>
+                <h2 class="page-title" style="margin-left: 1rem;">API Documentation</h2>
             </div>
-            <div class="d-flex align-items-center status-info">
-                <span class="badge bg-success me-3">
-                    <i class="fas fa-circle"></i> Online
+            <div style="display: flex; align-items: center;" class="status-info">
+                <span class="badge status-ready">
+                    <i data-lucide="check-circle" class="lucide"></i> Online
                 </span>
-                <span class="text-muted last-updated">Terakhir diperbarui: <span id="lastUpdated"></span></span>
+                <span class="last-updated">Terakhir diperbarui: <span id="lastUpdated"></span></span>
             </div>
         </nav>
 
         <div class="container-fluid content-wrapper">
-            <section class="content-section" id="overview-section">
+            <section class="content-section pixel-border" id="overview-section">
                 <div class="section-header">
-                    <i class="fas fa-home"></i>
+                    <i data-lucide="home" class="lucide"></i>
                     <h2>Beranda</h2>
                 </div>
                 <div class="overview-about">
@@ -679,305 +881,387 @@
                     <p>Silakan jelajahi koleksi API saya dan jangan ragu untuk menghubungi saya jika ada pertanyaan atau kolaborasi!</p>
                 </div>
 
-                <h3>Statistik API</h3>
+                <h3 style="margin-bottom: 1.5rem;">Statistik API</h3>
                 <div class="stats-cards">
-                    <div class="stats-card ready-card">
-                        <div class="card-icon"><i class="fas fa-check-circle"></i></div>
-                        <h3>10</h3>
+                    <div class="stats-card ready-card pixel-border">
+                        <i data-lucide="check-circle" class="lucide"></i>
+                        <h3 id="ready-count">0</h3>
                         <p>Ready</p>
                     </div>
-                    <div class="stats-card maintenance-card">
-                        <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                        <h3>1</h3>
+                    <div class="stats-card maintenance-card pixel-border">
+                        <i data-lucide="exclamation-triangle" class="lucide"></i>
+                        <h3 id="maintenance-count">0</h3>
                         <p>Maintenance</p>
                     </div>
-                    <div class="stats-card error-card">
-                        <div class="card-icon"><i class="fas fa-times-circle"></i></div>
-                        <h3>1</h3>
+                    <div class="stats-card error-card pixel-border">
+                        <i data-lucide="x-circle" class="lucide"></i>
+                        <h3 id="error-count">0</h3>
                         <p>Error</p>
                     </div>
-                    <div class="stats-card" style="background: linear-gradient(45deg, #17a2b8, #138496);">
-                        <div class="card-icon"><i class="fas fa-plug"></i></div>
-                        <h3>12</h3>
+                    <div class="stats-card total-card pixel-border">
+                        <i data-lucide="plug" class="lucide"></i>
+                        <h3 id="total-count">0</h3>
                         <p>Total API</p>
                     </div>
                 </div>
             </section>
 
-            <section class="content-section" id="api-section-list">
+            <section class="content-section pixel-border" id="api-section-list">
                 <div class="section-header">
-                    <i class="fas fa-puzzle-piece"></i>
+                    <i data-lucide="puzzle" class="lucide"></i>
                     <h2>Daftar API</h2>
                 </div>
 
-                <h3 class="mb-3 mt-4"><i class="fas fa-robot me-2"></i>AI APIs</h3>
+                <h3 style="margin-bottom: 1rem; margin-top: 2rem; display: flex; align-items: center;"><i data-lucide="robot" class="lucide" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: var(--info-color);"></i>AI APIs</h3>
                 <div class="api-grid" id="ai-apis-grid">
-                    </div>
+                </div>
 
-                <h3 class="mb-3 mt-5"><i class="fas fa-palette me-2"></i>Canvas APIs</h3>
+                <h3 style="margin-bottom: 1rem; margin-top: 2.5rem; display: flex; align-items: center;"><i data-lucide="palette" class="lucide" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: var(--accent-color);"></i>Canvas APIs</h3>
                 <div class="api-grid" id="canvas-apis-grid">
-                    </div>
+                </div>
 
-                <h3 class="mb-3 mt-5"><i class="fas fa-random me-2"></i>Random APIs</h3>
+                <h3 style="margin-bottom: 1rem; margin-top: 2.5rem; display: flex; align-items: center;"><i data-lucide="shuffle" class="lucide" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: var(--success-color);"></i>Random APIs</h3>
                 <div class="api-grid" id="random-apis-grid">
-                    </div>
+                </div>
 
-                <h3 class="mb-3 mt-5"><i class="fas fa-tools me-2"></i>Utility APIs</h3>
+                <h3 style="margin-bottom: 1rem; margin-top: 2.5rem; display: flex; align-items: center;"><i data-lucide="wrench" class="lucide" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: var(--warning-color);"></i>Utility APIs</h3>
                 <div class="api-grid" id="utility-apis-grid">
-                    </div>
+                </div>
             </section>
         </div>
+
+        <!-- Footer Section -->
+        <footer id="main-footer" class="main-footer">
+            <div class="footer-content">
+                <div class="footer-section contact-info">
+                    <h3>Hubungi Saya</h3>
+                    <p><i data-lucide="mail" class="lucide"></i> myp.dev@example.com</p>
+                    <p><i data-lucide="phone" class="lucide"></i> +62 812-3456-7890</p>
+                </div>
+                <div class="footer-section social-links">
+                    <h3>Ikuti Saya</h3>
+                    <div class="social-icons">
+                        <a href="https://wa.me/6281234567890" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle" class="lucide"></i></a>
+                        <a href="https://instagram.com/myp_dev" target="_blank" aria-label="Instagram"><i data-lucide="instagram" class="lucide"></i></a>
+                        <!-- Tambahkan lebih banyak tautan media sosial jika diperlukan -->
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MyP API Dashboard. Semua hak dilindungi.</p>
+            </div>
+        </footer>
     </main>
 
-    <div id="responseModal" class="response-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+    <!-- Response Modal -->
+    <div id="responseModal" class="modal-overlay">
+        <div class="modal-content pixel-border">
+            <span class="close-modal" onclick="closeResponseModal()"><i data-lucide="x" class="lucide"></i></span>
             <h3>API Response</h3>
-            <div id="responseContent" class="json-response"></div>
+            <pre id="responseContent" class="json-response"></pre>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        updateLastUpdated();
-        setInterval(updateLastUpdated, 60000); // Update every minute
+    <!-- GET Details Modal -->
+    <div id="getDetailsModal" class="modal-overlay">
+        <div class="modal-content pixel-border">
+            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" class="lucide"></i></span>
+            <h3 style="display: flex; align-items: center;"><i data-lucide="file-text" class="lucide" style="width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;"></i> Detail API</h3>
+            <div id="apiDetailsContent" class="modal-detail-content">
+                <!-- API details will be injected here -->
+            </div>
+        </div>
+    </div>
 
-        // Panggil fungsi untuk memuat API saat halaman dimuat
-        loadAPIs(); // <--- Pastikan ini ada di dalam DOMContentLoaded
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide icons
+            lucide.createIcons();
 
-        // Set initial active link and scroll to section if hash exists
-        const initialHash = window.location.hash;
-        if (initialHash) {
-            setActiveNavLink(initialHash);
-            document.querySelector(initialHash).scrollIntoView({ behavior: 'smooth' });
-        } else {
-            // Default to 'Beranda' section if no hash
-            setActiveNavLink('#overview-section');
-            document.getElementById('overview-section').scrollIntoView();
-        }
-    });
+            updateLastUpdated();
+            setInterval(updateLastUpdated, 60000); // Update every minute
 
-    function updateLastUpdated() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        document.getElementById('lastUpdated').textContent = timeString;
-    }
+            loadAPIs();
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-
-        // For mobile, toggle 'show' class
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('show');
-        }
-    }
-
-    // Function to set active navigation link
-    function setActiveNavLink(hash) {
-        document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
-        const activeLink = document.querySelector(`.sidebar-nav .nav-link[href="${hash}"]`);
-        if (activeLink) {
-            activeLink.classList.add('active');
-        }
-    }
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const target = document.querySelector(targetId);
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-            setActiveNavLink(targetId);
-
-            // Close sidebar on mobile after clicking a link
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('show');
-            }
-        });
-    });
-
-    // --- FUNGSI BARU: Memuat API dari Backend ---
-    async function loadAPIs() {
-        // GANTI DENGAN URL API MANAGER ANDA! Pastikan URL ini benar dan bisa diakses dari browser.
-        const apiManagerUrl = 'https://www.byapi.my.id/api/api-manager.js'; 
-
-        try {
-            const response = await fetch(apiManagerUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                renderAPICards(result.data); // Panggil fungsi untuk merender kartu API
+            // Set initial active link and scroll to section if hash exists
+            const initialHash = window.location.hash;
+            if (initialHash) {
+                setActiveNavLink(initialHash);
+                document.querySelector(initialHash).scrollIntoView({ behavior: 'smooth' });
             } else {
-                console.error('Failed to load APIs:', result.message);
-                // Tampilkan pesan error di UI jika perlu
+                // Default to 'Beranda' section if no hash
+                setActiveNavLink('#overview-section');
+                document.getElementById('overview-section').scrollIntoView();
             }
-        } catch (error) {
-            console.error('Error fetching APIs:', error);
-            // Tampilkan pesan error koneksi di UI jika perlu
-            alert('Gagal memuat data API. Pastikan server API berjalan dan dapat diakses.');
-        }
-    }
+        });
 
-    // --- FUNGSI BARU: Merender Kartu API ---
-    function renderAPICards(apis) {
-    // Bersihkan semua grid API terlebih dahulu
-    document.getElementById('ai-apis-grid').innerHTML = '';
-    document.getElementById('canvas-apis-grid').innerHTML = '';
-    document.getElementById('random-apis-grid').innerHTML = '';
-    document.getElementById('utility-apis-grid').innerHTML = '';
-
-    const apiCounts = {
-        ready: 0,
-        maintenance: 0,
-        error: 0,
-        total: 0
-    };
-
-    apis.forEach(api => {
-        const card = document.createElement('div');
-        card.classList.add('api-card');
-
-        let statusClass = '';
-        let buttonText = ''; // Akan ditentukan di bawah
-        let buttonDisabled = '';
-        let onclickAction = ''; // Akan ditentukan di bawah
-
-        // --- Tentukan perilaku tombol berdasarkan jenis API (gambar vs. data) ---
-        const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
-        if (imageGeneratingAPIs.includes(api.id)) {
-            buttonText = '<i class="fas fa-image"></i> Lihat Gambar';
-            onclickAction = `window.open('${api.endpoint}', '_blank')`;
-        } else {
-            buttonText = '<i class="fas fa-play"></i> Test API';
-            onclickAction = `testAPI('${api.endpoint}')`;
-        }
-        // --- END Tentukan perilaku tombol ---
-
-        // --- Sesuaikan perilaku tombol berdasarkan STATUS API ---
-        switch (api.status) {
-            case 'ready':
-                statusClass = 'status-ready';
-                apiCounts.ready++;
-                // Jika ready, gunakan buttonText/onclickAction yang sudah ditentukan di atas (Lihat Gambar / Test API)
-                break;
-            case 'maintenance':
-                statusClass = 'status-maintenance';
-                buttonText = '<i class="fas fa-wrench"></i> Maintenance'; // Override text
-                buttonDisabled = 'disabled';
-                onclickAction = ''; // Nonaktifkan onclick
-                apiCounts.maintenance++;
-                break;
-            case 'error':
-                statusClass = 'status-error';
-                buttonText = '<i class="fas fa-times"></i> Error'; // Override text
-                buttonDisabled = 'disabled';
-                onclickAction = ''; // Nonaktifkan onclick
-                apiCounts.error++;
-                break;
-            default: // Fallback, misalnya jika status tidak dikenal
-                statusClass = 'status-maintenance';
-                buttonText = '<i class="fas fa-question-circle"></i> Unknown Status';
-                buttonDisabled = 'disabled';
-                onclickAction = '';
-                break;
-        }
-        apiCounts.total++;
-
-        card.innerHTML = `
-            <div class="api-card-header">
-                <div>
-                    <h3 class="api-title">${api.name}</h3>
-                    <p class="api-description">${api.description}</p>
-                </div>
-                <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
-            </div>
-            <div class="api-endpoint">GET ${api.endpoint}</div>
-            <div class="api-actions">
-                <button class="btn-try" ${buttonDisabled} onclick="${onclickAction}">
-                    ${buttonText}
-                </button>
-            </div>
-        `;
-
-        // Masukkan kartu ke grid yang sesuai berdasarkan kategori
-        const targetGridId = api.category.toLowerCase().replace(/ /g, '-') + '-grid';
-        const targetGrid = document.getElementById(targetGridId);
-        if (targetGrid) {
-            targetGrid.appendChild(card);
-        } else {
-            console.warn(`Grid for category "${api.category}" not found. Appending to AI APIs.`);
-            document.getElementById('ai-apis-grid').appendChild(card); // Fallback
-        }
-    });
-
-    // Perbarui statistik di bagian Beranda
-    document.querySelector('.stats-card.ready-card h3').textContent = apiCounts.ready;
-    document.querySelector('.stats-card.maintenance-card h3').textContent = apiCounts.maintenance;
-    document.querySelector('.stats-card.error-card h3').textContent = apiCounts.error;
-    document.querySelector('.stats-card:last-child h3').textContent = apiCounts.total; // Total API
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('lastUpdated').textContent = timeString;
         }
 
-    // --- MODIFIKASI FUNGSI testAPI (tetap simulasi untuk demo jika endpoint asli belum ada) ---
-function testAPI(endpoint) {
-  const modal = document.getElementById('responseModal');
-  const responseContent = document.getElementById('responseContent');
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
 
-  responseContent.innerHTML = 'Memuat respons...';
-  modal.style.display = 'flex';
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
 
-  fetch(endpoint)
-    .then(async res => {
-      const contentType = res.headers.get('Content-Type');
-
-      if (contentType.includes('application/json')) {
-        const json = await res.json();
-        responseContent.innerHTML = JSON.stringify(json, null, 2);
-      } else if (contentType.includes('image/')) {
-        responseContent.innerHTML = `<img src="${endpoint}" alt="Hasil Gambar API" style="max-width:100%">`;
-      } else {
-        const text = await res.text();
-        responseContent.innerHTML = text;
-      }
-    })
-    .catch(err => {
-      responseContent.innerHTML = JSON.stringify({
-        status: 'error',
-        message: 'Gagal menghubungi API',
-        detail: err.message
-      }, null, 2);
-    });
-}
-
-    function closeModal() {
-        document.getElementById('responseModal').style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        const modal = document.getElementById('responseModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
+            // For mobile, toggle 'show' class
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('show');
+            }
+            // Re-render Lucide icons after sidebar state change if needed
+            lucide.createIcons();
         }
-    }
-</script>
+
+        // Function to set active navigation link
+        function setActiveNavLink(hash) {
+            document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            const activeLink = document.querySelector(`.sidebar-nav .nav-link[href="${hash}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                setActiveNavLink(targetId);
+
+                // Close sidebar on mobile after clicking a link
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('show');
+                }
+            });
+        });
+
+        // --- FUNGSI BARU: Memuat API dari Backend ---
+        async function loadAPIs() {
+            const apiManagerUrl = 'https://www.byapi.my.id/api/api-manager.js';
+
+            try {
+                const response = await fetch(apiManagerUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    renderAPICards(result.data);
+                } else {
+                    console.error('Failed to load APIs:', result.message);
+                    alert('Gagal memuat data API: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error fetching APIs:', error);
+                alert('Gagal memuat data API. Pastikan server API berjalan dan dapat diakses.');
+            }
+        }
+
+        // --- FUNGSI BARU: Merender Kartu API ---
+        function renderAPICards(apis) {
+            // Clear all API grids first
+            document.getElementById('ai-apis-grid').innerHTML = '';
+            document.getElementById('canvas-apis-grid').innerHTML = '';
+            document.getElementById('random-apis-grid').innerHTML = '';
+            document.getElementById('utility-apis-grid').innerHTML = '';
+
+            const apiCounts = {
+                ready: 0,
+                maintenance: 0,
+                error: 0,
+                total: 0
+            };
+
+            apis.forEach(api => {
+                const card = document.createElement('div');
+                card.classList.add('api-card', 'pixel-border'); // Add pixel-border class
+
+                let statusClass = '';
+                let testButtonText = '';
+                let testButtonIcon = 'play'; // Default icon for test
+                let testButtonDisabled = '';
+                let testOnclickAction = '';
+
+                // Determine button behavior based on API type (image vs. data)
+                const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
+                const isImageApi = imageGeneratingAPIs.includes(api.id);
+
+                if (isImageApi) {
+                    testButtonText = 'Lihat Gambar';
+                    testButtonIcon = 'image';
+                    testOnclickAction = `window.open('${api.endpoint}', '_blank')`;
+                } else {
+                    testButtonText = 'Test API';
+                    testButtonIcon = 'play';
+                    testOnclickAction = `testAPI('${api.endpoint}')`;
+                }
+
+                // Adjust button behavior based on API STATUS
+                switch (api.status) {
+                    case 'ready':
+                        statusClass = 'status-ready';
+                        break;
+                    case 'maintenance':
+                        statusClass = 'status-maintenance';
+                        testButtonText = 'Maintenance';
+                        testButtonIcon = 'wrench';
+                        testButtonDisabled = 'disabled';
+                        testOnclickAction = '';
+                        apiCounts.maintenance++;
+                        break;
+                    case 'error':
+                        statusClass = 'status-error';
+                        testButtonText = 'Error';
+                        testButtonIcon = 'x-circle';
+                        testButtonDisabled = 'disabled';
+                        testOnclickAction = '';
+                        apiCounts.error++;
+                        break;
+                    default: // Fallback
+                        statusClass = 'status-maintenance';
+                        testButtonText = 'Unknown Status';
+                        testButtonIcon = 'help-circle';
+                        testButtonDisabled = 'disabled';
+                        testOnclickAction = '';
+                        break;
+                }
+                if (api.status === 'ready') apiCounts.ready++;
+                apiCounts.total++;
+
+                card.innerHTML = `
+                    <div class="api-card-header">
+                        <div>
+                            <h3 class="api-title">${api.name}</h3>
+                            <p class="api-description">${api.description}</p>
+                        </div>
+                        <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
+                    </div>
+                    <div class="api-endpoint">GET ${api.endpoint}</div>
+                    <div class="api-actions">
+                        <button class="btn-base btn-get-details pixel-button"
+                                data-api="${encodeURIComponent(JSON.stringify(api))}"
+                                onclick="showGetDetailsModal(this)">
+                            <i data-lucide="info" class="lucide"></i> Detail API
+                        </button>
+                        <button class="btn-base btn-test pixel-button" ${testButtonDisabled} onclick="${testOnclickAction}">
+                            <i data-lucide="${testButtonIcon}" class="lucide"></i> ${testButtonText}
+                        </button>
+                    </div>
+                `;
+
+                // Append card to the correct grid based on category
+                const targetGridId = api.category.toLowerCase().replace(/ /g, '-') + '-grid';
+                const targetGrid = document.getElementById(targetGridId);
+                if (targetGrid) {
+                    targetGrid.appendChild(card);
+                } else {
+                    console.warn(`Grid for category "${api.category}" not found. Appending to AI APIs.`);
+                    document.getElementById('ai-apis-grid').appendChild(card); // Fallback
+                }
+            });
+
+            // Update statistics in the Overview section
+            document.getElementById('ready-count').textContent = apiCounts.ready;
+            document.getElementById('maintenance-count').textContent = apiCounts.maintenance;
+            document.getElementById('error-count').textContent = apiCounts.error;
+            document.getElementById('total-count').textContent = apiCounts.total;
+
+            // Re-create Lucide icons after dynamic content is added
+            lucide.createIcons();
+        }
+
+        // --- FUNGSI testAPI ---
+        async function testAPI(endpoint) {
+            const responseModal = document.getElementById('responseModal');
+            const responseContent = document.getElementById('responseContent');
+
+            responseContent.innerHTML = 'Memuat respons...';
+            responseModal.style.display = 'flex';
+
+            try {
+                const res = await fetch(endpoint);
+                const contentType = res.headers.get('Content-Type');
+
+                if (contentType && contentType.includes('application/json')) {
+                    const json = await res.json();
+                    responseContent.textContent = JSON.stringify(json, null, 2); // Use textContent for safety
+                } else if (contentType && contentType.includes('image/')) {
+                    responseContent.innerHTML = `<img src="${endpoint}" alt="Hasil Gambar API" style="max-width:100%; height:auto; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">`;
+                } else {
+                    const text = await res.text();
+                    responseContent.textContent = text;
+                }
+            } catch (err) {
+                responseContent.textContent = JSON.stringify({
+                    status: 'error',
+                    message: 'Gagal menghubungi API',
+                    detail: err.message
+                }, null, 2);
+            }
+            lucide.createIcons(); // Re-render icons in modal if any
+        }
+
+        function closeResponseModal() {
+            document.getElementById('responseModal').style.display = 'none';
+            document.getElementById('responseContent').innerHTML = ''; // Clear content
+        }
+
+        // --- FUNGSI showGetDetailsModal ---
+        function showGetDetailsModal(buttonElement) { // Changed parameter to buttonElement
+            const apiJsonString = buttonElement.getAttribute('data-api'); // Get data from attribute
+            if (!apiJsonString) {
+                console.error('Data API not found on button element.');
+                return;
+            }
+            const api = JSON.parse(decodeURIComponent(apiJsonString));
+            const getDetailsModal = document.getElementById('getDetailsModal');
+            const apiDetailsContent = document.getElementById('apiDetailsContent');
+
+            apiDetailsContent.innerHTML = `
+                <div class="detail-item"><strong>Nama API:</strong> ${api.name}</div>
+                <div class="detail-item"><strong>Deskripsi:</strong> ${api.description}</div>
+                <div class="detail-item"><strong>Endpoint:</strong> <code>${api.endpoint}</code></div>
+                <div class="detail-item"><strong>Kategori:</strong> ${api.category}</div>
+                <div class="detail-item"><strong>Status:</strong> <span class="status-badge ${api.status === 'ready' ? 'status-ready' : api.status === 'maintenance' ? 'status-maintenance' : 'status-error'}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span></div>
+                <!-- Add more details here if needed, e.g., parameters, examples -->
+            `;
+            getDetailsModal.style.display = 'flex';
+            lucide.createIcons(); // Re-render icons in modal if any
+        }
+
+        function closeGetDetailsModal() {
+            document.getElementById('getDetailsModal').style.display = 'none';
+            document.getElementById('apiDetailsContent').innerHTML = ''; // Clear content
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const responseModal = document.getElementById('responseModal');
+            const getDetailsModal = document.getElementById('getDetailsModal');
+            if (event.target === responseModal) {
+                closeResponseModal();
+            }
+            if (event.target === getDetailsModal) {
+                closeGetDetailsModal();
+            }
+        }
+    </script>
 </body>
 </html>
