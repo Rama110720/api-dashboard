@@ -249,7 +249,7 @@
             padding: 0.6rem;
             border-radius: 0.6rem;
             transition: all 0.2s ease;
-            display: none;
+            display: none; /* Hidden by default on desktop */
         }
 
         .toggle-btn:hover {
@@ -678,6 +678,7 @@
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
+            /* Desktop/Tablet collapsed state */
             .sidebar {
                 width: 90px;
             }
@@ -729,7 +730,6 @@
                 min-width: unset; /* Remove min-width constraint */
                 width: 100%; /* Take full width */
             }
-            /* .footer-section p already handles centering via text-align on parent and inline-flex on itself */
         }
 
         @media (max-width: 768px) {
@@ -738,32 +738,47 @@
             }
             .sidebar {
                 position: fixed;
-                left: -100%;
+                left: -280px; /* Hidden by default, matches sidebar width */
                 width: 280px; /* Full width for mobile overlay */
                 box-shadow: none;
+                /* Ensure it's not collapsed on mobile */
+                width: 280px !important; /* Override collapsed width */
             }
             .sidebar.show {
-                left: 0;
+                left: 0; /* Shown when 'show' class is present */
                 box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
             }
+            /* Ensure text and icon are visible in mobile overlay */
+            .sidebar .sidebar-header h1,
+            .sidebar .nav-link span {
+                display: block; /* Show text */
+                opacity: 1; /* Ensure opacity is 1 */
+                width: auto; /* Reset width */
+                padding: initial; /* Reset padding */
+                margin: initial; /* Reset margin */
+            }
+            .sidebar .sidebar-header .lucide {
+                margin-right: 1rem; /* Restore margin */
+            }
+            .sidebar .sidebar-nav .nav-link {
+                justify-content: flex-start; /* Align items to start */
+                padding: 1rem 1.5rem; /* Restore padding */
+                margin: 0; /* Reset margin */
+            }
+
             .main-content {
-                margin-left: 0;
+                margin-left: 0; /* No margin for main content on mobile */
                 width: 100%;
                 padding: 1rem;
             }
-            .main-content.expanded {
+            .main-content.expanded { /* This class is no longer needed for mobile */
                 margin-left: 0;
             }
-            .navbar-top {
-                border-radius: 0;
-                margin-bottom: 1.5rem;
-                padding: 1rem 1.5rem;
-            }
             .toggle-btn {
-                display: block;
+                display: block; /* Show toggle button on mobile */
             }
             .page-title {
-                display: none;
+                display: none; /* Hide page title on mobile */
             }
             .status-info {
                 margin-left: auto;
@@ -990,7 +1005,7 @@
     <!-- GET Details Modal (for API details and endpoint) -->
     <div id="getDetailsModal" class="modal-overlay">
         <div class="modal-content pixel-border">
-            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" classide="lucide"></i></span>
+            <span class="close-modal" onclick="closeGetDetailsModal()"><i data-lucide="x" class="lucide"></i></span>
             <h3 style="display: flex; align-items: center;"><i data-lucide="file-text" class="lucide" style="width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;"></i> Detail API</h3>
             <div id="apiDetailsContent" class="modal-detail-content">
                 <!-- API details will be injected here -->
@@ -1007,6 +1022,10 @@
             setInterval(updateLastUpdated, 60000); // Update every minute
 
             loadAPIs();
+
+            // Handle initial sidebar state and window resize
+            handleResize();
+            window.addEventListener('resize', handleResize);
 
             // Set initial active link and scroll to section if hash exists
             const initialHash = window.location.hash;
@@ -1029,18 +1048,60 @@
             document.getElementById('lastUpdated').textContent = timeString;
         }
 
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                // On mobile, sidebar is an overlay, always full width when shown
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+                // If sidebar is not explicitly 'show', ensure it's hidden
+                if (!sidebar.classList.contains('show')) {
+                    sidebar.style.left = '-280px'; // Hide it if not explicitly shown
+                } else {
+                    sidebar.style.left = '0'; // Show it if 'show' class is present
+                }
+            } else {
+                // On desktop/tablet, sidebar collapses/expands
+                sidebar.classList.remove('show'); // Remove mobile 'show' class
+                sidebar.style.left = '0'; // Ensure it's always visible on desktop
+
+                // Restore desktop collapse/expand state based on if it was previously collapsed
+                // Or set to default expanded if no prior state (e.g., first load)
+                if (sidebar.dataset.desktopCollapsed === 'true') {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('expanded');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    mainContent.classList.remove('expanded');
+                }
+            }
+            lucide.createIcons();
+        }
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
+            const isMobile = window.innerWidth <= 768;
 
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-
-            // For mobile, toggle 'show' class
-            if (window.innerWidth <= 768) {
+            if (isMobile) {
+                // Mobile behavior: toggle 'show' class for overlay
                 sidebar.classList.toggle('show');
+                // Adjust left property based on 'show' class
+                if (sidebar.classList.contains('show')) {
+                    sidebar.style.left = '0';
+                } else {
+                    sidebar.style.left = '-280px';
+                }
+            } else {
+                // Desktop/Tablet behavior: toggle 'collapsed' and 'expanded' classes
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                // Store desktop collapsed state
+                sidebar.dataset.desktopCollapsed = sidebar.classList.contains('collapsed');
             }
-            // Re-render Lucide icons after sidebar state change if needed
             lucide.createIcons();
         }
 
@@ -1071,7 +1132,9 @@
 
                 // Close sidebar on mobile after clicking a link
                 if (window.innerWidth <= 768) {
-                    document.getElementById('sidebar').classList.remove('show');
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.classList.remove('show');
+                    sidebar.style.left = '-280px'; // Explicitly hide it
                 }
             });
         });
@@ -1091,11 +1154,13 @@
                     renderAPICards(result.data);
                 } else {
                     console.error('Failed to load APIs:', result.message);
-                    alert('Gagal memuat data API: ' + result.message);
+                    // Use a custom message box instead of alert
+                    showMessageBox('Gagal memuat data API', result.message);
                 }
             } catch (error) {
                 console.error('Error fetching APIs:', error);
-                alert('Gagal memuat data API. Pastikan server API berjalan dan dapat diakses.');
+                // Use a custom message box instead of alert
+                showMessageBox('Gagal memuat data API', 'Pastikan server API berjalan dan dapat diakses.');
             }
         }
 
@@ -1273,6 +1338,25 @@
             if (event.target === getDetailsModal) {
                 closeGetDetailsModal();
             }
+        }
+
+        // Custom message box function to replace alert()
+        function showMessageBox(title, message) {
+            const modalOverlay = document.createElement('div');
+            modalOverlay.classList.add('modal-overlay');
+            modalOverlay.style.display = 'flex'; // Make it visible
+
+            const modalContent = document.createElement('div');
+            modalContent.classList.add('modal-content', 'pixel-border');
+            modalContent.innerHTML = `
+                <span class="close-modal" onclick="this.closest('.modal-overlay').remove();"><i data-lucide="x" class="lucide"></i></span>
+                <h3>${title}</h3>
+                <p>${message}</p>
+                <button class="btn-base btn-get pixel-button" onclick="this.closest('.modal-overlay').remove();" style="margin-top: 1rem;">OK</button>
+            `;
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+            lucide.createIcons(); // Re-create icons for new modal content
         }
     </script>
 </body>
