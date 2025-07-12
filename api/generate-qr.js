@@ -1,16 +1,14 @@
-// qr-generator.js
-// Ini adalah contoh kode backend (Node.js) untuk API QR Code Generator tanpa Express.js.
-// Anda perlu menginstal Node.js dan paket 'qrcode' terlebih dahulu.
-// Instalasi: npm install qrcode
+// api/generate-qr.js atau api/index.js
+// Ini adalah versi API QR Code Generator yang disesuaikan untuk Vercel.
+// Vercel mengharapkan fungsi 'handler' yang diekspor.
 
-const http = require('http'); // Mengimpor modul HTTP bawaan Node.js
-const url = require('url');   // Mengimpor modul URL untuk parsing URL
-const qrcode = require('qrcode'); // Mengimpor pustaka qrcode
+const url = require('url');
+const qrcode = require('qrcode');
 
-const port = process.env.PORT || 3000; // Port untuk menjalankan server API Anda
-
-// Membuat server HTTP
-const server = http.createServer(async (req, res) => {
+// Fungsi utama yang akan diekspor sebagai handler untuk Vercel
+// req: objek permintaan HTTP
+// res: objek respons HTTP
+module.exports = async (req, res) => {
     // Mengatur header CORS untuk mengizinkan akses dari semua origin
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -25,11 +23,10 @@ const server = http.createServer(async (req, res) => {
 
     // Parsing URL permintaan
     const parsedUrl = url.parse(req.url, true); // true untuk parse query string
-    const pathname = parsedUrl.pathname;
     const query = parsedUrl.query; // Objek query parameters
 
-    // Rute untuk menghasilkan QR Code
-    if (pathname === '/generate-qr' && req.method === 'GET') {
+    // Pastikan ini hanya menangani permintaan GET ke endpoint ini
+    if (req.method === 'GET') {
         const text = query.text; // Ambil teks dari parameter query 'text'
 
         if (!text) {
@@ -74,21 +71,12 @@ const server = http.createServer(async (req, res) => {
                 detail: error.message
             }));
         }
-    }
-    // Rute dasar untuk memeriksa apakah API berjalan
-    else if (pathname === '/' && req.method === 'GET') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({
-            status: 'success',
-            message: 'QR Code Generator API is running. Use /generate-qr?text=YOUR_TEXT to generate a QR code.'
-        }));
-    }
-    // Rute tidak ditemukan
-    else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
+    } else {
+        // Metode HTTP tidak diizinkan
+        res.writeHead(405, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
             status: 'error',
-            message: 'Endpoint tidak ditemukan.'
+            message: 'Metode tidak diizinkan. Hanya GET dan OPTIONS yang didukung.'
         }));
     }
-});
+};
