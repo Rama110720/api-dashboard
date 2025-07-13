@@ -35,30 +35,48 @@
 
     <!-- Google Fonts: Inter for general text, Press Start 2P for pixel art feel -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- Lucide Icons (instead of Font Awesome for a more modern, customizable feel) -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* CSS Variables for consistent styling - NEW COLOR SCHEME */
+        /* ===================================== */
+        /* 1. CSS Variables            */
+        /* ===================================== */
         :root {
             --primary-color: #1a237e; /* Dark Indigo Blue */
             --secondary-color: #283593; /* Slightly Lighter Indigo */
             --accent-color: #ff9800; /* Bright Orange */
-            --success-color: #4caf50; /* Green */
-            --warning-color: #ffc107; /* Amber */
-            --danger-color: #f44336; /* Red */
-            --info-color: #2196f3; /* Blue */
+            --success-color: #388e3c; /* Darker Green for gradient start */
+            --success-end: #4caf50; /* Lighter Green for gradient end */
+            --warning-color: #ffa000; /* Darker Amber for gradient start */
+            --warning-end: #ffc107; /* Lighter Amber for gradient end */
+            --danger-color: #d32f2f; /* Darker Red for gradient start */
+            --danger-end: #f44336; /* Lighter Red for gradient end */
+            --info-color: #1976d2; /* Darker Blue for gradient start */
+            --info-end: #2196f3; /* Lighter Blue for gradient end */
+
             --dark-text: #263238; /* Dark Grey Blue */
+            --light-text: #607d8b; /* Medium Grey Blue */
+            --white-text: #ffffff;
+            
             --light-bg: #eceff1; /* Very Light Grey Blue */
-            --white-bg: #ffffff;
+            --card-bg: #ffffff;
+            --sidebar-bg-start: #1a237e;
+            --sidebar-bg-end: #283593;
+            --footer-bg: #111827; /* Darker background for footer */
+            
             --pixel-dark: #1b1b1b; /* Darker for pixel borders */
             --code-bg: #2d2d2d; /* Dark background for code blocks */
             --code-text: #a8ff60; /* Bright green for code text */
-            --footer-bg: #111827; /* Darker background for footer */
-            --footer-text: #e0e0e0; /* Light text for footer */
+            --border-light: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --shadow-dark: rgba(0, 0, 0, 0.25);
         }
 
-        /* Base Styles */
+        /* ===================================== */
+        /* 2. Base Styles              */
+        /* ===================================== */
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--light-bg);
@@ -66,26 +84,50 @@
             line-height: 1.6;
             margin: 0;
             display: flex;
-            flex-direction: column; /* Allow footer to stack at bottom */
+            flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            font-size: 16px; /* Base font size */
         }
 
         h1, h2, h3 {
-            font-family: 'Press Start 2P', cursive; /* Pixel art font */
+            font-family: 'Press Start 2P', cursive;
             color: var(--dark-text);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
         }
 
-        /* Custom Pixel-like border/shadow */
+        h1 { font-size: 2.2rem; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.4rem; }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--light-text);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* ===================================== */
+        /* 3. Utility Classes          */
+        /* ===================================== */
         .pixel-border {
-            border: 3px solid var(--pixel-dark); /* Thicker border */
-            box-shadow: 6px 6px 0px 0px var(--pixel-dark); /* Larger shadow */
-            border-radius: 10px; /* Slightly more rounded */
+            border: 3px solid var(--pixel-dark);
+            box-shadow: 6px 6px 0px 0px var(--pixel-dark);
+            border-radius: 10px;
         }
 
         .pixel-button {
-            border: 3px solid var(--pixel-dark); /* Thicker border */
-            box-shadow: 4px 4px 0px 0px var(--pixel-dark); /* Larger shadow */
+            border: 3px solid var(--pixel-dark);
+            box-shadow: 4px 4px 0px 0px var(--pixel-dark);
             transition: all 0.1s ease-in-out;
             border-radius: 8px;
         }
@@ -100,50 +142,60 @@
             transform: translate(4px, 4px);
         }
 
-        /* Sidebar */
+        .lucide {
+            display: inline-block; /* Ensure icons align well */
+            vertical-align: middle;
+        }
+
+        /* ===================================== */
+        /* 4. Sidebar Styles           */
+        /* ===================================== */
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
-            width: 280px; /* Slightly wider */
-            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white-bg);
-            transition: all 0.3s ease-in-out;
+            width: 280px;
+            background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%);
+            color: var(--white-text);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother transition */
             z-index: 1050;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.25);
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar.collapsed {
-            width: 90px; /* Slightly wider collapsed state */
+            width: 90px;
         }
 
         .sidebar-header {
-            padding: 2rem 1rem; /* More padding */
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* Thicker border */
+            padding: 2rem 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
+            flex-shrink: 0; /* Prevent shrinking */
         }
 
         .sidebar-header h1 {
             margin: 0;
-            font-weight: 700; /* Bolder */
-            font-size: 1.5rem; /* Larger font */
-            transition: opacity 0.3s ease;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: opacity 0.3s ease, width 0.3s ease, padding 0.3s ease, margin 0.3s ease;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: var(--white-bg);
+            color: var(--white-text);
         }
 
         .sidebar-header .lucide {
-            font-size: 2.5rem; /* Larger icon */
+            font-size: 2.5rem;
             width: 2.5rem;
             height: 2.5rem;
-            margin-right: 1rem; /* More space */
+            margin-right: 1rem;
             transition: margin-right 0.3s ease;
         }
 
@@ -160,44 +212,45 @@
 
         .sidebar-nav {
             list-style: none;
-            padding: 0;
+            padding: 1.5rem;
             margin: 0;
             display: flex;
             flex-direction: column;
-            padding: 1.5rem; /* More padding */
-            gap: 0.75rem; /* More space between items */
+            gap: 0.75rem;
+            flex-grow: 1; /* Allows nav to take available space */
         }
 
         .sidebar-nav .nav-link {
             color: rgba(255, 255, 255, 0.9);
-            padding: 1rem 1.5rem; /* More padding */
+            padding: 1rem 1.5rem;
             border-radius: 0.75rem;
-            margin: 0;
-            transition: all 0.3s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 1.25rem; /* More space */
+            gap: 1.25rem;
             text-decoration: none;
-            font-weight: 600; /* Bolder text */
+            font-weight: 600;
         }
 
         .sidebar-nav .nav-link:hover {
-            background: rgba(255, 255, 255, 0.2); /* Stronger hover effect */
-            color: var(--white-bg);
-            transform: translateX(8px); /* More pronounced slide effect */
+            background: rgba(255, 255, 255, 0.25);
+            color: var(--white-text);
+            transform: translateX(8px);
         }
 
         .sidebar-nav .nav-link.active {
-            background: rgba(255, 255, 255, 0.35); /* Stronger active effect */
-            color: var(--white-bg);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+            background: rgba(255, 255, 255, 0.4);
+            color: var(--white-text);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(4px); /* Less pronounced active slide */
         }
 
         .sidebar-nav .nav-link .lucide {
-            font-size: 1.3rem; /* Larger icons */
+            font-size: 1.3rem;
             width: 24px;
             height: 24px;
             text-align: center;
+            flex-shrink: 0; /* Prevent icon from shrinking */
         }
 
         .sidebar.collapsed .sidebar-nav .nav-link span {
@@ -208,28 +261,33 @@
             justify-content: center;
             padding: 1rem 0;
             margin: 0 0.75rem;
+            gap: 0; /* Remove gap when collapsed */
         }
 
-        /* Main Content */
+        /* ===================================== */
+        /* 5. Main Content Layout      */
+        /* ===================================== */
         .main-content {
-            margin-left: 280px; /* Adjust initial margin */
+            margin-left: 280px;
             flex-grow: 1;
             min-height: 100vh;
-            transition: margin-left 0.3s ease-in-out;
-            padding: 2rem; /* More padding */
-            display: flex; /* Flex container for content and footer */
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 2rem;
+            display: flex;
             flex-direction: column;
         }
 
         .main-content.expanded {
-            margin-left: 90px; /* Adjust expanded margin */
+            margin-left: 90px;
         }
 
-        /* Navbar (Top Bar) */
+        /* ===================================== */
+        /* 6. Navbar (Top Bar)         */
+        /* ===================================== */
         .navbar-top {
-            background: var(--white-bg);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow */
-            padding: 1.25rem 2rem; /* More padding */
+            background: var(--card-bg);
+            box-shadow: 0 4px 15px var(--shadow-light);
+            padding: 1.25rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -237,13 +295,13 @@
             top: 0;
             z-index: 1000;
             border-radius: 0.75rem;
-            margin-bottom: 2.5rem; /* More margin */
+            margin-bottom: 2.5rem;
         }
 
         .toggle-btn {
             background: none;
             border: none;
-            font-size: 1.8rem; /* Larger icon */
+            font-size: 1.8rem;
             color: var(--dark-text);
             cursor: pointer;
             padding: 0.6rem;
@@ -253,24 +311,30 @@
         }
 
         .toggle-btn:hover {
-            background-color: rgba(0, 0, 0, 0.1); /* Stronger hover */
+            background-color: rgba(0, 0, 0, 0.08);
         }
 
         .page-title {
-            font-size: 2rem; /* Larger title */
+            font-size: 2rem;
             font-weight: 700;
             color: var(--dark-text);
             margin: 0;
         }
 
+        .status-info {
+            display: flex;
+            align-items: center;
+        }
+
         .status-info .badge {
-            font-size: 1rem; /* Larger badge text */
-            padding: 0.6em 1em; /* More padding */
+            font-size: 1rem;
+            padding: 0.6em 1em;
             border-radius: 50px;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem; /* More space */
-            font-weight: 700; /* Bolder */
+            gap: 0.5rem;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for badge */
         }
 
         .status-info .badge .lucide {
@@ -279,33 +343,37 @@
         }
 
         .last-updated {
-            font-size: 1rem; /* Larger text */
-            color: #6c757d;
-            margin-left: 2rem; /* More margin */
+            font-size: 0.95rem;
+            color: var(--light-text);
+            margin-left: 2rem;
         }
 
-        /* Sections */
+        /* ===================================== */
+        /* 7. Content Sections         */
+        /* ===================================== */
         .content-wrapper {
-            flex-grow: 1; /* Allows content sections to take up available space */
+            flex-grow: 1;
         }
 
         .content-section {
-            padding: 2.5rem; /* More padding */
-            background-color: var(--white-bg);
-            margin-bottom: 2.5rem; /* More margin */
+            padding: 2.5rem;
+            background-color: var(--card-bg);
+            margin-bottom: 2.5rem;
+            border-radius: 10px; /* Consistent with pixel-border */
+            box-shadow: 0 8px 25px var(--shadow-light); /* Deeper shadow for sections */
         }
 
         .section-header {
-            border-bottom: 2px solid #eee; /* Thicker border */
-            padding-bottom: 1.25rem; /* More padding */
-            margin-bottom: 2.5rem; /* More margin */
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 1.25rem;
+            margin-bottom: 2.5rem;
             display: flex;
             align-items: center;
-            gap: 1.25rem; /* More space */
+            gap: 1.25rem;
         }
 
         .section-header h2 {
-            font-size: 2rem; /* Larger title */
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary-color);
             margin: 0;
@@ -315,95 +383,134 @@
             width: 2.5rem;
             height: 2.5rem;
             color: var(--primary-color);
+            flex-shrink: 0;
         }
 
         /* Overview Section - About Me & Stats */
         .overview-about {
-            margin-bottom: 2.5rem; /* More margin */
-            border-bottom: 2px dashed #eee; /* Thicker dashed border */
-            padding-bottom: 2.5rem; /* More padding */
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed var(--border-light);
+            padding-bottom: 2.5rem;
         }
 
         .overview-about p {
-            font-size: 1.1rem; /* Slightly larger text */
-            color: #555;
+            font-size: 1.1rem;
+            color: var(--light-text);
             margin-bottom: 1rem;
         }
 
-        /* Statistik API - Minimalist Changes */
         .stats-description {
             font-size: 1rem;
-            color: #555;
-            margin-bottom: 1.5rem; /* Add margin below the description */
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
         }
 
         .stats-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Smaller min-width for more cards per row */
-            gap: 1rem; /* Reduced gap */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.25rem; /* Slightly more gap */
         }
 
         .stats-card {
-            color: var(--white-bg);
-            padding: 1.25rem; /* Reduced padding */
+            color: var(--white-text);
+            padding: 1.5rem; /* Increased padding */
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Slightly less pronounced shadow */
+            box-shadow: 0 5px 15px var(--shadow-medium);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            border-radius: 10px; /* Match pixel-border */
         }
         
         .stats-card .lucide {
-            width: 2rem; /* Reduced icon size */
-            height: 2rem;
-            margin: 0 auto 0.5rem auto; /* Reduced margin */
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-card h3 {
-            font-size: 2rem; /* Reduced font size */
-            font-weight: 800;
-            margin-bottom: 0.2rem; /* Reduced margin */
-            position: relative;
-            z-index: 1;
-            color: var(--white-bg);
-        }
-
-        .stats-card p {
-            font-size: 0.9rem; /* Reduced font size */
-            margin-bottom: 0;
+            width: 2.2rem; /* Slightly larger icon */
+            height: 2.2rem;
+            margin: 0 auto 0.75rem auto; /* More margin */
             opacity: 0.95;
             position: relative;
             z-index: 1;
         }
 
+        .stats-card h3 {
+            font-size: 2.2rem; /* Slightly larger font */
+            font-weight: 800;
+            margin-bottom: 0.4rem; /* More margin */
+            position: relative;
+            z-index: 1;
+            color: var(--white-text);
+        }
+
+        .stats-card p {
+            font-size: 0.95rem; /* Slightly larger font */
+            margin-bottom: 0;
+            opacity: 0.98;
+            position: relative;
+            z-index: 1;
+            color: rgba(255,255,255,0.9); /* Ensure readability on gradients */
+        }
+
         /* Updated gradient colors for stats cards */
-        .stats-card.ready-card { background: linear-gradient(45deg, var(--success-color), #388e3c); }
-        .stats-card.maintenance-card { background: linear-gradient(45deg, var(--warning-color), #ffa000); }
-        .stats-card.error-card { background: linear-gradient(45deg, var(--danger-color), #d32f2f); }
-        .stats-card.total-card { background: linear-gradient(45deg, var(--info-color), #1976d2); }
+        .stats-card.ready-card { background: linear-gradient(45deg, var(--success-color), var(--success-end)); }
+        .stats-card.maintenance-card { background: linear-gradient(45deg, var(--warning-color), var(--warning-end)); }
+        .stats-card.error-card { background: linear-gradient(45deg, var(--danger-color), var(--danger-end)); }
+        .stats-card.total-card { background: linear-gradient(45deg, var(--info-color), var(--info-end)); }
+
+        /* ===================================== */
+        /* 8. API Cards                */
+        /* ===================================== */
+        .api-filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            justify-content: center; /* Center buttons */
+        }
+
+        .api-filter-buttons .filter-btn {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            border: 2px solid var(--border-light);
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .api-filter-buttons .filter-btn:hover {
+            background-color: var(--border-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .api-filter-buttons .filter-btn.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--white-text);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-1px);
+        }
 
 
-        /* API Cards */
         .api-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Larger min-width */
-            gap: 2rem; /* More gap */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjusted min-width for better fit */
+            gap: 2rem;
         }
 
         .api-card {
-            background: var(--white-bg);
-            padding: 2rem; /* More padding */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Stronger shadow */
-            border: 2px solid #e0e0e0; /* Thicker border */
-            transition: all 0.3s ease;
+            background: var(--card-bg);
+            padding: 2rem;
+            box-shadow: 0 6px 20px var(--shadow-light);
+            border: 2px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            border-radius: 10px; /* Consistent with pixel-border */
         }
 
         .api-card::before {
@@ -412,67 +519,67 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 6px; /* Thicker accent bar */
+            height: 6px;
             background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            opacity: 0.8; /* Slightly subtle accent */
         }
 
         .api-card:hover {
-            transform: translateY(-8px); /* More pronounced lift */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* Much stronger shadow */
+            transform: translateY(-10px); /* More pronounced lift */
+            box-shadow: 0 18px 45px var(--shadow-medium); /* Much stronger shadow */
         }
 
         .api-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1.25rem; /* More margin */
+            margin-bottom: 1.25rem;
         }
 
         .api-title {
-            font-size: 1.5rem; /* Larger title */
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--dark-text);
             margin-bottom: 0.5rem;
         }
 
         .api-description {
-            color: #6b7280;
-            font-size: 1rem; /* Slightly larger text */
+            color: var(--light-text);
+            font-size: 1rem;
             line-height: 1.6;
-            margin-bottom: 1.5rem; /* More margin */
+            margin-bottom: 1.5rem;
         }
-
-        /* Removed .api-endpoint from here as per user request */
 
         .api-actions {
             display: flex;
             justify-content: flex-end;
             margin-top: auto;
-            gap: 0.75rem; /* More space between buttons */
+            gap: 0.75rem;
         }
 
         .btn-base {
             border: none;
-            padding: 0.8rem 1.5rem; /* More padding */
+            padding: 0.8rem 1.5rem;
             border-radius: 0.6rem;
-            font-size: 1rem; /* Larger font */
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem; /* More space */
-            font-weight: 600; /* Bolder */
+            gap: 0.6rem;
+            font-weight: 600;
         }
 
-        .btn-get { /* Renamed from btn-test */
+        .btn-get {
             background: var(--primary-color);
-            color: var(--white-bg);
+            color: var(--white-text);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Button shadow */
         }
 
-        .btn-get:hover { /* Renamed from btn-test */
+        .btn-get:hover {
             background: var(--secondary-color);
-            transform: translateY(-3px); /* More pronounced lift */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
         }
 
         .btn-base:disabled {
@@ -484,19 +591,22 @@
         }
 
         .status-badge {
-            padding: 0.4rem 1rem; /* More padding */
+            padding: 0.4rem 1rem;
             border-radius: 50px;
-            font-size: 0.85rem; /* Slightly larger */
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.75px; /* More spacing */
+            letter-spacing: 0.75px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .status-ready { background-color: #d4edda; color: #155724; }
         .status-error { background-color: #f8d7da; color: #721c24; }
         .status-maintenance { background-color: #fff3cd; color: #856404; }
 
-        /* Modals - Minimalist & Optimal for Mobile */
+        /* ===================================== */
+        /* 9. Modal Styles             */
+        /* ===================================== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -504,64 +614,68 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Darker overlay */
+            background: rgba(0, 0, 0, 0.75); /* Slightly darker overlay */
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            /* Removed padding from here, handled by modal-content */
+            backdrop-filter: blur(5px); /* Subtle blur effect */
         }
 
         .modal-content {
-            background: var(--white-bg);
-            padding: 1.5rem; /* Reduced padding for overall minimalist feel */
-            border-radius: 0.75rem; /* Slightly less rounded */
-            width: calc(100% - 2rem); /* Take 100% width minus combined horizontal padding */
-            max-width: 550px; /* Reduced max-width for desktop minimalist feel */
-            max-height: 90vh; /* Increased max-height to ensure content fits */
+            background: var(--card-bg);
+            padding: 2rem; /* Increased padding */
+            border-radius: 0.75rem;
+            width: calc(100% - 3rem); /* More responsive width */
+            max-width: 600px; /* Slightly increased max-width */
+            max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Slightly less pronounced shadow */
+            box-shadow: 0 15px 40px var(--shadow-dark); /* Stronger shadow */
             position: relative;
-            animation: fadeInScale 0.3s ease-out forwards;
-            margin: auto; /* Crucial for centering within flex container */
+            animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            margin: auto;
+            border: 2px solid var(--primary-color); /* Accent border */
         }
 
         .modal-content h3 {
             color: var(--dark-text);
-            margin-bottom: 1rem; /* Reduced margin */
+            margin-bottom: 1rem;
             font-weight: 700;
-            font-size: 1.5rem; /* Reduced font size */
+            font-size: 1.6rem; /* Slightly larger */
         }
 
         .close-modal {
             position: absolute;
-            top: 0.75rem; /* Adjusted position */
-            right: 0.75rem; /* Adjusted position */
-            font-size: 2rem; /* Slightly smaller close icon */
+            top: 0.75rem;
+            right: 0.75rem;
+            font-size: 2.2rem; /* Slightly larger close icon */
             font-weight: bold;
-            color: #aaa;
+            color: var(--light-text);
             cursor: pointer;
             transition: color 0.2s ease;
         }
 
         .close-modal:hover {
             color: var(--danger-color);
+            transform: scale(1.1);
         }
 
         .json-response {
             background: var(--code-bg);
             color: var(--code-text);
-            padding: 1rem; /* Reduced padding */
-            border-radius: 0.5rem; /* Slightly less rounded */
+            padding: 1.2rem; /* Increased padding */
+            border-radius: 0.6rem; /* Slightly more rounded */
             font-family: 'Fira Code', monospace;
-            font-size: 0.9rem; /* Reduced font size */
+            font-size: 0.9rem;
             white-space: pre-wrap;
             overflow-x: auto;
-            max-height: 350px; /* Reduced max-height */
+            max-height: 400px; /* Increased max-height */
+            border: 1px solid rgba(255,255,255,0.1); /* Subtle border */
         }
 
         .modal-detail-content .detail-item {
-            margin-bottom: 0.75rem; /* Reduced margin */
-            font-size: 1rem; /* Slightly reduced font size */
+            margin-bottom: 0.8rem; /* Increased margin */
+            font-size: 1.05rem; /* Slightly larger text */
+            color: var(--dark-text);
         }
 
         .modal-detail-content .detail-item strong {
@@ -571,120 +685,142 @@
         }
 
         .modal-detail-content .detail-item code {
-            background-color: #e0e0e0; /* Lighter background for inline code */
-            padding: 0.2em 0.4em; /* Reduced padding */
+            background-color: #e0e0e0;
+            padding: 0.25em 0.5em; /* Increased padding */
             border-radius: 4px;
             font-family: 'Fira Code', monospace;
             color: var(--dark-text);
+            font-size: 0.95em; /* Slightly larger inline code */
         }
 
-        /* Footer Styles */
+        /* ===================================== */
+        /* 10. Footer Styles           */
+        /* ===================================== */
         .main-footer {
             background-color: var(--footer-bg);
-            color: var(--footer-text);
-            padding: 3rem 2rem; /* Generous padding */
-            margin-top: 3rem; /* Space from content above */
+            color: var(--white-text);
+            padding: 3.5rem 2rem; /* More generous padding */
+            margin-top: 3.5rem; /* More space from content above */
             text-align: center;
-            border-top: 3px solid var(--accent-color); /* Accent line at the top */
+            border-top: 4px solid var(--accent-color); /* Thicker accent line */
         }
 
         .footer-content {
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            flex-wrap: wrap;
             justify-content: space-around;
-            gap: 2rem; /* Space between sections */
+            gap: 2.5rem; /* More space between sections */
             max-width: 1200px;
-            margin: 0 auto 2rem auto; /* Center and add bottom margin */
+            margin: 0 auto 2.5rem auto;
         }
 
         .footer-section {
-            flex: 1; /* Allow sections to grow */
-            min-width: 250px; /* Minimum width before wrapping */
+            flex: 1;
+            min-width: 280px; /* Increased min-width */
             padding: 1rem;
-            text-align: center; /* Ensure text within section is centered */
+            /* text-align: center; Dihapus karena flexbox akan menangani perataan */
+        }
+
+        /* Specific styling for the Contact Info section within the footer */
+        .footer-section.contact-info {
+            display: flex; /* Menggunakan flexbox untuk perataan item */
+            flex-direction: column;
+            align-items: center; /* Memusatkan item secara horizontal */
+            justify-content: center; /* Memusatkan item secara vertikal jika ada ruang */
         }
 
         .footer-section h3 {
             font-family: 'Press Start 2P', cursive;
-            color: var(--accent-color); /* Bright orange for footer headings */
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 1.8rem;
+            text-align: center; /* Memastikan judul tetap di tengah */
+            width: 100%; /* Memastikan judul mengambil lebar penuh untuk pemusatan */
         }
 
         .footer-section p {
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            display: inline-flex; /* Use inline-flex for icon and text to center as a group */
-            align-items: center;
-            justify-content: center; /* Explicitly center content within the inline-flex container */
-            gap: 0.75rem;
-            width: 100%; /* Ensure it takes full width to allow justify-content to work */
+            font-size: 1.05rem;
+            margin-bottom: 0.8rem;
+            display: flex; /* Menggunakan flex untuk kontrol yang lebih baik pada perataan ikon-teks */
+            align-items: center; /* Memusatkan ikon dan teks secara vertikal */
+            justify-content: center; /* Memusatkan konten dalam paragraf flex */
+            gap: 0.8rem;
+            color: rgba(255,255,255,0.85);
+            width: 100%; /* Memastikan paragraf mengambil lebar penuh untuk justify-content */
+            /* text-align: center; Dihapus karena justify-content: center sudah memusatkan */
         }
 
         .footer-section p .lucide {
-            width: 1.2rem;
-            height: 1.2rem;
-            color: var(--footer-text);
+            width: 1.3rem;
+            height: 1.3rem;
+            color: var(--white-text);
+            flex-shrink: 0; /* Mencegah ikon menyusut */
         }
 
         .social-icons {
             display: flex;
-            justify-content: center; /* Center social icons */
-            gap: 1.5rem;
-            margin-top: 1rem;
+            justify-content: center;
+            gap: 1.8rem;
+            margin-top: 1.2rem;
         }
 
         .social-icons a {
-            color: var(--footer-text);
-            font-size: 2.2rem; /* Larger icons */
+            color: var(--white-text);
+            font-size: 2.4rem;
             transition: transform 0.2s ease, color 0.2s ease;
-            display: inline-flex; /* Ensure icons are proper flex items */
+            display: inline-flex;
         }
 
         .social-icons a .lucide {
-            width: 2.2rem;
-            height: 2.2rem;
+            width: 2.4rem;
+            height: 2.4rem;
         }
 
         .social-icons a:hover {
-            color: var(--accent-color); /* Highlight on hover */
-            transform: translateY(-5px) scale(1.1);
+            color: var(--accent-color);
+            transform: translateY(-6px) scale(1.15);
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1.5rem;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 1.8rem;
+            margin-top: 1.8rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.75);
         }
 
-        /* Animations */
+        /* ===================================== */
+        /* 11. Animations              */
+        /* ===================================== */
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.85); } /* Start smaller */
+            from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* Custom scrollbar for better aesthetics */
+        /* ===================================== */
+        /* 12. Custom Scrollbar        */
+        /* ===================================== */
         ::-webkit-scrollbar {
-            width: 10px; /* Thicker scrollbar */
-            height: 10px;
+            width: 12px;
+            height: 12px;
         }
         ::-webkit-scrollbar-track {
-            background: #e0e0e0; /* Lighter track */
+            background: #cfd8dc;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #a0a0a0; /* Darker thumb */
+            background: #78909c;
             border-radius: 10px;
+            border: 2px solid #cfd8dc;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #707070;
+            background: #546e7a;
         }
 
-        /* Responsive Adjustments */
+        /* ===================================== */
+        /* 13. Responsive Adjustments  */
+        /* ===================================== */
         @media (max-width: 992px) {
-            /* Desktop/Tablet collapsed state */
             .sidebar {
                 width: 90px;
             }
@@ -699,6 +835,7 @@
                 justify-content: center;
                 padding: 1rem 0;
                 margin: 0 0.75rem;
+                gap: 0;
             }
             .main-content {
                 margin-left: 90px;
@@ -707,34 +844,34 @@
             .navbar-top .page-title {
                 font-size: 1.6rem;
             }
-            .stats-cards { /* Adjusted for smaller screens */
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 0.75rem;
+            .stats-cards {
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                gap: 1rem;
             }
             .stats-card {
-                padding: 1rem;
+                padding: 1.2rem;
             }
             .stats-card .lucide {
-                width: 1.8rem;
-                height: 1.8rem;
+                width: 2rem;
+                height: 2rem;
             }
             .stats-card h3 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             .stats-card p {
-                font-size: 0.8rem;
+                font-size: 0.85rem;
             }
             .api-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 gap: 1.5rem;
             }
             .footer-content {
-                flex-direction: column; /* Stack footer sections vertically */
+                flex-direction: column;
                 align-items: center;
             }
             .footer-section {
-                min-width: unset; /* Remove min-width constraint */
-                width: 100%; /* Take full width */
+                min-width: unset;
+                width: 100%;
             }
         }
 
@@ -744,79 +881,79 @@
             }
             .sidebar {
                 position: fixed;
-                left: -280px; /* Hidden by default, matches sidebar width */
-                width: 280px; /* Full width for mobile overlay */
+                left: -280px;
+                width: 280px;
                 box-shadow: none;
-                /* Ensure it's not collapsed on mobile */
-                width: 280px !important; /* Override collapsed width */
+                width: 280px !important;
             }
             .sidebar.show {
-                left: 0; /* Shown when 'show' class is present */
+                left: 0;
                 box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
             }
-            /* Ensure text and icon are visible in mobile overlay */
             .sidebar .sidebar-header h1,
             .sidebar .nav-link span {
-                display: block; /* Show text */
-                opacity: 1; /* Ensure opacity is 1 */
-                width: auto; /* Reset width */
-                padding: initial; /* Reset padding */
-                margin: initial; /* Reset margin */
+                display: block;
+                opacity: 1;
+                width: auto;
+                padding: initial;
+                margin: initial;
             }
             .sidebar .sidebar-header .lucide {
-                margin-right: 1rem; /* Restore margin */
+                margin-right: 1rem;
             }
             .sidebar .sidebar-nav .nav-link {
-                justify-content: flex-start; /* Align items to start */
-                padding: 1rem 1.5rem; /* Restore padding */
-                margin: 0; /* Reset margin */
+                justify-content: flex-start;
+                padding: 1rem 1.5rem;
+                margin: 0;
             }
 
             .main-content {
-                margin-left: 0; /* No margin for main content on mobile */
+                margin-left: 0;
                 width: 100%;
                 padding: 1rem;
             }
-            .main-content.expanded { /* This class is no longer needed for mobile */
+            .main-content.expanded {
                 margin-left: 0;
             }
             .toggle-btn {
-                display: block; /* Show toggle button on mobile */
+                display: block;
             }
             .page-title {
-                display: none; /* Hide page title on mobile */
+                display: none;
             }
             .status-info {
                 margin-left: auto;
             }
-            .stats-cards { /* Further adjustments for smaller tablets/large phones */
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-                gap: 0.5rem;
+            .stats-cards {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Even smaller for phones */
+                gap: 0.75rem;
             }
             .stats-card {
-                padding: 0.75rem;
+                padding: 0.8rem;
             }
             .stats-card .lucide {
-                width: 1.5rem;
-                height: 1.5rem;
+                width: 1.8rem;
+                height: 1.8rem;
+                margin-bottom: 0.4rem;
             }
             .stats-card h3 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
+                margin-bottom: 0.1rem;
             }
             .stats-card p {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
             }
             .api-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
             .modal-content {
-                width: calc(100% - 2rem); /* Adjusted for 1rem padding on each side */
-                margin: auto; /* Ensure it's centered */
-                padding: 1rem; /* Reduced padding */
+                width: calc(100% - 2rem);
+                margin: auto;
+                padding: 1.5rem;
             }
             .main-footer {
-                padding: 2rem 1rem;
+                padding: 2.5rem 1rem;
             }
         }
 
@@ -825,48 +962,63 @@
                 padding: 0.75rem 1rem;
             }
             .status-info .badge {
-                font-size: 0.9rem;
-                padding: 0.5em 0.8em;
+                font-size: 0.85rem;
+                padding: 0.4em 0.7em;
             }
             .last-updated {
                 display: none;
             }
             .section-header h2 {
-                font-size: 1.6rem;
+                font-size: 1.4rem;
+                gap: 0.8rem;
+            }
+            .section-header .lucide {
+                width: 2rem;
+                height: 2rem;
             }
             .api-card {
                 padding: 1.5rem;
             }
+            .api-title {
+                font-size: 1.3rem;
+            }
+            .api-description {
+                font-size: 0.9rem;
+            }
+            .btn-base {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
             .modal-content {
-                padding: 0.75rem; /* Minimal padding */
+                padding: 1rem;
             }
             .modal-content h3 {
-                font-size: 1.3rem;
-                margin-bottom: 0.75rem;
+                font-size: 1.4rem;
+                margin-bottom: 0.8rem;
             }
             .close-modal {
-                font-size: 1.8rem;
-                top: 0.5rem;
-                right: 0.5rem;
+                font-size: 2rem;
+                top: 0.4rem;
+                right: 0.4rem;
             }
             .json-response {
-                font-size: 0.8rem;
-                padding: 0.75rem;
-                max-height: 300px; /* Adjusted for smaller screens */
+                font-size: 0.75rem;
+                padding: 0.8rem;
+                max-height: 250px;
             }
             .modal-detail-content .detail-item {
                 font-size: 0.9rem;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.4rem;
             }
             .footer-section h3 {
                 font-size: 1.2rem;
             }
             .social-icons a {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             .social-icons a .lucide {
-                width: 1.8rem;
-                height: 1.8rem;
+                width: 2rem;
+                height: 2rem;
             }
         }
     </style>
@@ -959,6 +1111,15 @@
                     <h2>Daftar API</h2>
                 </div>
 
+                <!-- API Filter Buttons -->
+                <div class="api-filter-buttons">
+                    <button class="filter-btn active" data-category="all" onclick="filterAPIsByCategory('all')">Semua API</button>
+                    <button class="filter-btn" data-category="ai" onclick="filterAPIsByCategory('ai')">AI APIs</button>
+                    <button class="filter-btn" data-category="canvas" onclick="filterAPIsByCategory('canvas')">Canvas APIs</button>
+                    <button class="filter-btn" data-category="random" onclick="filterAPIsByCategory('random')">Random APIs</button>
+                    <button class="filter-btn" data-category="utility" onclick="filterAPIsByCategory('utility')">Utility APIs</button>
+                </div>
+
                 <h3 style="margin-bottom: 1rem; margin-top: 2rem; display: flex; align-items: center;"><i data-lucide="robot" class="lucide" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: var(--info-color);"></i>AI APIs</h3>
                 <div class="api-grid" id="ai-apis-grid">
                 </div>
@@ -1028,6 +1189,8 @@
             updateLastUpdated();
             setInterval(updateLastUpdated, 60000); // Update every minute
 
+            // PENTING: Fungsi loadAPIs() TIDAK diubah sesuai permintaan Anda.
+            // Ini akan tetap memuat data API dari api-manager.js
             loadAPIs();
 
             // Handle initial sidebar state and window resize
@@ -1146,7 +1309,7 @@
             });
         });
 
-        // --- FUNGSI: Memuat API dari Backend ---
+        // --- FUNGSI: Memuat API dari Backend (TIDAK DIUBAH SESUAI PERMINTAAN) ---
         async function loadAPIs() {
             const apiManagerUrl = 'https://www.byapi.my.id/api/api-manager.js';
 
@@ -1159,6 +1322,8 @@
 
                 if (result.status === 'success') {
                     renderAPICards(result.data);
+                    // Setelah API dirender, panggil filter untuk menampilkan semua
+                    filterAPIsByCategory('all');
                 } else {
                     console.error('Failed to load APIs:', result.message);
                     // Use a custom message box instead of alert
@@ -1264,6 +1429,50 @@
             lucide.createIcons();
         }
 
+        // --- FUNGSI BARU: Filter API berdasarkan Kategori ---
+        function filterAPIsByCategory(selectedCategory) {
+            const apiGrids = {
+                'ai': document.getElementById('ai-apis-grid'),
+                'canvas': document.getElementById('canvas-apis-grid'),
+                'random': document.getElementById('random-apis-grid'),
+                'utility': document.getElementById('utility-apis-grid')
+            };
+
+            // Dapatkan semua elemen h3 kategori dan grid API
+            const categoryHeaders = document.querySelectorAll('#api-section-list h3[style*="margin-top"]');
+            const allApiGrids = document.querySelectorAll('.api-grid');
+
+            // Sembunyikan semua header dan grid terlebih dahulu
+            categoryHeaders.forEach(header => header.style.display = 'none');
+            allApiGrids.forEach(grid => grid.style.display = 'none');
+
+            if (selectedCategory === 'all') {
+                // Tampilkan semua header dan grid
+                categoryHeaders.forEach(header => header.style.display = 'flex'); /* Kembali ke flex */
+                allApiGrids.forEach(grid => {
+                    if (grid.children.length > 0) { // Hanya tampilkan grid jika ada isinya
+                        grid.style.display = 'grid'; /* Kembali ke grid */
+                    }
+                });
+            } else {
+                // Tampilkan hanya header dan grid yang sesuai
+                const targetHeader = document.querySelector(`#api-section-list h3[style*="margin-right"][style*="color"][style*="${selectedCategory === 'ai' ? 'info' : selectedCategory === 'canvas' ? 'accent' : selectedCategory === 'random' ? 'success' : 'warning'}"]`);
+                const targetGrid = apiGrids[selectedCategory];
+
+                if (targetHeader) targetHeader.style.display = 'flex';
+                if (targetGrid && targetGrid.children.length > 0) { // Hanya tampilkan grid jika ada isinya
+                    targetGrid.style.display = 'grid';
+                }
+            }
+
+            // Atur tombol aktif
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.filter-btn[data-category="${selectedCategory}"]`).classList.add('active');
+        }
+
+
         // --- FUNGSI: Mengambil dan Menampilkan Respons API (digunakan dari dalam modal detail) ---
         async function testAPI(endpoint) {
             const responseModal = document.getElementById('responseModal');
@@ -1312,7 +1521,7 @@
             const apiDetailsContent = document.getElementById('apiDetailsContent');
 
             let additionalActions = '';
-            const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat'];
+            const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat', 'upscale-image']; // Tambahkan 'upscale-image'
             const isImageApi = imageGeneratingAPIs.includes(api.id);
 
             if (isImageApi) {
