@@ -571,7 +571,7 @@
 
         .api-card-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Space between title and (now removed) status badge */
             align-items: center;
             margin-bottom: 0.5rem; /* Reduced margin */
             flex-wrap: wrap; /* Allow wrapping on smaller screens */
@@ -595,9 +595,10 @@
 
         .api-actions {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; /* Align items to the right */
+            align-items: center; /* Vertically align items */
             margin-top: 1rem; /* Reduced space above buttons */
-            gap: 0.6rem; /* Reduced gap */
+            gap: 0.8rem; /* Increased gap slightly to separate button and badge */
         }
 
         .btn-base {
@@ -641,6 +642,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px; /* Reduced letter spacing */
             box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Smaller shadow */
+            /* No longer absolute positioning, so remove top/right/transform */
         }
 
         .status-ready { background-color: #d4edda; color: #155724; }
@@ -1465,12 +1467,13 @@
                         <div class="api-text-content">
                             <div class="api-card-header">
                                 <h3 class="api-title">${api.name}</h3>
-                                <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
+                                <!-- Status badge moved to api-actions -->
                             </div>
                             <p class="api-description">${api.description}</p>
                         </div>
                     </div>
                     <div class="api-actions">
+                        <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
                         <button class="btn-base btn-get pixel-button"
                                 data-api="${encodeURIComponent(JSON.stringify(api))}"
                                 ${buttonDisabled}
