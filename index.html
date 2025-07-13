@@ -40,7 +40,7 @@
 
     <style>
         /* ===================================== */
-        /* 1. CSS Variables            */
+        /* 1. CSS Variables                      */
         /* ===================================== */
         :root {
             --primary-color: #1a237e; /* Dark Indigo Blue */
@@ -75,7 +75,7 @@
         }
 
         /* ===================================== */
-        /* 2. Base Styles              */
+        /* 2. Base Styles                        */
         /* ===================================== */
         body {
             font-family: 'Inter', sans-serif;
@@ -117,7 +117,7 @@
         }
 
         /* ===================================== */
-        /* 3. Utility Classes          */
+        /* 3. Utility Classes                    */
         /* ===================================== */
         .pixel-border {
             border: 3px solid var(--pixel-dark);
@@ -148,7 +148,7 @@
         }
 
         /* ===================================== */
-        /* 4. Sidebar Styles           */
+        /* 4. Sidebar Styles                     */
         /* ===================================== */
         .sidebar {
             position: fixed;
@@ -265,7 +265,7 @@
         }
 
         /* ===================================== */
-        /* 5. Main Content Layout      */
+        /* 5. Main Content Layout                */
         /* ===================================== */
         .main-content {
             margin-left: 280px;
@@ -282,7 +282,7 @@
         }
 
         /* ===================================== */
-        /* 6. Navbar (Top Bar)         */
+        /* 6. Navbar (Top Bar)                   */
         /* ===================================== */
         .navbar-top {
             background: var(--card-bg);
@@ -349,7 +349,7 @@
         }
 
         /* ===================================== */
-        /* 7. Content Sections         */
+        /* 7. Content Sections                   */
         /* ===================================== */
         .content-wrapper {
             flex-grow: 1;
@@ -456,7 +456,7 @@
         .stats-card.total-card { background: linear-gradient(45deg, var(--info-color), var(--info-end)); }
 
         /* ===================================== */
-        /* 8. API Cards                */
+        /* 8. API Cards                          */
         /* ===================================== */
         .api-filter-buttons {
             display: flex;
@@ -499,9 +499,10 @@
             gap: 2rem;
         }
 
+        /* REDESIGNED API CARD STYLES */
         .api-card {
             background: var(--card-bg);
-            padding: 2rem;
+            padding: 1rem; /* Reduced padding for more efficiency */
             box-shadow: 0 6px 20px var(--shadow-light);
             border: 2px solid var(--border-light);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -510,7 +511,10 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-radius: 10px; /* Consistent with pixel-border */
+            border-radius: 12px; /* More rounded corners */
+            background: linear-gradient(135deg, var(--card-bg) 0%, #f0f4f7 100%); /* Subtle gradient */
+            border: 1px solid var(--border-light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
         .api-card::before {
@@ -519,67 +523,106 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
+            height: 6px; /* Slightly thinner accent bar */
             background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            opacity: 0.8; /* Slightly subtle accent */
+            opacity: 1; /* Full opacity for accent */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
         }
 
         .api-card:hover {
-            transform: translateY(-10px); /* More pronounced lift */
-            box-shadow: 0 18px 45px var(--shadow-medium); /* Much stronger shadow */
+            transform: translateY(-8px) scale(1.01); /* Less pronounced lift and scale */
+            box-shadow: 0 15px 30px var(--shadow-medium); /* Adjusted shadow */
+            border-color: var(--primary-color); /* Highlight border on hover */
+        }
+
+        .api-card-content {
+            display: flex;
+            align-items: flex-start; /* Align icon and text at the top */
+            gap: 1rem; /* Reduced space between icon and text */
+            margin-bottom: 1rem; /* Reduced margin */
+            flex-grow: 1;
+        }
+
+        .api-icon-wrapper {
+            flex-shrink: 0;
+            width: 50px; /* Smaller icon container */
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%; /* Circular icon background */
+            background: var(--primary-color); /* Icon background color */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2); /* Smaller shadow */
+            position: relative;
+            top: -5px; /* Lift icon slightly above the card edge */
+            left: -5px;
+        }
+
+        .api-card-icon {
+            width: 28px; /* Smaller icon size */
+            height: 28px;
+            color: var(--white-text); /* Icon color */
+        }
+
+        .api-text-content {
+            flex-grow: 1;
         }
 
         .api-card-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.25rem;
+            align-items: center;
+            margin-bottom: 0.5rem; /* Reduced margin */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
         }
 
         .api-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem; /* Slightly smaller title */
             font-weight: 700;
             color: var(--dark-text);
-            margin-bottom: 0.5rem;
+            margin: 0; /* Remove default margin */
+            line-height: 1.2;
+            flex-grow: 1;
         }
 
         .api-description {
             color: var(--light-text);
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem; /* Slightly smaller description for better fit */
+            line-height: 1.4; /* Adjusted line height */
+            margin-bottom: 0; /* Remove bottom margin here, handled by overall card padding */
         }
 
         .api-actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: auto;
-            gap: 0.75rem;
+            margin-top: 1rem; /* Reduced space above buttons */
+            gap: 0.6rem; /* Reduced gap */
         }
 
         .btn-base {
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 0.6rem;
-            font-size: 1rem;
+            padding: 0.7rem 1.2rem; /* Reduced padding */
+            border-radius: 0.5rem; /* Slightly smaller border radius */
+            font-size: 0.9rem; /* Slightly smaller font size */
             cursor: pointer;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem; /* Reduced gap */
             font-weight: 600;
         }
 
         .btn-get {
             background: var(--primary-color);
             color: var(--white-text);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Button shadow */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2); /* Smaller button shadow */
         }
 
         .btn-get:hover {
             background: var(--secondary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px); /* Less pronounced lift */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         }
 
         .btn-base:disabled {
@@ -591,13 +634,13 @@
         }
 
         .status-badge {
-            padding: 0.4rem 1rem;
+            padding: 0.3rem 0.8rem; /* Reduced padding */
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Slightly smaller font size */
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.75px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            letter-spacing: 0.5px; /* Reduced letter spacing */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Smaller shadow */
         }
 
         .status-ready { background-color: #d4edda; color: #155724; }
@@ -605,7 +648,7 @@
         .status-maintenance { background-color: #fff3cd; color: #856404; }
 
         /* ===================================== */
-        /* 9. Modal Styles             */
+        /* 9. Modal Styles                       */
         /* ===================================== */
         .modal-overlay {
             display: none;
@@ -694,13 +737,13 @@
         }
 
         /* ===================================== */
-        /* 10. Footer Styles           */
+        /* 10. Footer Styles                     */
         /* ===================================== */
         .main-footer {
             background-color: var(--footer-bg);
             color: var(--white-text);
-            padding: 3.5rem 2rem; /* More generous padding */
-            margin-top: 3.5rem; /* More space from content above */
+            padding: 2rem 2rem; /* Reduced padding */
+            margin-top: 2.5rem; /* Reduced margin */
             text-align: center;
             border-top: 4px solid var(--accent-color); /* Thicker accent line */
         }
@@ -708,89 +751,81 @@
         .footer-content {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 2.5rem; /* More space between sections */
+            justify-content: center; /* Centered content */
+            align-items: center; /* Vertically align items */
+            gap: 1.5rem; /* Reduced gap */
             max-width: 1200px;
-            margin: 0 auto 2.5rem auto;
+            margin: 0 auto 1.5rem auto; /* Reduced bottom margin */
         }
 
         .footer-section {
             flex: 1;
-            min-width: 280px; /* Increased min-width */
-            padding: 1rem;
-            /* text-align: center; Dihapus karena flexbox akan menangani perataan */
-        }
-
-        /* Specific styling for the Contact Info section within the footer */
-        .footer-section.contact-info {
-            display: flex; /* Menggunakan flexbox untuk perataan item */
-            flex-direction: column;
-            align-items: center; /* Memusatkan item secara horizontal */
-            justify-content: center; /* Memusatkan item secara vertikal jika ada ruang */
+            min-width: 200px; /* Reduced min-width to allow more flexibility */
+            padding: 0.5rem; /* Reduced padding */
+            text-align: center; /* Ensure text is centered */
         }
 
         .footer-section h3 {
             font-family: 'Press Start 2P', cursive;
             color: var(--accent-color);
-            font-size: 1.5rem;
-            margin-bottom: 1.8rem;
-            text-align: center; /* Memastikan judul tetap di tengah */
-            width: 100%; /* Memastikan judul mengambil lebar penuh untuk pemusatan */
+            font-size: 1.3rem; /* Slightly smaller font size */
+            margin-bottom: 1rem; /* Reduced margin */
+            text-align: center;
+            width: 100%;
         }
 
         .footer-section p {
-            font-size: 1.05rem;
-            margin-bottom: 0.8rem;
-            display: flex; /* Menggunakan flex untuk kontrol yang lebih baik pada perataan ikon-teks */
-            align-items: center; /* Memusatkan ikon dan teks secara vertikal */
-            justify-content: center; /* Memusatkan konten dalam paragraf flex */
-            gap: 0.8rem;
+            font-size: 0.95rem; /* Slightly smaller font size */
+            margin-bottom: 0.5rem; /* Reduced margin */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center content within paragraph */
+            gap: 0.6rem; /* Reduced gap */
             color: rgba(255,255,255,0.85);
-            width: 100%; /* Memastikan paragraf mengambil lebar penuh untuk justify-content */
-            /* text-align: center; Dihapus karena justify-content: center sudah memusatkan */
+            width: 100%;
         }
 
         .footer-section p .lucide {
-            width: 1.3rem;
-            height: 1.3rem;
+            width: 1.1rem; /* Slightly smaller icon */
+            height: 1.1rem;
             color: var(--white-text);
-            flex-shrink: 0; /* Mencegah ikon menyusut */
+            flex-shrink: 0;
         }
 
         .social-icons {
             display: flex;
             justify-content: center;
-            gap: 1.8rem;
-            margin-top: 1.2rem;
+            gap: 1rem; /* Reduced gap */
+            margin-top: 0.8rem; /* Reduced margin */
         }
 
         .social-icons a {
             color: var(--white-text);
-            font-size: 2.4rem;
+            font-size: 2rem; /* Slightly smaller icon size */
             transition: transform 0.2s ease, color 0.2s ease;
             display: inline-flex;
         }
 
         .social-icons a .lucide {
-            width: 2.4rem;
-            height: 2.4rem;
+            width: 2rem; /* Slightly smaller icon size */
+            height: 2rem;
         }
 
         .social-icons a:hover {
             color: var(--accent-color);
-            transform: translateY(-6px) scale(1.15);
+            transform: translateY(-4px) scale(1.1); /* Reduced lift and scale */
         }
 
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.15);
-            padding-top: 1.8rem;
-            margin-top: 1.8rem;
-            font-size: 0.95rem;
+            padding-top: 1.2rem; /* Reduced padding */
+            margin-top: 1.2rem; /* Reduced margin */
+            font-size: 0.85rem; /* Slightly smaller font size */
             color: rgba(255, 255, 255, 0.75);
         }
 
         /* ===================================== */
-        /* 11. Animations              */
+        /* 11. Animations                        */
         /* ===================================== */
         @keyframes fadeInScale {
             from { opacity: 0; transform: scale(0.9); }
@@ -798,7 +833,7 @@
         }
 
         /* ===================================== */
-        /* 12. Custom Scrollbar        */
+        /* 12. Custom Scrollbar                  */
         /* ===================================== */
         ::-webkit-scrollbar {
             width: 12px;
@@ -818,7 +853,7 @@
         }
 
         /* ===================================== */
-        /* 13. Responsive Adjustments  */
+        /* 13. Responsive Adjustments            */
         /* ===================================== */
         @media (max-width: 992px) {
             .sidebar {
@@ -952,8 +987,33 @@
                 margin: auto;
                 padding: 1.5rem;
             }
-            .main-footer {
-                padding: 2.5rem 1rem;
+            .modal-content h3 {
+                font-size: 1.4rem;
+                margin-bottom: 0.8rem;
+            }
+            .close-modal {
+                font-size: 2rem;
+                top: 0.4rem;
+                right: 0.4rem;
+            }
+            .json-response {
+                font-size: 0.75rem;
+                padding: 0.8rem;
+                max-height: 250px;
+            }
+            .modal-detail-content .detail-item {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+            .footer-section h3 {
+                font-size: 1.2rem;
+            }
+            .social-icons a {
+                font-size: 2rem;
+            }
+            .social-icons a .lucide {
+                width: 2rem;
+                height: 2rem;
             }
         }
 
@@ -977,17 +1037,17 @@
                 height: 2rem;
             }
             .api-card {
-                padding: 1.5rem;
+                padding: 1rem; /* Further reduced padding for mobile */
             }
             .api-title {
-                font-size: 1.3rem;
+                font-size: 1.2rem; /* Smaller title for mobile */
             }
             .api-description {
-                font-size: 0.9rem;
+                font-size: 0.85rem; /* Smaller description for mobile */
             }
             .btn-base {
-                padding: 0.7rem 1.2rem;
-                font-size: 0.9rem;
+                padding: 0.6rem 1rem; /* Smaller button padding */
+                font-size: 0.8rem; /* Smaller button font size */
             }
             .modal-content {
                 padding: 1rem;
@@ -1336,6 +1396,22 @@
             }
         }
 
+        // Helper function to get Lucide icon based on category
+        function getIconForCategory(category) {
+            switch (category.toLowerCase()) {
+                case 'ai':
+                    return 'robot';
+                case 'canvas':
+                    return 'palette';
+                case 'random':
+                    return 'shuffle';
+                case 'utility':
+                    return 'wrench';
+                default:
+                    return 'plug'; // Default icon
+            }
+        }
+
         // --- FUNGSI: Merender Kartu API ---
         function renderAPICards(apis) {
             // Clear all API grids first
@@ -1382,12 +1458,17 @@
                 apiCounts.total++;
 
                 card.innerHTML = `
-                    <div class="api-card-header">
-                        <div>
-                            <h3 class="api-title">${api.name}</h3>
+                    <div class="api-card-content">
+                        <div class="api-icon-wrapper">
+                            <i data-lucide="${getIconForCategory(api.category)}" class="lucide api-card-icon"></i>
+                        </div>
+                        <div class="api-text-content">
+                            <div class="api-card-header">
+                                <h3 class="api-title">${api.name}</h3>
+                                <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
+                            </div>
                             <p class="api-description">${api.description}</p>
                         </div>
-                        <span class="status-badge ${statusClass}">${api.status.charAt(0).toUpperCase() + api.status.slice(1)}</span>
                     </div>
                     <div class="api-actions">
                         <button class="btn-base btn-get pixel-button"
