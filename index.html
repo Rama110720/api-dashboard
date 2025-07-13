@@ -845,7 +845,7 @@
                 font-size: 1.6rem;
             }
             .stats-cards {
-                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); /* Adjusted for more cards per row */
                 gap: 1rem;
             }
             .stats-card {
@@ -1520,24 +1520,12 @@
             const getDetailsModal = document.getElementById('getDetailsModal');
             const apiDetailsContent = document.getElementById('apiDetailsContent');
 
-            let additionalActions = '';
-            const imageGeneratingAPIs = ['meme-generator', 'quote-generator', 'certificate-generator', 'brat', 'upscale-image']; // Tambahkan 'upscale-image'
-            const isImageApi = imageGeneratingAPIs.includes(api.id);
-
-            if (isImageApi) {
-                // Changed to call testAPI and then close the details modal
-                additionalActions = `
-                    <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
-                        <i data-lucide="image" class="lucide"></i> Lihat Gambar
-                    </button>
-                `;
-            } else {
-                additionalActions = `
-                    <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
-                        <i data-lucide="play" class="lucide"></i> Test Respons API
-                    </button>
-                `;
-            }
+            // Selalu tampilkan tombol "Test Respons API"
+            const additionalActions = `
+                <button class="btn-base btn-get pixel-button" onclick="closeGetDetailsModal(); testAPI('${api.endpoint}');" style="margin-top: 1.5rem;">
+                    <i data-lucide="play" class="lucide"></i> Test Respons API
+                </button>
+            `;
 
             apiDetailsContent.innerHTML = `
                 <div class="detail-item"><strong>Nama API:</strong> ${api.name}</div>
