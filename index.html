@@ -399,61 +399,107 @@
             margin-bottom: 1rem;
         }
 
-        .stats-description {
-            font-size: 1rem;
-            color: var(--light-text);
-            margin-bottom: 1.5rem;
-        }
-
-        .stats-cards {
+        /* Redesigned Stats Section */
+        .stats-overview-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.25rem; /* Slightly more gap */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjusted min-width for better distribution */
+            gap: 1.5rem; /* Space between stat cards */
+            margin-top: 1.5rem; /* Space from heading */
         }
 
-        .stats-card {
-            color: var(--white-text);
-            padding: 1.5rem; /* Increased padding */
+        .stat-card-new {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            box-shadow: 0 5px 15px var(--shadow-medium);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
             overflow: hidden;
-            border-radius: 10px; /* Match pixel-border */
-        }
-        
-        .stats-card .lucide {
-            width: 2.2rem; /* Slightly larger icon */
-            height: 2.2rem;
-            margin: 0 auto 0.75rem auto; /* More margin */
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
+            border: 1px solid var(--border-light);
         }
 
-        .stats-card h3 {
-            font-size: 2.2rem; /* Slightly larger font */
+        .stat-card-new::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            /* Dynamic background based on status */
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        /* Specific colors for the top bar */
+        .stat-card-new.ready-stat::before { background: linear-gradient(90deg, var(--success-color), var(--success-end)); }
+        .stat-card-new.maintenance-stat::before { background: linear-gradient(90deg, var(--warning-color), var(--warning-end)); }
+        .stat-card-new.error-stat::before { background: linear-gradient(90deg, var(--danger-color), var(--danger-end)); }
+        .stat-card-new.total-stat::before { background: linear-gradient(90deg, var(--info-color), var(--info-end)); }
+
+
+        .stat-card-new:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-card-new .lucide {
+            width: 2.8rem; /* Larger icon */
+            height: 2.8rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color); /* Default icon color */
+        }
+
+        /* Specific icon colors for stats */
+        .stat-card-new.ready-stat .lucide { color: var(--success-color); }
+        .stat-card-new.maintenance-stat .lucide { color: var(--warning-color); }
+        .stat-card-new.error-stat .lucide { color: var(--danger-color); }
+        .stat-card-new.total-stat .lucide { color: var(--info-color); }
+
+
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2.5rem; /* Large count */
             font-weight: 800;
-            margin-bottom: 0.4rem; /* More margin */
-            position: relative;
-            z-index: 1;
-            color: var(--white-text);
+            line-height: 1;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
         }
 
-        .stats-card p {
-            font-size: 0.95rem; /* Slightly larger font */
-            margin-bottom: 0;
-            opacity: 0.98;
-            position: relative;
-            z-index: 1;
-            color: rgba(255,255,255,0.9); /* Ensure readability on gradients */
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--light-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem; /* Space before the bar */
         }
 
-        /* Updated gradient colors for stats cards */
-        .stats-card.ready-card { background: linear-gradient(45deg, var(--success-color), var(--success-end)); }
-        .stats-card.maintenance-card { background: linear-gradient(45deg, var(--warning-color), var(--warning-end)); }
-        .stats-card.error-card { background: linear-gradient(45deg, var(--danger-color), var(--danger-end)); }
-        .stats-card.total-card { background: linear-gradient(45deg, var(--info-color), var(--info-end)); }
+        .stat-progress-bar {
+            width: 100%;
+            height: 8px; /* Height of the progress bar */
+            background-color: var(--border-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-progress-fill {
+            height: 100%;
+            width: 0%; /* Will be set by JS */
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Default fill */
+            transition: width 0.5s ease-out;
+            border-radius: 4px;
+        }
+
+        /* Specific fill colors for progress bars */
+        .stat-card-new.ready-stat .stat-progress-fill { background: linear-gradient(90deg, var(--success-color), var(--success-end)); }
+        .stat-card-new.maintenance-stat .stat-progress-fill { background: linear-gradient(90deg, var(--warning-color), var(--warning-end)); }
+        .stat-card-new.error-stat .stat-progress-fill { background: linear-gradient(90deg, var(--danger-color), var(--danger-end)); }
+        .stat-card-new.total-stat .stat-progress-fill { background: linear-gradient(90deg, var(--info-color), var(--info-end)); }
+
 
         /* ===================================== */
         /* 8. API Cards                          */
@@ -881,22 +927,28 @@
             .navbar-top .page-title {
                 font-size: 1.6rem;
             }
-            .stats-cards {
-                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); /* Adjusted for more cards per row */
+            /* Adjusted for new stats layout */
+            .stats-overview-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Allow more columns on smaller desktop */
                 gap: 1rem;
             }
-            .stats-card {
-                padding: 1.2rem;
+            .stat-card-new {
+                padding: 1rem;
             }
-            .stats-card .lucide {
-                width: 2rem;
-                height: 2rem;
+            .stat-card-new .lucide {
+                width: 2.5rem;
+                height: 2.5rem;
+                margin-bottom: 0.5rem;
             }
-            .stats-card h3 {
+            .stat-value {
                 font-size: 2rem;
             }
-            .stats-card p {
-                font-size: 0.85rem;
+            .stat-label {
+                font-size: 0.9rem;
+                margin-bottom: 0.8rem;
+            }
+            .stat-progress-bar {
+                height: 6px;
             }
             .api-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -961,24 +1013,25 @@
             .status-info {
                 margin-left: auto;
             }
-            .stats-cards {
-                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Even smaller for phones */
-                gap: 0.75rem;
+            /* Adjusted for new stats layout */
+            .stats-overview-grid {
+                grid-template-columns: 1fr; /* Stack on mobile */
+                gap: 1rem;
             }
-            .stats-card {
-                padding: 0.8rem;
+            .stat-card-new {
+                padding: 1.2rem;
             }
-            .stats-card .lucide {
-                width: 1.8rem;
-                height: 1.8rem;
+            .stat-card-new .lucide {
+                width: 2.2rem;
+                height: 2.2rem;
                 margin-bottom: 0.4rem;
             }
-            .stats-card h3 {
-                font-size: 1.6rem;
-                margin-bottom: 0.1rem;
+            .stat-value {
+                font-size: 2rem;
             }
-            .stats-card p {
-                font-size: 0.75rem;
+            .stat-label {
+                font-size: 0.85rem;
+                margin-bottom: 0.6rem;
             }
             .api-grid {
                 grid-template-columns: 1fr;
@@ -1142,27 +1195,39 @@
                 </div>
 
                 <h3 style="margin-bottom: 1.5rem;">Statistik API</h3>
-                <p class="stats-description">Berikut adalah gambaran umum status dan jumlah API yang tersedia di dashboard ini, diperbarui secara real-time untuk memberikan informasi terkini mengenai ketersediaan layanan.</p>
-                <div class="stats-cards">
-                    <div class="stats-card ready-card pixel-border">
+                <!-- Redesigned Stats Section -->
+                <div class="stats-overview-grid">
+                    <div class="stat-card-new ready-stat">
                         <i data-lucide="check-circle" class="lucide"></i>
-                        <h3 id="ready-count">0</h3>
-                        <p>Ready</p>
+                        <span class="stat-value" id="ready-count">0</span>
+                        <span class="stat-label">Ready</span>
+                        <div class="stat-progress-bar">
+                            <div class="stat-progress-fill" id="ready-progress"></div>
+                        </div>
                     </div>
-                    <div class="stats-card maintenance-card pixel-border">
-                        <i data-lucide="exclamation-triangle" class="lucide"></i> <!-- Menggunakan ikon exclamation-triangle -->
-                        <h3 id="maintenance-count">0</h3>
-                        <p>Maintenance</p>
+                    <div class="stat-card-new maintenance-stat">
+                        <i data-lucide="settings" class="lucide"></i> <!-- Changed icon to 'settings' for maintenance -->
+                        <span class="stat-value" id="maintenance-count">0</span>
+                        <span class="stat-label">Maintenance</span>
+                        <div class="stat-progress-bar">
+                            <div class="stat-progress-fill" id="maintenance-progress"></div>
+                        </div>
                     </div>
-                    <div class="stats-card error-card pixel-border">
+                    <div class="stat-card-new error-stat">
                         <i data-lucide="x-circle" class="lucide"></i>
-                        <h3 id="error-count">0</h3>
-                        <p>Error</p>
+                        <span class="stat-value" id="error-count">0</span>
+                        <span class="stat-label">Error</span>
+                        <div class="stat-progress-bar">
+                            <div class="stat-progress-fill" id="error-progress"></div>
+                        </div>
                     </div>
-                    <div class="stats-card total-card pixel-border">
+                    <div class="stat-card-new total-stat">
                         <i data-lucide="plug" class="lucide"></i>
-                        <h3 id="total-count">0</h3>
-                        <p>Total API</p>
+                        <span class="stat-value" id="total-count">0</span>
+                        <span class="stat-label">Total API</span>
+                        <div class="stat-progress-bar">
+                            <div class="stat-progress-fill" id="total-progress"></div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1507,6 +1572,13 @@
             document.getElementById('maintenance-count').textContent = apiCounts.maintenance;
             document.getElementById('error-count').textContent = apiCounts.error;
             document.getElementById('total-count').textContent = apiCounts.total;
+
+            // Calculate percentages for the new progress bars
+            const total = apiCounts.total > 0 ? apiCounts.total : 1; // Avoid division by zero
+            document.getElementById('ready-progress').style.width = `${(apiCounts.ready / total) * 100}%`;
+            document.getElementById('maintenance-progress').style.width = `${(apiCounts.maintenance / total) * 100}%`;
+            document.getElementById('error-progress').style.width = `${(apiCounts.error / total) * 100}%`;
+            document.getElementById('total-progress').style.width = `100%`; // Total is always 100% of itself
 
             // Keep the global lucide.createIcons() for any other static elements or future dynamic additions
             // that are not part of the card rendering loop, though it might be redundant for the cards themselves now.
